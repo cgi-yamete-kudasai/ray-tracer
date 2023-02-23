@@ -14,6 +14,6 @@ public static class SingleExtensions
         if (castLhs >> 31 != castRhs >> 31)
             return lhs == rhs;
 
-        return Math.Abs(lhs - rhs) <= TOLERANCE;
+        return Math.Abs(castLhs - castRhs) <= TOLERANCE;
     }
 }
