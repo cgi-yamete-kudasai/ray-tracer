@@ -1,4 +1,5 @@
-﻿using RayTracer.Library.Mathematics;
+﻿using System.Runtime.CompilerServices;
+using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Utils;
 
@@ -33,11 +34,11 @@ public sealed class Camera
                 float v = (float)j / imageWidth;
 
                 Vector3 direction = Settings.Origin + topLeftCorner + u * vertical + v * horizontal - Settings.Origin;
-                Ray ray = new Ray(Settings.Origin, direction);
+                Ray ray = new(Settings.Origin, direction);
 
                 foreach (var shape in scene.Shapes)
                 {
-                    if (shape.TryIntersect(ray, out var color))
+                    if (shape.TryIntersect(new(ray, Vector3.Normalize(new Vector3(0, 0, -1))), out var color))
                     {
                         map.SetColor(j, i, color);
                         break;

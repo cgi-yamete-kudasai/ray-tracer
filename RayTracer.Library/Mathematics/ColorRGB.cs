@@ -14,4 +14,11 @@ public readonly struct ColorRGB
         G = g;
         B = b;
     }
+
+    public ColorRGB(float rgb)
+    {
+        R = rgb;
+        G = rgb;
+        B = rgb;
+    }
 }

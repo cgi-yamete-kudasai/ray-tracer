@@ -25,9 +25,18 @@ public class ConsoleBitmapWriter : IBitmapWriter
 
     private static char ColorToChar(in ColorRGB color)
     {
-        if (color.R > 0.5f && color.G > 0.5f && color.B > 0.5f)
-            return '#';
+        if (color.R == 0 && color.G == 0 && color.B == 0)
+            return ' ';
 
-        return '.';
+        if (color.R < 0.2f && color.G < 0.2f && color.B < 0.2f)
+            return '.';
+
+        if (color.R < 0.5f && color.G < 0.5f && color.B < 0.5f)
+            return '*';
+
+        if (color.R < 0.8f && color.G < 0.8f && color.B < 0.8f)
+            return 'O';
+
+        return '#';
     }
 }
