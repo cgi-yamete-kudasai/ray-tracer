@@ -15,11 +15,8 @@ public class Sphere : IIntersectable
         Radius = radius;
     }
 
-    public bool TryIntersect(in IntersectionContext context, out ColorRGB color)
+    public bool TryIntersect(in Ray ray, out Vector3 point)
     {
-        ref readonly Ray ray = ref context.Ray;
-        ref readonly Vector3 light = ref context.DirectionalLight;
-
         Vector3 k = ray.Origin - Center;
         float a = Vector3.Dot(ray.Direction, ray.Direction);
         float b = 2 * Vector3.Dot(k, ray.Direction);
@@ -29,16 +26,17 @@ public class Sphere : IIntersectable
 
         if (rootsCount == 0)
         {
-            color = new ColorRGB(0);
+            point = Vector3.Zero;
             return false;
         }
 
         float closest = Math.Min(root1, root2);
-        Vector3 intersectionPoint = ray.Origin + closest * ray.Direction;
-        Vector3 normal = intersectionPoint - Center;
-
-        float dot = Vector3.Dot(normal, -1 * light);
-        color = new ColorRGB(dot);
+        point = ray.Origin + closest * ray.Direction;
         return true;
+    }
+
+    public Vector3 GetNormal(in Vector3 point)
+    {
+        return point - Center;
     }
 }

@@ -4,5 +4,7 @@ namespace RayTracer.Library.Shapes;
 
 public interface IIntersectable
 {
-    bool TryIntersect(in IntersectionContext context, out ColorRGB color);
+    bool TryIntersect(in Ray ray, out Vector3 point);
+
+    Vector3 GetNormal(in Vector3 point);
 }

@@ -1,4 +1,5 @@
 ﻿using System.Runtime.CompilerServices;
+using RayTracer.Library.Lights;
 using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Utils;
@@ -14,6 +15,8 @@ public sealed class Camera
 
     public Bitmap Render(Scene scene)
     {
+        DirectionalLight light = new(Vector3.Normalize(new(0, 0, -1)));
+
         int imageHeight = Settings.ImageHeight;
         int imageWidth = (int)(Settings.AspectRatio * imageHeight);
 
@@ -38,8 +41,9 @@ public sealed class Camera
 
                 foreach (var shape in scene.Shapes)
                 {
-                    if (shape.TryIntersect(new(ray, Vector3.Normalize(new Vector3(0, 0, -1))), out var color))
+                    if (shape.TryIntersect(ray, out var point))
                     {
+                        ColorRGB color = light.Color(shape, point);
                         map.SetColor(j, i, color);
                         break;
                     }

@@ -21,4 +21,31 @@ public class SingleComparisonTests
 
         Assert.False(f1.IsEqualTo(f2));
     }
+
+    [Fact]
+    public void NaN()
+    {
+        float f1 = float.NaN;
+        float f2 = float.NaN;
+
+        Assert.True(f1.IsEqualTo(f2));
+    }
+
+    [Fact]
+    public void PositiveInfinity()
+    {
+        float f1 = float.PositiveInfinity;
+        float f2 = float.PositiveInfinity;
+
+        Assert.True(f1.IsEqualTo(f2));
+    }
+
+    [Fact]
+    public void NegativeInfinity()
+    {
+        float f1 = float.NegativeInfinity;
+        float f2 = float.NegativeInfinity;
+
+        Assert.True(f1.IsEqualTo(f2));
+    }
 }
