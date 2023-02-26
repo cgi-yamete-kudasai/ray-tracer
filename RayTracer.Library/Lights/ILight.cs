@@ -5,5 +5,7 @@ namespace RayTracer.Library.Lights;
 
 public interface ILight
 {
-    ColorRGB Color(IIntersectable shape, Vector3 point);
+    ColorRGB Color { get; }
+
+    ColorRGB PaintPoint(IIntersectable shape, Vector3 point);
 }

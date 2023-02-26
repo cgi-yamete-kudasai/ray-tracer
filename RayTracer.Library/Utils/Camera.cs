@@ -43,7 +43,7 @@ public sealed class Camera
                 {
                     if (shape.TryIntersect(ray, out var point))
                     {
-                        ColorRGB color = light.Color(shape, point);
+                        ColorRGB color = light.PaintPoint(shape, point);
                         map.SetColor(j, i, color);
                         break;
                     }

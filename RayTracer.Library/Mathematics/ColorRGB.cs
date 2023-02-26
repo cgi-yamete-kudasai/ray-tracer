@@ -2,6 +2,8 @@
 
 public readonly struct ColorRGB
 {
+    public static readonly ColorRGB White = new(1, 1, 1);
+
     public readonly float R;
 
     public readonly float G;
@@ -20,5 +22,10 @@ public readonly struct ColorRGB
         R = rgb;
         G = rgb;
         B = rgb;
+    }
+
+    public static ColorRGB operator *(float c, ColorRGB color)
+    {
+        return new(c * color.R, c * color.G, c * color.B);
     }
 }

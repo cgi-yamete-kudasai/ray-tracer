@@ -6,15 +6,15 @@ public readonly struct CameraSettings
 {
     public static readonly CameraSettings Default = new(16f / 9f, 1920, 2, 1, Vector3.Zero);
 
-    public readonly float AspectRatio;
+    public float AspectRatio { get; init; }
 
-    public readonly int ImageHeight;
+    public int ImageHeight { get; init; }
 
-    public readonly float ViewportHeight;
+    public float ViewportHeight { get; init; }
 
-    public readonly float FocalLength;
+    public float FocalLength { get; init; }
 
-    public readonly Vector3 Origin;
+    public Vector3 Origin { get; init; }
 
     public CameraSettings(
         float aspectRatio,
