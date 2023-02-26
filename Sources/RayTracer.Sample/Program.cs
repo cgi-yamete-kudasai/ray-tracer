@@ -10,7 +10,7 @@ CameraSettings settings = CameraSettings.Default with
 
 Camera camera = new(settings);
 
-FileStream fs = File.OpenRead("../../../../Assets/Scenes/SpheresTest.json");
+FileStream fs = File.OpenRead("../../../../../Assets/Scenes/SpheresTest.json");
 Scene scene = SerializationHelper.Deserialize<Scene>(fs)!;
 
 Bitmap bitmap = camera.Render(scene);
