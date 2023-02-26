@@ -1,9 +1,11 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Serialization;
+using RayTracer.Library.Serialization.Serializers;
 
 namespace RayTracer.Library.Shapes;
 
-public class Sphere : IIntersectable
+public class Sphere : IIntersectable, ISerializable<Sphere>
 {
     public Vector3 Center { get; init; }
 
@@ -39,4 +41,6 @@ public class Sphere : IIntersectable
     {
         return point - Center;
     }
+
+    static ISerializer<Sphere> ISerializable<Sphere>.Serializer => SphereSerializer.Instance;
 }

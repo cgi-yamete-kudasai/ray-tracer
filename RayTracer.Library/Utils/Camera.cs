@@ -15,8 +15,6 @@ public sealed class Camera
 
     public Bitmap Render(Scene scene)
     {
-        DirectionalLight light = new(Vector3.Normalize(new(0, 0, -1)));
-
         int imageHeight = Settings.ImageHeight;
         int imageWidth = (int)(Settings.AspectRatio * imageHeight);
 
@@ -43,7 +41,8 @@ public sealed class Camera
                 {
                     if (shape.TryIntersect(ray, out var point))
                     {
-                        ColorRGB color = light.PaintPoint(shape, point);
+                        // TODO: handle many lights
+                        ColorRGB color = scene.Lights[0].PaintPoint(shape, point);
                         map.SetColor(j, i, color);
                         break;
                     }

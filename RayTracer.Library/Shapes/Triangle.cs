@@ -63,6 +63,6 @@ public class Triangle : IIntersectable
         Vector3 e1 = B - A;
         Vector3 e2 = C - A;
 
-        return Vector3.Normalize(Vector3.Cross(e1, e2));
+        return Vector3.Cross(e1, e2);
     }
 }

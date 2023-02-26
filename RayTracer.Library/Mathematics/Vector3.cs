@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using RayTracer.Library.Extensions;
+using RayTracer.Library.Serialization;
+using RayTracer.Library.Serialization.Serializers;
 
 namespace RayTracer.Library.Mathematics;
 
 [DebuggerDisplay("X = {X}, Y = {Y}, Z = {Z}")]
-public readonly partial struct Vector3
+public readonly partial struct Vector3 : ISerializable<Vector3>
 {
     public readonly float X;
 
@@ -29,4 +31,6 @@ public readonly partial struct Vector3
     {
         return HashCode.Combine(X, Y, Z);
     }
+
+    static ISerializer<Vector3> ISerializable<Vector3>.Serializer => Vector3Serializer.Instance;
 }

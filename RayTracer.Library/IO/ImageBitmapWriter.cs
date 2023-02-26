@@ -7,6 +7,7 @@ using Color = System.Drawing.Color;
 
 namespace RayTracer.Library.IO;
 
+[SupportedOSPlatform("windows")]
 public class ImageBitmapWriter : IBitmapWriter
 {
     public string Filename { get; }
@@ -19,7 +20,6 @@ public class ImageBitmapWriter : IBitmapWriter
         Filename = filename;
     }
 
-    [SupportedOSPlatform("windows")]
     public void Write(Bitmap bitmap)
     {
         BM map = new(bitmap.Width, bitmap.Height);
