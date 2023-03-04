@@ -1,13 +1,12 @@
 ﻿using System.Text.Json;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
-using RayTracer.Library.Utils;
 
 namespace RayTracer.Library.Serialization.Serializers;
 
-public class Vector3Serializer : Singleton<Vector3Serializer>, ISerializer<Vector3>
+public class Vector3Serializer : SerializerBase<Vector3Serializer, Vector3>
 {
-    public void Serialize(Utf8JsonWriter writer, Vector3 value)
+    public override void Serialize(Utf8JsonWriter writer, Vector3 value)
     {
         writer.WriteStartObject();
 
@@ -23,7 +22,7 @@ public class Vector3Serializer : Singleton<Vector3Serializer>, ISerializer<Vecto
         writer.WriteEndObject();
     }
 
-    public Vector3 Deserialize(ref Utf8JsonReader reader)
+    public override Vector3 Deserialize(ref Utf8JsonReader reader)
     {
         reader.EnsureTokenAndRead(JsonTokenType.StartObject);
 

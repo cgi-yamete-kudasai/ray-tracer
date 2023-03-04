@@ -1,9 +1,8 @@
 ﻿using System.Text.Json;
-using RayTracer.Library.Utils;
 
 namespace RayTracer.Library.Serialization.Serializers;
 
-public abstract class ProxySerializer<TInstance, TFrom, TTo> : Singleton<TInstance>, ISerializer<TFrom>
+public abstract class ProxySerializer<TInstance, TFrom, TTo> : SerializerBase<TInstance, TFrom>
     where TInstance : ProxySerializer<TInstance, TFrom, TTo>, new()
 {
     protected abstract ISerializer<TTo> ProxyTypeSerializer { get; }
@@ -12,13 +11,13 @@ public abstract class ProxySerializer<TInstance, TFrom, TTo> : Singleton<TInstan
 
     protected abstract TFrom? Convert(TTo? value);
 
-    public void Serialize(Utf8JsonWriter writer, TFrom? value)
+    public override void Serialize(Utf8JsonWriter writer, TFrom? value)
     {
         TTo? proxy = Convert(value);
         ProxyTypeSerializer.Serialize(writer, proxy);
     }
 
-    public TFrom? Deserialize(ref Utf8JsonReader reader)
+    public override TFrom? Deserialize(ref Utf8JsonReader reader)
     {
         TTo? proxy = ProxyTypeSerializer.Deserialize(ref reader);
         return Convert(proxy);

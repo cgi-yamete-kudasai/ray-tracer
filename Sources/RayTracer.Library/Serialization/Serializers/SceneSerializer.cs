@@ -6,9 +6,9 @@ using RayTracer.Library.Utils;
 
 namespace RayTracer.Library.Serialization.Serializers;
 
-public class SceneSerializer : Singleton<SceneSerializer>, ISerializer<Scene>
+public class SceneSerializer : SerializerBase<SceneSerializer, Scene>
 {
-    public void Serialize(Utf8JsonWriter writer, Scene? value)
+    public override void Serialize(Utf8JsonWriter writer, Scene? value)
     {
         if (value is null)
         {
@@ -27,7 +27,7 @@ public class SceneSerializer : Singleton<SceneSerializer>, ISerializer<Scene>
         writer.WriteEndObject();
     }
 
-    public Scene? Deserialize(ref Utf8JsonReader reader)
+    public override Scene? Deserialize(ref Utf8JsonReader reader)
     {
         if (reader.TryReadNull())
             return null;
