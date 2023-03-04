@@ -1,5 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-using RayTracer.Library.Lights;
+﻿using System;
 using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Utils;
@@ -18,8 +17,8 @@ public sealed class Camera
         int imageHeight = Settings.ImageHeight;
         int imageWidth = (int)(Settings.AspectRatio * imageHeight);
 
-        float viewportHeight = Settings.ViewportHeight;
-        float viewportWidth = Settings.AspectRatio * Settings.ViewportHeight;
+        float viewportHeight = Settings.FocalLength * (float)Math.Tan(Settings.VerticalFOV / 2);
+        float viewportWidth = Settings.AspectRatio * viewportHeight;
 
         Vector3 horizontal = new(viewportWidth, 0, 0);
         Vector3 vertical = new(0, -viewportHeight, 0);

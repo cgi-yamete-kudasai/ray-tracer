@@ -4,13 +4,13 @@ namespace RayTracer.Library.Utils;
 
 public readonly struct CameraSettings
 {
-    public static readonly CameraSettings Default = new(16f / 9f, 1920, 2, 1, Vector3.Zero);
+    public static readonly CameraSettings Default = new(16f / 9f, 1920, MathHelper.DegToRad(90), 1, Vector3.Zero);
 
     public float AspectRatio { get; init; }
 
     public int ImageHeight { get; init; }
 
-    public float ViewportHeight { get; init; }
+    public float VerticalFOV { get; init; }
 
     public float FocalLength { get; init; }
 
@@ -19,13 +19,13 @@ public readonly struct CameraSettings
     public CameraSettings(
         float aspectRatio,
         int imageHeight,
-        float viewportHeight,
+        float verticalFOV,
         float focalLength,
         in Vector3 origin)
     {
         AspectRatio = aspectRatio;
         ImageHeight = imageHeight;
-        ViewportHeight = viewportHeight;
+        VerticalFOV = verticalFOV;
         FocalLength = focalLength;
         Origin = origin;
     }
