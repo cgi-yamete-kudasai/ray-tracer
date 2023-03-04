@@ -38,10 +38,10 @@ public sealed class Camera
 
                 foreach (var shape in scene.Shapes)
                 {
-                    if (shape.TryIntersect(ray, out var point))
+                    if (shape.TryIntersect(ray, out var result))
                     {
                         // TODO: handle many lights
-                        ColorRGB color = scene.Lights[0].PaintPoint(shape, point);
+                        ColorRGB color = scene.Lights[0].PaintPoint(shape, result.Point);
                         map.SetColor(j, i, color);
                         break;
                     }
