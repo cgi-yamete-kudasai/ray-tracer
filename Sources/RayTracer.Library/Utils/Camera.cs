@@ -17,7 +17,7 @@ public sealed class Camera
         int imageHeight = Settings.ImageHeight;
         int imageWidth = (int)(Settings.AspectRatio * imageHeight);
 
-        float viewportHeight = Settings.FocalLength * (float)Math.Tan(Settings.VerticalFOV / 2);
+        float viewportHeight = 2 * Settings.FocalLength * (float)Math.Tan(Settings.VerticalFOV / 2);
         float viewportWidth = Settings.AspectRatio * viewportHeight;
 
         Vector3 horizontal = new(viewportWidth, 0, 0);
