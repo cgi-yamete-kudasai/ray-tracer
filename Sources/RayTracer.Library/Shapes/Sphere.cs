@@ -17,7 +17,7 @@ public class Sphere : IIntersectable, ISerializable<Sphere>
         Radius = radius;
     }
 
-    public bool TryIntersect(in Ray ray, out Vector3 point)
+    public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
         Vector3 k = ray.Origin - Center;
         float a = Vector3.Dot(ray.Direction, ray.Direction);
@@ -28,12 +28,14 @@ public class Sphere : IIntersectable, ISerializable<Sphere>
 
         if (rootsCount == 0)
         {
-            point = Vector3.Zero;
+            result = default;
             return false;
         }
 
         float closest = Math.Min(root1, root2);
-        point = ray.Origin + closest * ray.Direction;
+        Vector3 point = ray.Origin + closest * ray.Direction;
+
+        result = new(point, closest);
         return true;
     }
 

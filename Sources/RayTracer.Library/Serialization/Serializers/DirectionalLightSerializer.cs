@@ -2,13 +2,12 @@
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Lights;
 using RayTracer.Library.Mathematics;
-using RayTracer.Library.Utils;
 
 namespace RayTracer.Library.Serialization.Serializers;
 
-public class DirectionalLightSerializer : Singleton<DirectionalLightSerializer>, ISerializer<DirectionalLight>
+public class DirectionalLightSerializer : SerializerBase<DirectionalLightSerializer, DirectionalLight>
 {
-    public void Serialize(Utf8JsonWriter writer, DirectionalLight? value)
+    public override void Serialize(Utf8JsonWriter writer, DirectionalLight? value)
     {
         if (value is null)
         {
@@ -27,7 +26,7 @@ public class DirectionalLightSerializer : Singleton<DirectionalLightSerializer>,
         writer.WriteEndObject();
     }
 
-    public DirectionalLight? Deserialize(ref Utf8JsonReader reader)
+    public override DirectionalLight? Deserialize(ref Utf8JsonReader reader)
     {
         if (reader.TryReadNull())
             return null;

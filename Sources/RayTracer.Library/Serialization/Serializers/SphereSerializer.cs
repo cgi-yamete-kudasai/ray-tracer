@@ -2,13 +2,12 @@
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
-using RayTracer.Library.Utils;
 
 namespace RayTracer.Library.Serialization.Serializers;
 
-public class SphereSerializer : Singleton<SphereSerializer>, ISerializer<Sphere>
+public class SphereSerializer : SerializerBase<SphereSerializer, Sphere>
 {
-    public void Serialize(Utf8JsonWriter writer, Sphere? value)
+    public override void Serialize(Utf8JsonWriter writer, Sphere? value)
     {
         if (value is null)
         {
@@ -27,7 +26,7 @@ public class SphereSerializer : Singleton<SphereSerializer>, ISerializer<Sphere>
         writer.WriteEndObject();
     }
 
-    public Sphere? Deserialize(ref Utf8JsonReader reader)
+    public override Sphere? Deserialize(ref Utf8JsonReader reader)
     {
         if (reader.TryReadNull())
             return null;
