@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Immutable;
+using System.Text.Json;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Lights;
 using RayTracer.Library.Shapes;
@@ -19,7 +20,7 @@ public class SceneSerializer : SerializerBase<SceneSerializer, Scene>
         writer.WriteStartObject();
 
         writer.WritePropertyName(nameof(Scene.Shapes));
-        ImmutableArraySerializer<IIntersectable>.Instance.Serialize(writer, value.Shapes);
+        ImmutableArraySerializer<IIntersectable>.Instance.Serialize(writer, value.Shapes.ToImmutableArray());
 
         writer.WritePropertyName(nameof(Scene.Lights));
         ImmutableArraySerializer<ILight>.Instance.Serialize(writer, value.Lights);
