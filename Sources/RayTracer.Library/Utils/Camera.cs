@@ -1,5 +1,6 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Shapes;
 
 namespace RayTracer.Library.Utils;
 
@@ -35,17 +36,13 @@ public sealed class Camera
 
                 Vector3 direction = Settings.Origin + topLeftCorner + u * vertical + v * horizontal - Settings.Origin;
                 Ray ray = new(Settings.Origin, direction);
-
-                //foreach (var shape in scene.Shapes)
-                //{
-                    if (scene.Shapes.TryIntersect(ray, out var result))
-                    {
-                        // TODO: handle many lights
-                        ColorRGB color = scene.Lights[0].PaintPoint(scene.Shapes, result.Point);
-                        map.SetColor(j, i, color);
-                        break;
-                    }
-                //}
+                
+                if (scene.Shapes.TryIntersect(ray, out var result))
+                {
+                    // TODO: handle many lights
+                    ColorRGB color = scene.Lights[0].PaintPoint(scene.Shapes, result.Normal);
+                    map.SetColor(j, i, color);
+                }
             }
         }
 
