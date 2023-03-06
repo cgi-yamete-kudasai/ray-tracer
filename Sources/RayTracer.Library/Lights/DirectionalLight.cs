@@ -14,7 +14,8 @@ public class DirectionalLight : ILight, ISerializable<DirectionalLight>
 
     public DirectionalLight(Vector3 direction)
         : this(direction, ColorRGB.White)
-    { }
+    {
+    }
 
     public DirectionalLight(Vector3 direction, ColorRGB color)
     {
@@ -22,13 +23,13 @@ public class DirectionalLight : ILight, ISerializable<DirectionalLight>
         Color = color;
     }
 
-    public ColorRGB PaintPoint(IIntersectable shape, Vector3 point)
+    public ColorRGB PaintPoint(IIntersectable shape, Vector3 normal)
     {
-        Vector3 normal = Vector3.Normalize(shape.GetNormal(point));
         float dot = Vector3.Dot(normal, -1 * Direction);
         dot = Math.Max(0, dot);
         return dot * Color;
     }
 
-    static ISerializer<DirectionalLight> ISerializable<DirectionalLight>.Serializer => DirectionalLightSerializer.Instance;
+    static ISerializer<DirectionalLight> ISerializable<DirectionalLight>.Serializer =>
+        DirectionalLightSerializer.Instance;
 }

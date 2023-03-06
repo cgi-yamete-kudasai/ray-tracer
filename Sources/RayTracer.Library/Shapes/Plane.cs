@@ -24,17 +24,12 @@ public class Plane : IIntersectable
 
             if (t >= 0)
             {
-                result = new(ray.Origin + t * ray.Direction, t);
+                result = new(ray.Origin + t * ray.Direction, t, _normal);
                 return true;
             }
         }
 
         result = default;
         return false;
-    }
-
-    public Vector3 GetNormal(in Vector3 point)
-    {
-        return _normal;
     }
 }

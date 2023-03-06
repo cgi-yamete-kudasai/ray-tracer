@@ -31,18 +31,4 @@ public class IntersectableList : List<IIntersectable>, IIntersectable
 
         return resultExists;
     }
-
-    public Vector3 GetNormal(in Vector3 point)
-    {
-        Ray ray = new(point, Vector3.Zero);
-        foreach (var intersectable in this)
-        {
-            if(intersectable.TryIntersect(ray, out _))
-            {
-                return intersectable.GetNormal(point);
-            }
-        }
-        
-        throw new System.Exception("No intersectable found");
-    }
 }
