@@ -13,7 +13,7 @@ public class Plane : IIntersectable
         _normal = normal;
     }
 
-    public bool TryIntersect(in Ray ray, out Vector3 point)
+    public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
         float denominator = Vector3.Dot(_normal, ray.Direction);
 
@@ -24,12 +24,12 @@ public class Plane : IIntersectable
 
             if (t >= 0)
             {
-                point = ray.Origin + t * ray.Direction;
+                result = new(ray.Origin + t * ray.Direction, t);
                 return true;
             }
         }
 
-        point = default;
+        result = default;
         return false;
     }
 
