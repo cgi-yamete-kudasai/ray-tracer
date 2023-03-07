@@ -1,15 +1,27 @@
+using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Shapes;
 
-public class IntersectableList : List<IIntersectable>, IIntersectable
+public class IntersectableList : ICollection<IIntersectable>, IIntersectable
 {
-    private IIntersectable? _lastIntersectable;
-    public IntersectableList(IIntersectable[] intersectables) : base(intersectables)
+    public int Count => _intersectables.Count;
+
+    public bool IsReadOnly => false;
+
+    private List<IIntersectable> _intersectables;
+
+    public IntersectableList()
     {
+        _intersectables = new();
     }
+
+    public IntersectableList(IEnumerable<IIntersectable> intersectables)
+    {
+        _intersectables = new(intersectables);
+    }
+
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
         result = default;
@@ -30,5 +42,40 @@ public class IntersectableList : List<IIntersectable>, IIntersectable
         }
 
         return resultExists;
+    }
+
+    public IEnumerator<IIntersectable> GetEnumerator()
+    {
+        return _intersectables.GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public void Add(IIntersectable item)
+    {
+        _intersectables.Add(item);
+    }
+
+    public void Clear()
+    {
+        _intersectables.Clear();
+    }
+
+    public bool Contains(IIntersectable item)
+    {
+        return _intersectables.Contains(item);
+    }
+
+    public void CopyTo(IIntersectable[] array, int arrayIndex)
+    {
+        _intersectables.CopyTo(array, arrayIndex);
+    }
+
+    public bool Remove(IIntersectable item)
+    {
+        return _intersectables.Remove(item);
     }
 }
