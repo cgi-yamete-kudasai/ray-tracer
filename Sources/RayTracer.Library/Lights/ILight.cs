@@ -7,5 +7,5 @@ public interface ILight
 {
     ColorRGB Color { get; }
 
-    ColorRGB PaintPoint(IIntersectable shape, Vector3 point);
+    ColorRGB PaintPoint(IIntersectable shape, in IntersectionResult result);
 }

@@ -35,11 +35,11 @@ public class Sphere : IIntersectable, ISerializable<Sphere>
         float closest = Math.Min(root1, root2);
         Vector3 point = ray.Origin + closest * ray.Direction;
 
-        result = new(point, closest);
+        result = new(point, closest, GetNormal(point));
         return true;
     }
 
-    public Vector3 GetNormal(in Vector3 point)
+    private Vector3 GetNormal(in Vector3 point)
     {
         return point - Center;
     }
