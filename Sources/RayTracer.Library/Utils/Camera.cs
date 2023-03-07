@@ -1,6 +1,5 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
-using RayTracer.Library.Shapes;
 
 namespace RayTracer.Library.Utils;
 
@@ -40,7 +39,7 @@ public sealed class Camera
                 if (scene.Shapes.TryIntersect(ray, out var result))
                 {
                     // TODO: handle many lights
-                    ColorRGB color = scene.Lights[0].PaintPoint(scene.Shapes, result.Normal);
+                    ColorRGB color = scene.Lights[0].PaintPoint(scene.Shapes, result);
                     map.SetColor(j, i, color);
                 }
             }
