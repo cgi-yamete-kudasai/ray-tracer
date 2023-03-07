@@ -49,72 +49,6 @@
       "$Value": {
         "Radius": 0.6,
         "Center": {
-          "X": -4,
-          "Y": 0,
-          "Z": -3
-        }
-      }
-    },
-    {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
-      "$Value": {
-        "Radius": 0.6,
-        "Center": {
-          "X": 4,
-          "Y": 0,
-          "Z": -3
-        }
-      }
-    },
-    {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
-      "$Value": {
-        "Radius": 0.6,
-        "Center": {
-          "X": 4,
-          "Y": 2,
-          "Z": -3
-        }
-      }
-    },
-    {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
-      "$Value": {
-        "Radius": 0.6,
-        "Center": {
-          "X": -4,
-          "Y": 2,
-          "Z": -3
-        }
-      }
-    },
-    {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
-      "$Value": {
-        "Radius": 0.6,
-        "Center": {
-          "X": 4,
-          "Y": -2,
-          "Z": -3
-        }
-      }
-    },
-    {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
-      "$Value": {
-        "Radius": 0.6,
-        "Center": {
-          "X": -4,
-          "Y": -2,
-          "Z": -3
-        }
-      }
-    },
-    {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
-      "$Value": {
-        "Radius": 0.6,
-        "Center": {
           "X": -2,
           "Y": 2,
           "Z": -3
@@ -155,13 +89,18 @@
       }
     },
     {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
+      "$Type": "RayTracer.Library.Shapes.Disc",
       "$Value": {
         "Radius": 0.6,
         "Center": {
           "X": 0,
           "Y": 0,
           "Z": -3
+        },
+        "Normal": {
+          "X": -1,
+          "Y": 0,
+          "Z": 1
         }
       }
     }
@@ -176,9 +115,9 @@
           "Z": 1
         },
         "Direction": {
-          "X": 0,
+          "X": 1,
           "Y": 0,
-          "Z": -1
+          "Z": 0
         }
       }
     }
