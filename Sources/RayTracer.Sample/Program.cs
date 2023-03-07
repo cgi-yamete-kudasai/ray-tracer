@@ -14,6 +14,6 @@ FileStream fs = File.OpenRead("../../../../../Assets/Scenes/SpheresTest.json");
 Scene scene = SerializationHelper.Deserialize<Scene>(fs)!;
 
 Bitmap bitmap = camera.Render(scene);
-ConsoleBitmapWriter writer = new();
 
+ConsoleBitmapWriter writer = new();
 writer.Write(bitmap);

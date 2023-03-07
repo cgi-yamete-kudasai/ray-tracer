@@ -39,7 +39,7 @@ public class DirectionalLightSerializer : SerializerBase<DirectionalLightSeriali
         reader.EnsurePropertyAndRead("Direction"u8);
         Vector3 direction = Vector3Serializer.Instance.Deserialize(ref reader);
 
-        reader.Read();
+        reader.EnsureTokenAndRead(JsonTokenType.EndObject);
 
         return new(direction, color);
     }
