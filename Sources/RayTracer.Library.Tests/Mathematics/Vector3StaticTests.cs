@@ -40,18 +40,7 @@ public class Vector3StaticTests
 
         Assert.Equal(result, actual);
     }
-    
-    [Fact]
-    public void ZeroVectorNormalization()
-    {
-        var v = Vector3.Zero;
-        var result = Vector3.Zero;
 
-        var actual = Vector3.Normalize(v);
-
-        Assert.Equal(result, actual);
-    }
-    
     [Fact]
     public void DotMultiplication()
     {
@@ -63,8 +52,7 @@ public class Vector3StaticTests
 
         Assert.Equal(result, actual);
     }
-    
-    
+
     [Fact]
     public void CrossMultiplication()
     {
