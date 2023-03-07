@@ -4,6 +4,16 @@ namespace RayTracer.Library.Mathematics;
 
 public static class MathHelper
 {
+    public static float DegToRad(float deg)
+    {
+        return (deg / 180) * (float)Math.PI;
+    }
+
+    public static float RadToDeg(float rad)
+    {
+        return (rad / (float)Math.PI) * 180;
+    }
+
     public static (float, float) SolveQuadraticEquation(float a, float b, float c, out int rootsCount)
     {
         float discriminant = b * b - 4 * a * c;

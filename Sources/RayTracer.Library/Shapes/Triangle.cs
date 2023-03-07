@@ -17,9 +17,9 @@ public class Triangle : IIntersectable
         C = c;
     }
 
-    public bool TryIntersect(in Ray ray, out Vector3 point)
+    public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
-        point = default;
+        result = default;
 
         // Möller–Trumbore intersection algorithm
         // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
@@ -53,8 +53,10 @@ public class Triangle : IIntersectable
         if (v < 0 || u + v > 1)
             return false;
 
-        var distance = Vector3.Dot(e2, qvec) * inv_det;
-        point = ray.Origin + distance * ray.Direction;
+        float distance = Vector3.Dot(e2, qvec) * inv_det;
+        Vector3 point = ray.Origin + distance * ray.Direction;
+
+        result = new(point, distance);
         return true;
     }
 
