@@ -14,7 +14,7 @@ public class DiscSerializer : SerializerBase<DiscSerializer, Disc>
             writer.WriteNullValue();
             return;
         }
-        
+
         writer.WriteStartObject();
 
         writer.WritePropertyName(nameof(value.Radius));
@@ -22,7 +22,7 @@ public class DiscSerializer : SerializerBase<DiscSerializer, Disc>
 
         writer.WritePropertyName(nameof(value.Center));
         Vector3Serializer.Instance.Serialize(writer, value.Center);
-        
+
         writer.WritePropertyName(nameof(value.Normal));
         Vector3Serializer.Instance.Serialize(writer, value.Normal);
 
@@ -43,12 +43,12 @@ public class DiscSerializer : SerializerBase<DiscSerializer, Disc>
 
         reader.EnsurePropertyAndRead("Center"u8);
         Vector3 center = Vector3Serializer.Instance.Deserialize(ref reader);
-        reader.Read();
         
         reader.EnsurePropertyAndRead("Normal"u8);
         Vector3 normal = Vector3Serializer.Instance.Deserialize(ref reader);
+
         reader.Read();
-        
+
         return new(center, normal, radius);
     }
 }
