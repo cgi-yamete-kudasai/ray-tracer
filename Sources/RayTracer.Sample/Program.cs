@@ -17,6 +17,3 @@ Bitmap bitmap = camera.Render(scene);
 
 ConsoleBitmapWriter writer = new();
 writer.Write(bitmap);
-
-// ImageBitmapWriter imageWriter = new("output.png");
-// imageWriter.Write(bitmap);

@@ -47,7 +47,7 @@ public class DiscSerializer : SerializerBase<DiscSerializer, Disc>
         reader.EnsurePropertyAndRead("Normal"u8);
         Vector3 normal = Vector3Serializer.Instance.Deserialize(ref reader);
 
-        reader.Read();
+        reader.EnsureTokenAndRead(JsonTokenType.EndObject);
 
         return new(center, normal, radius);
     }

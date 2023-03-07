@@ -40,7 +40,8 @@ public class SphereSerializer : SerializerBase<SphereSerializer, Sphere>
 
         reader.EnsurePropertyAndRead("Center"u8);
         Vector3 center = Vector3Serializer.Instance.Deserialize(ref reader);
-        reader.Read();
+        
+        reader.EnsureTokenAndRead(JsonTokenType.EndObject);
 
         return new(center, radius);
     }
