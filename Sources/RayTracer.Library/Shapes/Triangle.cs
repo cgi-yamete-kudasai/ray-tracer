@@ -56,11 +56,11 @@ public class Triangle : IIntersectable
         float distance = Vector3.Dot(e2, qvec) * inv_det;
         Vector3 point = ray.Origin + distance * ray.Direction;
 
-        result = new(point, distance);
+        result = new(point, distance, GetNormal(point));
         return true;
     }
 
-    public Vector3 GetNormal(in Vector3 point)
+    private Vector3 GetNormal(in Vector3 point)
     {
         Vector3 e1 = B - A;
         Vector3 e2 = C - A;

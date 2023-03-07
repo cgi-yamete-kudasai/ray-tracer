@@ -35,16 +35,12 @@ public sealed class Camera
 
                 Vector3 direction = Settings.Origin + topLeftCorner + u * vertical + v * horizontal - Settings.Origin;
                 Ray ray = new(Settings.Origin, direction);
-
-                foreach (var shape in scene.Shapes)
+                
+                if (scene.Shapes.TryIntersect(ray, out var result))
                 {
-                    if (shape.TryIntersect(ray, out var result))
-                    {
-                        // TODO: handle many lights
-                        ColorRGB color = scene.Lights[0].PaintPoint(shape, result.Point);
-                        map.SetColor(j, i, color);
-                        break;
-                    }
+                    // TODO: handle many lights
+                    ColorRGB color = scene.Lights[0].PaintPoint(scene.Shapes, result);
+                    map.SetColor(j, i, color);
                 }
             }
         }

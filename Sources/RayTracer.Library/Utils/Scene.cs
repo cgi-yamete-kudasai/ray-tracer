@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Linq;
 using RayTracer.Library.Lights;
 using RayTracer.Library.Serialization;
 using RayTracer.Library.Serialization.Serializers;
@@ -8,19 +9,19 @@ namespace RayTracer.Library.Utils;
 
 public class Scene : ISerializable<Scene>
 {
-    public ImmutableArray<IIntersectable> Shapes { get; }
+    public IntersectableList Shapes { get; }
 
     public ImmutableArray<ILight> Lights { get; }
 
     public Scene(ImmutableArray<IIntersectable> shapes, ImmutableArray<ILight> lights)
     {
-        Shapes = shapes;
+        Shapes = new(shapes.ToArray());
         Lights = lights;
     }
 
     public Scene(ILight light, params IIntersectable[] shapes)
     {
-        Shapes = shapes.ToImmutableArray();
+        Shapes = new(shapes.ToArray());
         Lights = ImmutableArray<ILight>.Empty.Add(light);
     }
 
