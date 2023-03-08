@@ -25,7 +25,7 @@ public class DirectionalLight : ILight, ISerializable<DirectionalLight>
 
     public ColorRGB PaintPoint(IIntersectable shape, in IntersectionResult result)
     {
-        float dot = Vector3.Dot(result.Normal, -1 * Direction);
+        float dot = Vector3.Dot(Vector3.Normalize(result.Normal), -1 * Direction);
         dot = Math.Max(0, dot);
         return dot * Color;
     }
