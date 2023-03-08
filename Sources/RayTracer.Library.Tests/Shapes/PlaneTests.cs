@@ -14,6 +14,7 @@ public class PlaneTests
     {
         var intersects = plane.TryIntersect(ray, out var intersectionResult);
         
+        Assert.True(intersectionResult.IsCorrect());
         Assert.Equal(expIntersexts, intersects);
         if (intersects)
         {
@@ -44,12 +45,12 @@ public class PlaneTests
             null,
             false
         };
-        yield return new object[] // промінь лежить на площині
+        yield return new object?[] // промінь лежить на площині
         {
-            new Plane(new Vector3(0, 0, -2), new Vector3(0, 1, 1)), 
-            new Ray(new Vector3(1, -2, 0), new Vector3(0, -1, 0)), 
-            new Vector3(1, -2, 0),
-            true
+            new Plane(new Vector3(0, 0, 0), new Vector3(0, 0, 1)), 
+            new Ray(new Vector3(0, 0, 0), new Vector3(1, 0, 0)), 
+            null,
+            false
         };
         yield return new object?[] // промінь перетинає площину на надто далекій відстані
         {

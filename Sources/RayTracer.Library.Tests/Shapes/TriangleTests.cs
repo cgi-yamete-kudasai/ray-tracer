@@ -14,6 +14,7 @@ public class TriangleTests
     {
         var intersects = triangle.TryIntersect(ray, out var intersectionResult);
 
+        Assert.True(intersectionResult.IsCorrect());
         Assert.Equal(expIntersects, intersects);
         if (intersects)
         {

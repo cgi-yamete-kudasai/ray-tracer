@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Numerics;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
-using Vector3 = RayTracer.Library.Mathematics.Vector3;
 
 namespace RayTracer.Library.Tests.Shapes;
 
@@ -15,7 +13,8 @@ public class DiscTests
     public void DiscIntersectionTest(Disc disc, Ray ray, Vector3 expPoint, bool expIntersects)
     {
         var intersects = disc.TryIntersect(ray, out var intersectionResult);
-
+        
+        Assert.True(intersectionResult.IsCorrect());
         Assert.Equal(expIntersects, intersects);
         if (intersects)
         {
@@ -50,8 +49,8 @@ public class DiscTests
         {
             new Disc(new Vector3(0, 4, 0), new Vector3(0, -1, -1), 1),
             new Ray(new Vector3(0, 4, 0), new Vector3(1, 0, 0)),
-            new Vector3(0, 4, 0),
-            true
+            null,
+            false
         };
         yield return new object?[] // промінь не перетинає диск
         {
