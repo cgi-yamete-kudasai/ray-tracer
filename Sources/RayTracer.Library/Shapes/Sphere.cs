@@ -26,7 +26,7 @@ public class Sphere : IIntersectable, ISerializable<Sphere>
 
         var (root1, root2) = MathHelper.SolveQuadraticEquation(a, b, c, out int rootsCount);
 
-        if (rootsCount == 0)
+        if (b >= 0 || rootsCount == 0)
         {
             result = default;
             return false;
