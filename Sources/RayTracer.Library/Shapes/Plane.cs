@@ -1,4 +1,5 @@
-﻿using RayTracer.Library.Mathematics;
+﻿using System;
+using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Shapes;
 
@@ -17,7 +18,7 @@ public class Plane : IIntersectable
     {
         float denominator = Vector3.Dot(_normal, ray.Direction);
 
-        if (denominator > IntersectionHelper.INTERSECTION_TOLERANCE)
+        if (MathF.Abs(denominator) > IntersectionHelper.INTERSECTION_TOLERANCE)
         {
             Vector3 vector = BasePoint - ray.Origin;
             float t = Vector3.Dot(vector, _normal) / denominator;

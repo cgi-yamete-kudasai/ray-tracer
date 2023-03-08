@@ -1,13 +1,13 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
 
 namespace RayTracer.Library.Serialization.Serializers;
 
-public class SphereSerializer : SerializerBase<SphereSerializer, Sphere>
+public class DiscSerializer : SerializerBase<DiscSerializer, Disc>
 {
-    public override void Serialize(Utf8JsonWriter writer, Sphere? value)
+    public override void Serialize(Utf8JsonWriter writer, Disc? value)
     {
         if (value is null)
         {
@@ -23,10 +23,13 @@ public class SphereSerializer : SerializerBase<SphereSerializer, Sphere>
         writer.WritePropertyName(nameof(value.Center));
         Vector3Serializer.Instance.Serialize(writer, value.Center);
 
+        writer.WritePropertyName(nameof(value.Normal));
+        Vector3Serializer.Instance.Serialize(writer, value.Normal);
+
         writer.WriteEndObject();
     }
 
-    public override Sphere? Deserialize(ref Utf8JsonReader reader)
+    public override Disc? Deserialize(ref Utf8JsonReader reader)
     {
         if (reader.TryReadNull())
             return null;
@@ -41,8 +44,11 @@ public class SphereSerializer : SerializerBase<SphereSerializer, Sphere>
         reader.EnsurePropertyAndRead("Center"u8);
         Vector3 center = Vector3Serializer.Instance.Deserialize(ref reader);
         
+        reader.EnsurePropertyAndRead("Normal"u8);
+        Vector3 normal = Vector3Serializer.Instance.Deserialize(ref reader);
+
         reader.EnsureTokenAndRead(JsonTokenType.EndObject);
 
-        return new(center, radius);
+        return new(center, normal, radius);
     }
 }

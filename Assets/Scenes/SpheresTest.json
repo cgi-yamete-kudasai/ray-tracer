@@ -28,17 +28,6 @@
         "Radius": 0.6,
         "Center": {
           "X": 0,
-          "Y": 0,
-          "Z": -3
-        }
-      }
-    },
-    {
-      "$Type": "RayTracer.Library.Shapes.Sphere",
-      "$Value": {
-        "Radius": 0.6,
-        "Center": {
-          "X": 0,
           "Y": 2,
           "Z": -3
         }
@@ -162,6 +151,22 @@
           "X": 2,
           "Y": -2,
           "Z": -3
+        }
+      }
+    },
+    {
+      "$Type": "RayTracer.Library.Shapes.Disc",
+      "$Value": {
+        "Radius": 0.6,
+        "Center": {
+          "X": 0,
+          "Y": 0,
+          "Z": -3
+        },
+        "Normal": {
+          "X": 0,
+          "Y": 0,
+          "Z": 1
         }
       }
     }
