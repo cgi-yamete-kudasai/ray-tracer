@@ -16,7 +16,11 @@ public class IntersectableListSerializer : SerializerBase<IntersectableListSeria
 
     public override void Serialize(Utf8JsonWriter writer, IntersectableList? value)
     {
-        if (value == null) throw new ArgumentNullException(nameof(value));
+        if (value == null)
+        {
+            writer.WriteNullValue();
+            return;
+        }
 
         writer.WriteStartArray();
 
@@ -28,8 +32,13 @@ public class IntersectableListSerializer : SerializerBase<IntersectableListSeria
         writer.WriteEndArray();
     }
 
-    public override IntersectableList Deserialize(ref Utf8JsonReader reader)
+    public override IntersectableList? Deserialize(ref Utf8JsonReader reader)
     {
+        if (reader.TryReadNull())
+        {
+            return null;
+        }
+        
         IntersectableList intersectableList = new IntersectableList();
 
         reader.EnsureTokenAndRead(JsonTokenType.StartArray);
