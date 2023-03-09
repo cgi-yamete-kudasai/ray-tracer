@@ -1,9 +1,11 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Serialization;
+using RayTracer.Library.Serialization.Serializers;
 
 namespace RayTracer.Library.Shapes;
 
-public class Plane : IIntersectable
+public class Plane : IIntersectable, ISerializable<Plane>
 {
     public Vector3 BasePoint { get; }
     public Vector3 Normal { get; }
@@ -33,4 +35,6 @@ public class Plane : IIntersectable
         result = default;
         return false;
     }
+
+    public static ISerializer<Plane> Serializer => PlaneSerializer.Instance;
 }
