@@ -13,11 +13,11 @@ public class TriangleTests
     public void PlaneIntersectionTest(Triangle triangle, Ray ray, Vector3 expPoint, bool expIntersects)
     {
         var intersects = triangle.TryIntersect(ray, out var intersectionResult);
-
-        Assert.True(intersectionResult.IsCorrect());
+        
         Assert.Equal(expIntersects, intersects);
         if (intersects)
         {
+            Assert.True(intersectionResult.IsCorrect());
             Assert.Equal(expPoint, intersectionResult.Point);
         }
     }

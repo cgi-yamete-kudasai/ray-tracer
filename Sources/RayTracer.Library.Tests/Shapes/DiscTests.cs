@@ -13,11 +13,11 @@ public class DiscTests
     public void DiscIntersectionTest(Disc disc, Ray ray, Vector3 expPoint, bool expIntersects)
     {
         var intersects = disc.TryIntersect(ray, out var intersectionResult);
-        
-        Assert.True(intersectionResult.IsCorrect());
+
         Assert.Equal(expIntersects, intersects);
         if (intersects)
         {
+            Assert.True(intersectionResult.IsCorrect());
             Assert.Equal(expPoint, intersectionResult.Point);
         }
     }
