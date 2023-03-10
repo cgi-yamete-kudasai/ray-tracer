@@ -20,7 +20,7 @@ public class SceneSerializer : SerializerBase<SceneSerializer, Scene>
         writer.WriteStartObject();
 
         writer.WritePropertyName(nameof(Scene.Shapes));
-        ImmutableArraySerializer<IIntersectable>.Instance.Serialize(writer, value.Shapes.ToImmutableArray());
+        IntersectableListSerializer.Instance.Serialize(writer, value.Shapes);
 
         writer.WritePropertyName(nameof(Scene.Lights));
         ImmutableArraySerializer<ILight>.Instance.Serialize(writer, value.Lights);
@@ -36,7 +36,7 @@ public class SceneSerializer : SerializerBase<SceneSerializer, Scene>
         reader.EnsureTokenAndRead(JsonTokenType.StartObject);
 
         reader.EnsurePropertyAndRead("Shapes"u8);
-        var shapes = ImmutableArraySerializer<IIntersectable>.Instance.Deserialize(ref reader);
+        var shapes = IntersectableListSerializer.Instance.Deserialize(ref reader);
 
         reader.EnsurePropertyAndRead("Lights"u8);
         var lights = ImmutableArraySerializer<ILight>.Instance.Deserialize(ref reader);

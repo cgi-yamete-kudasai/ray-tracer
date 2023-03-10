@@ -14,10 +14,10 @@ public class PlaneTests
     {
         var intersects = plane.TryIntersect(ray, out var intersectionResult);
         
-        Assert.True(intersectionResult.IsCorrect());
         Assert.Equal(expIntersexts, intersects);
         if (intersects)
         {
+            Assert.True(intersectionResult.IsCorrect());
             Assert.Equal(expPoint, intersectionResult.Point);
         }
     }

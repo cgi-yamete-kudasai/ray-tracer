@@ -41,7 +41,7 @@ public class Sphere : IIntersectable, ISerializable<Sphere>
 
     private Vector3 GetNormal(in Vector3 point)
     {
-        return point - Center;
+        return Vector3.Normalize(point - Center);
     }
 
     static ISerializer<Sphere> ISerializable<Sphere>.Serializer => SphereSerializer.Instance;

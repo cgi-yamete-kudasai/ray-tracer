@@ -13,15 +13,15 @@ public class Scene : ISerializable<Scene>
 
     public ImmutableArray<ILight> Lights { get; }
 
-    public Scene(ImmutableArray<IIntersectable> shapes, ImmutableArray<ILight> lights)
+    public Scene(IntersectableList shapes, ImmutableArray<ILight> lights)
     {
-        Shapes = new(shapes.ToArray());
+        Shapes = shapes;
         Lights = lights;
     }
 
     public Scene(ILight light, params IIntersectable[] shapes)
     {
-        Shapes = new(shapes.ToArray());
+        Shapes = new(shapes);
         Lights = ImmutableArray<ILight>.Empty.Add(light);
     }
 

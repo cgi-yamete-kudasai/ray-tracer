@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Serialization;
+using RayTracer.Library.Serialization.Serializers;
 
 namespace RayTracer.Library.Shapes;
 
-public class IntersectableList : ICollection<IIntersectable>, IIntersectable
+public class IntersectableList : ICollection<IIntersectable>, IIntersectable, ISerializable<IntersectableList>
 {
     public int Count => _intersectables.Count;
 
@@ -78,4 +80,6 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable
     {
         return _intersectables.Remove(item);
     }
+
+    public static ISerializer<IntersectableList> Serializer => IntersectableListSerializer.Instance;
 }

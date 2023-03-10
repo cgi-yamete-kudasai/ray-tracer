@@ -14,7 +14,7 @@ public class Disc : IIntersectable, ISerializable<Disc>
     public Disc(Vector3 center, Vector3 normal, float radius)
     {
         Center = center;
-        Normal = normal;
+        Normal = Vector3.Normalize(normal);
         Radius = radius;
     }
 

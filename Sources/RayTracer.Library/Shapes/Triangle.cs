@@ -1,4 +1,5 @@
-﻿using RayTracer.Library.Mathematics;
+﻿using System;
+using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Shapes;
 
@@ -7,14 +8,17 @@ public class Triangle : IIntersectable
     public Vector3 A { get; }
 
     public Vector3 B { get; }
-    
+
     public Vector3 C { get; }
+    private Lazy<Vector3> _normal;
 
     public Triangle(Vector3 a, Vector3 b, Vector3 c)
     {
         A = a;
         B = b;
         C = c;
+
+        _normal = new(() => FindNormal(a, b, c));
     }
 
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
@@ -43,7 +47,7 @@ public class Triangle : IIntersectable
         float inv_det = 1 / det;
         Vector3 tvec = orig - v0;
         float u = Vector3.Dot(tvec, pvec) * inv_det;
-        
+
         if (u < 0 || u > 1)
             return false;
 
@@ -56,15 +60,15 @@ public class Triangle : IIntersectable
         float distance = Vector3.Dot(e2, qvec) * inv_det;
         Vector3 point = ray.Origin + distance * ray.Direction;
 
-        result = new(point, distance, GetNormal(point));
+        result = new(point, distance, _normal.Value);
         return true;
     }
 
-    private Vector3 GetNormal(in Vector3 point)
+    private static Vector3 FindNormal(Vector3 a, Vector3 b, Vector3 c)
     {
-        Vector3 e1 = B - A;
-        Vector3 e2 = C - A;
+        Vector3 e1 = b - a;
+        Vector3 e2 = c - a;
 
-        return Vector3.Cross(e1, e2);
+        return Vector3.Normalize(Vector3.Cross(e1, e2));
     }
 }

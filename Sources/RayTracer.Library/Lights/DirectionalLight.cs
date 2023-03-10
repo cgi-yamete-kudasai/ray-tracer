@@ -19,7 +19,7 @@ public class DirectionalLight : ILight, ISerializable<DirectionalLight>
 
     public DirectionalLight(Vector3 direction, ColorRGB color)
     {
-        Direction = direction;
+        Direction = Vector3.Normalize(direction);
         Color = color;
     }
 
