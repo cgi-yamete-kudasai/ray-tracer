@@ -1,56 +1,26 @@
-using System;
-using System.Text.Json;
-using RayTracer.Library.Extensions;
+using System.Collections.Immutable;
 using RayTracer.Library.Shapes;
 
 namespace RayTracer.Library.Serialization.Serializers;
 
-public class IntersectableListSerializer : SerializerBase<IntersectableListSerializer, IntersectableList>
+public class IntersectableListSerializer : ProxySerializer<IntersectableListSerializer, IntersectableList,
+    ImmutableArray<IIntersectable>>
 {
-    private readonly ISerializer<IIntersectable> _itemSerializer;
+    protected override ISerializer<ImmutableArray<IIntersectable>> ProxyTypeSerializer =>
+        ImmutableArraySerializer<IIntersectable>.Instance;
 
-    public IntersectableListSerializer()
+    protected override ImmutableArray<IIntersectable> Convert(IntersectableList? value)
     {
-        _itemSerializer = new PolymorphicSerializer<IIntersectable>();
+        if (value is null)
+        {
+            return ImmutableArray<IIntersectable>.Empty;
+        }
+
+        return value.ToImmutableArray();
     }
 
-    public override void Serialize(Utf8JsonWriter writer, IntersectableList? value)
+    protected override IntersectableList? Convert(ImmutableArray<IIntersectable> value)
     {
-        if (value == null)
-        {
-            writer.WriteNullValue();
-            return;
-        }
-
-        writer.WriteStartArray();
-
-        foreach (var item in value)
-        {
-            _itemSerializer.Serialize(writer, item);
-        }
-
-        writer.WriteEndArray();
-    }
-
-    public override IntersectableList? Deserialize(ref Utf8JsonReader reader)
-    {
-        if (reader.TryReadNull())
-        {
-            return null;
-        }
-        
-        IntersectableList intersectableList = new IntersectableList();
-
-        reader.EnsureTokenAndRead(JsonTokenType.StartArray);
-
-        while (reader.TokenType != JsonTokenType.EndArray)
-        {
-            IIntersectable item = _itemSerializer.Deserialize(ref reader)!;
-            intersectableList.Add(item);
-        }
-        
-        reader.EnsureTokenAndRead(JsonTokenType.EndArray);
-
-        return intersectableList;
+        return new IntersectableList(value);
     }
 }
