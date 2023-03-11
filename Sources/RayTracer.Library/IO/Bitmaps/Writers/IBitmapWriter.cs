@@ -1,6 +1,6 @@
 ﻿using RayTracer.Library.Utils;
 
-namespace RayTracer.Library.IO;
+namespace RayTracer.Library.IO.Bitmaps.Writers;
 
 public interface IBitmapWriter
 {
