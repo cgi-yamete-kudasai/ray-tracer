@@ -1,4 +1,5 @@
 ﻿using System;
+using RayTracer.Library.Extensions;
 
 namespace RayTracer.Library.Mathematics;
 
@@ -20,6 +21,11 @@ public partial struct Vector3
     {
         float coefficient = (float)Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y + vector.Z * vector.Z);
         return new(vector.X / coefficient, vector.Y / coefficient, vector.Z / coefficient);
+    }
+
+    public static bool IsUnit(in Vector3 vector)
+    {
+        return vector.Length().IsEqualTo(1);
     }
 
     public static Vector3 operator +(in Vector3 lhs, in Vector3 rhs)
