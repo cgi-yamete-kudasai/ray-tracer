@@ -10,7 +10,8 @@ public class Triangle : IIntersectable
     public Vector3 B { get; }
 
     public Vector3 C { get; }
-    private Lazy<Vector3> _normal;
+
+    private readonly Lazy<Vector3> _normal;
 
     public Triangle(Vector3 a, Vector3 b, Vector3 c)
     {

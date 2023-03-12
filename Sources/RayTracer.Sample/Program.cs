@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using RayTracer.Library.IO;
+using RayTracer.Library.IO.Bitmaps.Writers;
 using RayTracer.Library.Serialization;
 using RayTracer.Library.Utils;
 

@@ -2,7 +2,7 @@
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
 
-namespace RayTracer.Library.IO;
+namespace RayTracer.Library.IO.Bitmaps.Writers;
 
 public class ConsoleBitmapWriter : IBitmapWriter
 {

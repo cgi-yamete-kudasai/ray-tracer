@@ -15,14 +15,16 @@ public readonly partial struct Vector3 : ISerializable<Vector3>
     
     public readonly float Z;
     
-    public float Length() => (float)Math.Sqrt(X * X + Y * Y + Z * Z);
-
     public Vector3(float x, float y, float z)
     {
         X = x;
         Y = y;
         Z = z;
     }
+
+    public float Length() => (float)Math.Sqrt(LengthSquared());
+
+    public float LengthSquared() => X * X + Y * Y + Z * Z;
 
     public override bool Equals(object? obj)
     {

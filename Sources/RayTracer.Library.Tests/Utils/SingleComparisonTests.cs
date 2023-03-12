@@ -8,7 +8,7 @@ public class SingleComparisonTests
     public void Equal()
     {
         float f1 = 1;
-        float f2 = 0.99999999f;
+        float f2 = 0.9999999f;
 
         Assert.True(f1.IsEqualTo(f2));
     }
@@ -17,7 +17,7 @@ public class SingleComparisonTests
     public void NotEqual()
     {
         float f1 = 1;
-        float f2 = 0.9999999f;
+        float f2 = 0.9999997f;
 
         Assert.False(f1.IsEqualTo(f2));
     }

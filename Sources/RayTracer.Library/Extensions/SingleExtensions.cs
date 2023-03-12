@@ -4,7 +4,7 @@ namespace RayTracer.Library.Extensions;
 
 public static class SingleExtensions
 {
-    private const int TOLERANCE = 1;
+    private const int TOLERANCE = 3;
 
     public static unsafe bool IsEqualTo(this float lhs, float rhs)
     {

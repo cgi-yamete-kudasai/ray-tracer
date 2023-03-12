@@ -5,7 +5,7 @@ using RayTracer.Library.Utils;
 using BM = System.Drawing.Bitmap;
 using Color = System.Drawing.Color;
 
-namespace RayTracer.Library.IO;
+namespace RayTracer.Library.IO.Bitmaps.Writers;
 
 [SupportedOSPlatform("windows")]
 public class ImageBitmapWriter : IBitmapWriter
