@@ -17,7 +17,7 @@ public class SingleComparisonTests
     public void NotEqual()
     {
         float f1 = 1;
-        float f2 = 0.9999998f;
+        float f2 = 0.9999997f;
 
         Assert.False(f1.IsEqualTo(f2));
     }

@@ -25,7 +25,7 @@ public partial struct Vector3
 
     public static bool IsUnit(in Vector3 vector)
     {
-        return vector.Length().IsEqualTo(1);
+        return vector.LengthSquared().IsEqualTo(1);
     }
 
     public static Vector3 operator +(in Vector3 lhs, in Vector3 rhs)
