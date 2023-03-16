@@ -1,19 +1,43 @@
-﻿using System.IO;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Text;
+using CommandLine;
+using RayTracer.Library.IO;
 using RayTracer.Library.IO.Bitmaps.Writers;
 using RayTracer.Library.Serialization;
 using RayTracer.Library.Utils;
+using RayTracer.Sample.CommandArgsParser;
 
-CameraSettings settings = CameraSettings.Default with
+bool inputArgsAreCorrect = true;
+StringBuilder errorsSB = new StringBuilder();
+errorsSB.Append("Error: ");
+
+Parser.Default.ParseArguments<CommandLineOptions>(args).WithParsed(options =>
 {
-    ImageHeight = 20
-};
+    if (!CommandArgsParser.ParseSourcePath(options.SourcePath, out string errorMessage))
+    {
+        errorsSB.Append(errorMessage);
+        inputArgsAreCorrect = false;
+    }
+});
 
-Camera camera = new(settings);
+if (!inputArgsAreCorrect)
+{
+    Console.WriteLine(errorsSB.ToString());
+}
 
-FileStream fs = File.OpenRead("../../../../../Assets/Scenes/SpheresTest.json");
-Scene scene = SerializationHelper.Deserialize<Scene>(fs)!;
-
-Bitmap bitmap = camera.Render(scene);
-
-ConsoleBitmapWriter writer = new();
-writer.Write(bitmap);
+// CameraSettings settings = CameraSettings.Default with
+// {
+//     ImageHeight = 20
+// };
+//
+// Camera camera = new(settings);
+//
+// FileStream fs = File.OpenRead("../../../../../Assets/Scenes/SpheresTest.json");
+// Scene scene = SerializationHelper.Deserialize<Scene>(fs)!;
+//
+// Bitmap bitmap = camera.Render(scene);
+//
+// ConsoleBitmapWriter writer = new();
+// writer.Write(bitmap);
