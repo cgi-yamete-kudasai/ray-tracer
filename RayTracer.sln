@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Sample", "Sources
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Library.Tests", "Sources\RayTracer.Library.Tests\RayTracer.Library.Tests.csproj", "{A3DD9F4A-7FCE-44A3-862C-0A8379584F99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.IO", "RayTracer.IO\RayTracer.IO.csproj", "{495553B9-5FAC-46A8-83F0-0FD080A9EEFC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Imaging", "Sources\RayTracer.Imaging\RayTracer.Imaging.csproj", "{F400BF14-6418-42E3-B43D-3F883AA5E02E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Imaging", "RayTracer.Imaging\RayTracer.Imaging.csproj", "{F400BF14-6418-42E3-B43D-3F883AA5E02E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.ImagingSample", "RayTracer.ImagingSample\RayTracer.ImagingSample.csproj", "{BFA971F7-9C21-4B29-838E-660742D84854}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Imaging.Sample", "Sources\RayTracer.Imaging.Sample\RayTracer.Imaging.Sample.csproj", "{BFA971F7-9C21-4B29-838E-660742D84854}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

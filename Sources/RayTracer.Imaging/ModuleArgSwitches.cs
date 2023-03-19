@@ -1,4 +1,4 @@
 ﻿using RayTracer.Imaging;
-using RayTracer.IO.CLI;
+using RayTracer.Library.CLI;
 
 [module: ModuleArgSwitches(typeof(ImageConverterConfiguration))]

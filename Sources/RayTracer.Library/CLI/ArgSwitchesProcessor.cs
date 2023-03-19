@@ -3,21 +3,13 @@ using System.Diagnostics;
 using System.Reflection;
 using RayTracer.Library.Utils;
 
-namespace RayTracer.IO.CLI;
+namespace RayTracer.Library.CLI;
 
-public class ArgSwitchesProcessor
+public static class ArgSwitchesProcessor
 {
-    private readonly ArgSwitchesCollector _collector;
-
-    public ArgSwitchesProcessor(AppDomain? domain = null)
+    public static void Process(string[] args)
     {
-        domain ??= AppDomain.CurrentDomain;
-        _collector = new(domain);
-    }
-
-    public void Process(string[] args)
-    {
-        var switchesMap = _collector.Collect();
+        var switchesMap = ArgSwitchesIndexer.Instance.Switches;
 
         foreach (var arg in args)
         {

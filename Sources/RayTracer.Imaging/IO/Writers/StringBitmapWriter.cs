@@ -1,26 +1,33 @@
 ﻿using System;
+using System.IO;
+using System.Text;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
 
-namespace RayTracer.Library.IO.Bitmaps.Writers;
+namespace RayTracer.Imaging.IO.Writers;
 
-public class ConsoleBitmapWriter : IBitmapWriter
+public class StringBitmapWriter : IBitmapWriter
 {
-    public void Write(Bitmap bitmap)
+    ImageFormat IBitmapWriter.Format => throw new NotSupportedException();
+
+    public void Write(Stream destination, Bitmap bitmap)
     {
-        Console.Clear();
+        StringBuilder builder = new();
 
         for (int i = 0; i < bitmap.Height; i++)
         {
             for (int j = 0; j < bitmap.Width; j++)
             {
                 char @char = ColorToChar(bitmap.Get(j, i));
-                Console.Write(@char);
-                Console.Write(' ');
+                builder.Append(@char);
+                builder.Append(' ');
             }
 
-            Console.WriteLine();
+            builder.AppendLine();
         }
+
+        using StreamWriter writer = new(destination);
+        writer.Write(builder.ToString());
     }
 
     private static char ColorToChar(in ColorRGB color)
