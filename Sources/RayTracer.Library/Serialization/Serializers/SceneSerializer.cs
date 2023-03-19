@@ -36,7 +36,7 @@ public class SceneSerializer : SerializerBase<SceneSerializer, Scene>
         reader.EnsureTokenAndRead(JsonTokenType.StartObject);
 
         reader.EnsurePropertyAndRead("Shapes"u8);
-        var shapes = IntersectableListSerializer.Instance.Deserialize(ref reader);
+        var shapes = IntersectableListSerializer.Instance.Deserialize(ref reader)!;
 
         reader.EnsurePropertyAndRead("Lights"u8);
         var lights = ImmutableArraySerializer<ILight>.Instance.Deserialize(ref reader);
