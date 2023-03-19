@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RayTracer.ImagingSample": {
+      "commandName": "Project",
+      "commandLineArgs": "--source=Test1 --goal-format=Test2 --output=Test3"
+    }
+  }
+}

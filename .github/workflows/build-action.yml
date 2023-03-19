@@ -1,0 +1,16 @@
+name: Build & Test RayTracer.sln
+on: push
+jobs:
+  build:
+    name: Build
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - run: dotnet build RayTracer.sln /warnaserror
+  tests:
+    name: Unit tests
+    runs-on: windows-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v2.1.0
+      - run: dotnet test RayTracer.sln --no-build
