@@ -1,5 +1,7 @@
-﻿using System.IO;
-using RayTracer.Library.IO.Bitmaps.Writers;
+﻿using System;
+using System.IO;
+using System.Text;
+using RayTracer.Imaging.IO.Writers;
 using RayTracer.Library.Serialization;
 using RayTracer.Library.Utils;
 
@@ -15,5 +17,10 @@ Scene scene = SerializationHelper.Deserialize<Scene>(fs)!;
 
 Bitmap bitmap = camera.Render(scene);
 
-ConsoleBitmapWriter writer = new();
-writer.Write(bitmap);
+StringBitmapWriter writer = new();
+
+MemoryStream ms = new();
+writer.Write(ms, bitmap);
+
+string image = Encoding.UTF8.GetString(ms.GetBuffer());
+Console.WriteLine(image);

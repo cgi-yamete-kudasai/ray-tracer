@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RayTracer.IO.CLI;
+namespace RayTracer.Library.CLI;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
 public class ArgSwitchAttribute : Attribute

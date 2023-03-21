@@ -1,4 +1,4 @@
-﻿using RayTracer.IO.CLI;
+﻿using RayTracer.Library.CLI;
 using RayTracer.Library.Utils;
 
 namespace RayTracer.Imaging;

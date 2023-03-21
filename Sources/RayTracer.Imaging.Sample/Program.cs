@@ -1,7 +1,8 @@
 ﻿using System;
-using RayTracer.Imaging;using RayTracer.IO.CLI;
+using RayTracer.Imaging;
+using RayTracer.Library.CLI;
 
-new ArgSwitchesProcessor().Process(args);
+ArgSwitchesProcessor.Process(args);
 
 Console.WriteLine(ImageConverterConfiguration.Instance.Source);
 Console.WriteLine(ImageConverterConfiguration.Instance.Target);

@@ -54,7 +54,7 @@ public static class Assert
         [CallerFilePath] string? file = null)
     {
         if (!EqualityComparer<T>.Default.Equals(lhs, rhs))
-            throw new AssertionException($"Expected values to be equal in member {name} on line {line} ({file})");
+            throw new AssertionException($"Expected values {lhs} and {rhs} to be equal in member {name} on line {line} ({file})");
     }
 
     [Conditional("DEBUG")]
@@ -67,6 +67,6 @@ public static class Assert
         [CallerFilePath] string? file = null)
     {
         if (EqualityComparer<T>.Default.Equals(lhs, rhs))
-            throw new AssertionException($"Expected values to be not equal in member {name} on line {line} ({file})");
+            throw new AssertionException($"Expected values {lhs} and {rhs} to be not equal in member {name} on line {line} ({file})");
     }
 }
