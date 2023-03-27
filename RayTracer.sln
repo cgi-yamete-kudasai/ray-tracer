@@ -3,15 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Library", "Sources\RayTracer.Library\RayTracer.Library.csproj", "{40D07548-1A93-44EB-9A6F-62A432452713}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Library", "Sources\RayTracer\RayTracer.Library\RayTracer.Library.csproj", "{40D07548-1A93-44EB-9A6F-62A432452713}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Sample", "Sources\RayTracer.Sample\RayTracer.Sample.csproj", "{202723F0-E830-4381-9E9F-F125F3592C7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Sample", "Sources\RayTracer\RayTracer.Sample\RayTracer.Sample.csproj", "{202723F0-E830-4381-9E9F-F125F3592C7B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Library.Tests", "Sources\RayTracer.Library.Tests\RayTracer.Library.Tests.csproj", "{A3DD9F4A-7FCE-44A3-862C-0A8379584F99}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Library.Tests", "Sources\RayTracer\RayTracer.Library.Tests\RayTracer.Library.Tests.csproj", "{A3DD9F4A-7FCE-44A3-862C-0A8379584F99}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Imaging", "Sources\RayTracer.Imaging\RayTracer.Imaging.csproj", "{F400BF14-6418-42E3-B43D-3F883AA5E02E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Imaging", "Sources\RayTracer\RayTracer.Imaging\RayTracer.Imaging.csproj", "{F400BF14-6418-42E3-B43D-3F883AA5E02E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Imaging.Sample", "Sources\RayTracer.Imaging.Sample\RayTracer.Imaging.Sample.csproj", "{BFA971F7-9C21-4B29-838E-660742D84854}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Imaging.Sample", "Sources\RayTracer\RayTracer.Imaging.Sample\RayTracer.Imaging.Sample.csproj", "{BFA971F7-9C21-4B29-838E-660742D84854}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{AD0FFFC7-DC8D-414E-90B8-C71858B76CCD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{886AD218-4FA0-47AB-9F84-05B934AF6371}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Readers", "Readers", "{D04477E1-A7AF-4AE7-B0B6-38FA68193F1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Writers", "Writers", "{3499A441-D624-44DD-8DDC-D2B654C88616}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Bmp.Reader", "Sources\Plugins\Readers\RayTracer.Bmp.Reader\RayTracer.Bmp.Reader.csproj", "{802040BC-023F-4BAD-88C3-8E804D8C2614}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Bmp.Writer", "Sources\Plugins\Writers\RayTracer.Bmp.Writer\RayTracer.Bmp.Writer.csproj", "{95D0C84A-20FE-4A64-A60D-1EE655752AB3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RayTracer", "RayTracer", "{430241A2-137D-4111-AA2F-300343475483}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,10 +45,6 @@ Global
 		{A3DD9F4A-7FCE-44A3-862C-0A8379584F99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3DD9F4A-7FCE-44A3-862C-0A8379584F99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3DD9F4A-7FCE-44A3-862C-0A8379584F99}.Release|Any CPU.Build.0 = Release|Any CPU
-		{495553B9-5FAC-46A8-83F0-0FD080A9EEFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{495553B9-5FAC-46A8-83F0-0FD080A9EEFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{495553B9-5FAC-46A8-83F0-0FD080A9EEFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{495553B9-5FAC-46A8-83F0-0FD080A9EEFC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F400BF14-6418-42E3-B43D-3F883AA5E02E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F400BF14-6418-42E3-B43D-3F883AA5E02E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F400BF14-6418-42E3-B43D-3F883AA5E02E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -43,9 +53,30 @@ Global
 		{BFA971F7-9C21-4B29-838E-660742D84854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFA971F7-9C21-4B29-838E-660742D84854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFA971F7-9C21-4B29-838E-660742D84854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Debug|Any CPU.ActiveCfg = Release|Any CPU
+		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{40D07548-1A93-44EB-9A6F-62A432452713} = {430241A2-137D-4111-AA2F-300343475483}
+		{202723F0-E830-4381-9E9F-F125F3592C7B} = {430241A2-137D-4111-AA2F-300343475483}
+		{A3DD9F4A-7FCE-44A3-862C-0A8379584F99} = {430241A2-137D-4111-AA2F-300343475483}
+		{F400BF14-6418-42E3-B43D-3F883AA5E02E} = {430241A2-137D-4111-AA2F-300343475483}
+		{BFA971F7-9C21-4B29-838E-660742D84854} = {430241A2-137D-4111-AA2F-300343475483}
+		{886AD218-4FA0-47AB-9F84-05B934AF6371} = {AD0FFFC7-DC8D-414E-90B8-C71858B76CCD}
+		{D04477E1-A7AF-4AE7-B0B6-38FA68193F1A} = {886AD218-4FA0-47AB-9F84-05B934AF6371}
+		{3499A441-D624-44DD-8DDC-D2B654C88616} = {886AD218-4FA0-47AB-9F84-05B934AF6371}
+		{802040BC-023F-4BAD-88C3-8E804D8C2614} = {D04477E1-A7AF-4AE7-B0B6-38FA68193F1A}
+		{95D0C84A-20FE-4A64-A60D-1EE655752AB3} = {3499A441-D624-44DD-8DDC-D2B654C88616}
+		{430241A2-137D-4111-AA2F-300343475483} = {AD0FFFC7-DC8D-414E-90B8-C71858B76CCD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E45FBB5-0F08-4318-82C2-F8E3DE2B317B}

@@ -13,4 +13,4 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v2.1.0
-      - run: dotnet test RayTracer.sln --no-build
+      - run: dotnet test RayTracer.sln

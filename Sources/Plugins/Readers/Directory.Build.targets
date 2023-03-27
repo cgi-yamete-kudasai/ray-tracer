@@ -1,0 +1,8 @@
+<Project>
+  <Target Name="AddAssemblyPluginAttribute" BeforeTargets="CoreGenerateAssemblyInfo">
+      <ItemGroup>
+          <AssemblyAttribute Include="RayTracer.Imaging.Reflection.AssemblyPluginAttribute" >
+          </AssemblyAttribute>
+      </ItemGroup>
+  </Target>
+</Project>

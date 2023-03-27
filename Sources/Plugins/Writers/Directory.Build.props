@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <OutputPath>..\..\..\..\Plugins\Writers\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+</Project>
