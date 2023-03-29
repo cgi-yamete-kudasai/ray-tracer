@@ -1,9 +1,9 @@
 ﻿using System.Text.Json;
 using RayTracer.Library.Extensions;
-using RayTracer.Library.Lights;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Serialization.Serializers;
 
-namespace RayTracer.Library.Serialization.Serializers;
+namespace RayTracer.Render.Lights;
 
 public class DirectionalLightSerializer : SerializerBase<DirectionalLightSerializer, DirectionalLight>
 {

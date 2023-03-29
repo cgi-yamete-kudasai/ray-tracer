@@ -1,6 +1,6 @@
 ﻿using RayTracer.Library.Mathematics;
 
-namespace RayTracer.Library.Utils;
+namespace RayTracer.Render.Core;
 
 public readonly struct CameraSettings
 {

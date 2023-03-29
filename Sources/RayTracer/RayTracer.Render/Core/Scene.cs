@@ -1,11 +1,10 @@
 ﻿using System.Collections.Immutable;
 using System.Linq;
-using RayTracer.Library.Lights;
 using RayTracer.Library.Serialization;
-using RayTracer.Library.Serialization.Serializers;
 using RayTracer.Library.Shapes;
+using RayTracer.Render.Lights;
 
-namespace RayTracer.Library.Utils;
+namespace RayTracer.Render.Core;
 
 public class Scene : ISerializable<Scene>
 {

@@ -1,7 +1,8 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Utils;
 
-namespace RayTracer.Library.Utils;
+namespace RayTracer.Render.Core;
 
 public sealed class Camera
 {

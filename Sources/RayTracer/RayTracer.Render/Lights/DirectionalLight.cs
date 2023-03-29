@@ -1,10 +1,9 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Serialization;
-using RayTracer.Library.Serialization.Serializers;
 using RayTracer.Library.Shapes;
 
-namespace RayTracer.Library.Lights;
+namespace RayTracer.Render.Lights;
 
 public class DirectionalLight : ILight, ISerializable<DirectionalLight>
 {
