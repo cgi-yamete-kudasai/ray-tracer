@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Shapes;
 using RayTracer.Library.Utils;
 
 namespace RayTracer.Render.Core;
@@ -27,7 +29,9 @@ public sealed class Camera
 
         Bitmap map = new(imageWidth, imageHeight);
 
-        for (int i = 0; i < imageHeight; i++)
+        IntersectableList list = new(scene.Shapes);
+
+        Parallel.For(0, imageHeight, i =>
         {
             for (int j = 0; j < imageWidth; j++)
             {
@@ -36,15 +40,15 @@ public sealed class Camera
 
                 Vector3 direction = Settings.Origin + topLeftCorner + u * vertical + v * horizontal - Settings.Origin;
                 Ray ray = new(Settings.Origin, direction);
-                
-                if (scene.Shapes.TryIntersect(ray, out var result))
+
+                if (list.TryIntersect(ray, out var result))
                 {
                     // TODO: handle many lights
-                    ColorRGB color = scene.Lights[0].PaintPoint(scene.Shapes, result);
+                    ColorRGB color = scene.Lights[0].PaintPoint(list, result);
                     map.SetColor(j, i, color);
                 }
             }
-        }
+        });
 
         return map;
     }

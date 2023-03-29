@@ -12,7 +12,6 @@ public class ConverterApp
     public void Run()
     {
         ImageConverterSetup setup = new(ImageConverterConfiguration.Instance);
-        new PluginLoader().LoadPlugins();
 
         if (!BitmapReadersIndexer.Instance.Readers.TryGetValue(setup.SourceFormat, out var reader))
             throw new InvalidOperationException($"Format {setup.SourceFormat} is not supported for reading");
