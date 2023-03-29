@@ -4,6 +4,7 @@ using System.Text;
 using RayTracer.Imaging.IO.Writers;
 using RayTracer.Library.Serialization;
 using RayTracer.Library.Utils;
+using RayTracer.Render.Core;
 
 CameraSettings settings = CameraSettings.Default with
 {

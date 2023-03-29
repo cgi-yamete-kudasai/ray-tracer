@@ -1,11 +1,9 @@
-﻿using System.Collections.Immutable;
-using System.Text.Json;
+﻿using System.Text.Json;
 using RayTracer.Library.Extensions;
-using RayTracer.Library.Lights;
-using RayTracer.Library.Shapes;
-using RayTracer.Library.Utils;
+using RayTracer.Library.Serialization.Serializers;
+using RayTracer.Render.Lights;
 
-namespace RayTracer.Library.Serialization.Serializers;
+namespace RayTracer.Render.Core;
 
 public class SceneSerializer : SerializerBase<SceneSerializer, Scene>
 {

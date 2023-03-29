@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Bmp.Writer", "Sou
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RayTracer", "RayTracer", "{430241A2-137D-4111-AA2F-300343475483}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Render", "Sources\RayTracer\RayTracer.Render\RayTracer.Render.csproj", "{87EBEE75-4F44-4F98-8BA7-373F686CC8B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Debug|Any CPU.Build.0 = Release|Any CPU
 		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87EBEE75-4F44-4F98-8BA7-373F686CC8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87EBEE75-4F44-4F98-8BA7-373F686CC8B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87EBEE75-4F44-4F98-8BA7-373F686CC8B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87EBEE75-4F44-4F98-8BA7-373F686CC8B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{802040BC-023F-4BAD-88C3-8E804D8C2614} = {D04477E1-A7AF-4AE7-B0B6-38FA68193F1A}
 		{95D0C84A-20FE-4A64-A60D-1EE655752AB3} = {3499A441-D624-44DD-8DDC-D2B654C88616}
 		{430241A2-137D-4111-AA2F-300343475483} = {AD0FFFC7-DC8D-414E-90B8-C71858B76CCD}
+		{87EBEE75-4F44-4F98-8BA7-373F686CC8B6} = {430241A2-137D-4111-AA2F-300343475483}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E45FBB5-0F08-4318-82C2-F8E3DE2B317B}

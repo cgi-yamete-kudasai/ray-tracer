@@ -1,7 +1,7 @@
 ﻿using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
 
-namespace RayTracer.Library.Lights;
+namespace RayTracer.Render.Lights;
 
 public interface ILight
 {
