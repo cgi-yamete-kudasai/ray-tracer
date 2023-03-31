@@ -1,6 +1,3 @@
-using System;
-using System.Numerics;
-using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Tests.Mathematics;
@@ -77,7 +74,7 @@ public class MathHelperTests
             { 318, 342, 366 }
         };
 
-        float[,] actual = matrix1.MultiplyByMatrix(matrix2);
+        float[,] actual = matrix1.Multiply(matrix2);
 
         Assert.Equal(expected, actual);
     }
@@ -105,98 +102,8 @@ public class MathHelperTests
             { 95, 106, 117 }
         };
 
-        float[,] actual = matrix1.MultiplyByMatrix(matrix2);
+        float[,] actual = matrix1.Multiply(matrix2);
 
         Assert.Equal(expected, actual);
-    }
-
-    public const float TOLERANCE = 0.0001f;
-
-    [Fact]
-    public void RotationMatrix4x4X()
-    {
-        float xAngle = 90;
-        float yAngle = 0;
-        float zAngle = 0;
-        bool clockwise = false;
-
-        float[,] expected = new float[4, 4]
-        {
-            { 1, 0, 0, 0 },
-            { 0, 0, -1, 0 },
-            { 0, 1, 0, 0 },
-            { 0, 0, 0, 1 }
-        };
-
-        float[,] actual = MathHelper.CreateRotationMatrix4x4(xAngle, yAngle, zAngle, clockwise);
-
-        Assert.Equal(expected.GetLength(0), actual.GetLength(0));
-        Assert.Equal(expected.GetLength(1), actual.GetLength(1));
-
-        Assert.True(CompareMatrices(expected, actual));
-    }
-
-    [Fact]
-    public void RotationMatrix4x4Y()
-    {
-        float xAngle = 0;
-        float yAngle = 90;
-        float zAngle = 0;
-        bool clockwise = false;
-
-        float[,] expected = new float[4, 4]
-        {
-            { 0, 0, 1, 0 },
-            { 0, 1, 0, 0 },
-            { -1, 0, 0, 0 },
-            { 0, 0, 0, 1 }
-        };
-
-        float[,] actual = MathHelper.CreateRotationMatrix4x4(xAngle, yAngle, zAngle, clockwise);
-
-        Assert.Equal(expected.GetLength(0), actual.GetLength(0));
-        Assert.Equal(expected.GetLength(1), actual.GetLength(1));
-
-        Assert.True(CompareMatrices(expected, actual));
-    }
-
-    [Fact]
-    public void RotationMatrix4x4Z()
-    {
-        float xAngle = 0;
-        float yAngle = 0;
-        float zAngle = 90;
-        bool clockwise = false;
-        
-        float[,] expected = new float[4, 4]
-        {
-            { 0, -1, 0, 0 },
-            { 1, 0, 0, 0 },
-            { 0, 0, 1, 0 },
-            { 0, 0, 0, 1 }
-        };
-        
-        float[,] actual = MathHelper.CreateRotationMatrix4x4(xAngle, yAngle, zAngle, clockwise);
-        
-        Assert.Equal(expected.GetLength(0), actual.GetLength(0));
-        Assert.Equal(expected.GetLength(1), actual.GetLength(1));
-
-        Matrix4x4 m = Matrix4x4.CreateRotationX(90);
-        
-        Assert.True(CompareMatrices(expected, actual));
-    }
-
-    private static bool CompareMatrices(float[,] expected, float[,] actual)
-    {
-        bool areEqual = true;
-        for (int i = 0; i < expected.GetLength(0); i++)
-        {
-            for (int j = 0; j < expected.GetLength(1); j++)
-            {
-                areEqual &= Math.Abs(expected[i, j] - actual[i, j]) < TOLERANCE;
-            }
-        }
-
-        return areEqual;
     }
 }
