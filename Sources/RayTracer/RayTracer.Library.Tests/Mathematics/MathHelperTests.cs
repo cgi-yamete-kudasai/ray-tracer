@@ -42,4 +42,61 @@ public class MathHelperTests
         Assert.Equal(1, rootsCount);
         Assert.Equal((-5, -5), roots);
     }
+
+    [Fact]
+    public void MatrixMultiplicationSquareMatrices()
+    {
+        float[,] matrix1 = new float[3, 3]
+        {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 9 }
+        };
+        
+        float[,] matrix2 = new float[3, 3]
+        {
+            { 10, 11, 12 },
+            { 13, 14, 15 },
+            { 16, 17, 18 }
+        };
+        
+        float[,] expected = new float[3, 3]
+        {
+            { 84, 90, 96 },
+            { 201, 216, 231 },
+            { 318, 342, 366 }
+        };
+        
+        float[,] actual = matrix1.MultiplyByMatrix(matrix2);
+        
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public void MatrixMultiplicationNonSquareMatrices()
+    {
+        float[,] matrix1 = new float[3, 2]
+        {
+            { 1, 2 },
+            { 3, 4 },
+            { 5, 6 }
+        };
+        
+        float[,] matrix2 = new float[2, 3]
+        {
+            { 7, 8, 9 },
+            { 10, 11, 12 }
+        };
+        
+        float[,] expected = new float[3, 3]
+        {
+            { 27, 30, 33 },
+            { 61, 68, 75 },
+            { 95, 106, 117 }
+        };
+        
+        float[,] actual = matrix1.MultiplyByMatrix(matrix2);
+        
+        Assert.Equal(expected, actual);
+    }
 }
