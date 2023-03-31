@@ -67,7 +67,43 @@ public static class MathHelper
 
         float[,] rotationMatrix = MultiplyByMatrix(rotationMatrixX, rotationMatrixY);
         rotationMatrix = MultiplyByMatrix(rotationMatrix, rotationMatrixZ);
-        
+
+        return rotationMatrix;
+    }
+
+    public static float[,] CreateRotationMatrix4x4(float xAngle, float yAngle, float zAngle, bool clockwise)
+    {
+        float xRad = DegToRad(xAngle) * (clockwise ? -1 : 1);
+        float yRad = DegToRad(yAngle) * (clockwise ? -1 : 1);
+        float zRad = DegToRad(zAngle) * (clockwise ? -1 : 1);
+
+        float[,] rotationMatrixX = new float[4, 4]
+        {
+            { 1, 0, 0, 0 },
+            { 0, (float)Math.Cos(xRad), (float)-Math.Sin(xRad), 0 },
+            { 0, (float)Math.Sin(xRad), (float)Math.Cos(xRad), 0 },
+            { 0, 0, 0, 1 }
+        };
+
+        float[,] rotationMatrixY = new float[4, 4]
+        {
+            { (float)Math.Cos(yRad), 0, (float)Math.Sin(yRad), 0 },
+            { 0, 1, 0, 0 },
+            { (float)-Math.Sin(yRad), 0, (float)Math.Cos(yRad), 0 },
+            { 0, 0, 0, 1 }
+        };
+
+        float[,] rotationMatrixZ = new float[4, 4]
+        {
+            { (float)Math.Cos(zRad), (float)-Math.Sin(zRad), 0, 0 },
+            { (float)Math.Sin(zRad), (float)Math.Cos(zRad), 0, 0 },
+            { 0, 0, 1, 0 },
+            { 0, 0, 0, 1 }
+        };
+
+        float[,] rotationMatrix = MultiplyByMatrix(rotationMatrixX, rotationMatrixY);
+        rotationMatrix = MultiplyByMatrix(rotationMatrix, rotationMatrixZ);
+
         return rotationMatrix;
     }
 
@@ -93,20 +129,29 @@ public static class MathHelper
         return result;
     }
     
+    
+
     public static Vector3 MultiplyByVector3(this float[,] matrix, Vector3 vector)
     {
-        if (matrix.GetLength(1) != 3)
+        if (matrix.GetLength(1) == 3)
         {
-            throw new ArgumentException("Matrix cannot be multiplied by vector");
+            float x = matrix[0, 0] * vector.X + matrix[0, 1] * vector.Y + matrix[0, 2] * vector.Z;
+            float y = matrix[1, 0] * vector.X + matrix[1, 1] * vector.Y + matrix[1, 2] * vector.Z;
+            float z = matrix[2, 0] * vector.X + matrix[2, 1] * vector.Y + matrix[2, 2] * vector.Z;
+            return new Vector3(x, y, z);
         }
 
-        float x = matrix[0, 0] * vector.X + matrix[0, 1] * vector.Y + matrix[0, 2] * vector.Z;
-        float y = matrix[1, 0] * vector.X + matrix[1, 1] * vector.Y + matrix[1, 2] * vector.Z;
-        float z = matrix[2, 0] * vector.X + matrix[2, 1] * vector.Y + matrix[2, 2] * vector.Z;
+        if (matrix.GetLength(1) == 4)
+        {
+            float x = matrix[0, 0] * vector.X + matrix[0, 1] * vector.Y + matrix[0, 2] * vector.Z + matrix[0, 3];
+            float y = matrix[1, 0] * vector.X + matrix[1, 1] * vector.Y + matrix[1, 2] * vector.Z + matrix[1, 3];
+            float z = matrix[2, 0] * vector.X + matrix[2, 1] * vector.Y + matrix[2, 2] * vector.Z + matrix[2, 3];
+            return new Vector3(x, y, z);
+        }
 
-        return new Vector3(x, y, z);
+        throw new ArgumentException("Matrix cannot be multiplied by vector");
     }
-    
+
     public static Vector3 Transform(this Vector3 vector, float[,] matrix)
     {
         return matrix.MultiplyByVector3(vector);
