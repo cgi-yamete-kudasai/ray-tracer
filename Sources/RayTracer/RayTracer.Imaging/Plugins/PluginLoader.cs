@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace RayTracer.Imaging.Sample;
+namespace RayTracer.Imaging.Plugins;
 
 public class PluginLoader
 {

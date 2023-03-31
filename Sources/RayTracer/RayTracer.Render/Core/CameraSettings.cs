@@ -4,7 +4,7 @@ namespace RayTracer.Render.Core;
 
 public readonly struct CameraSettings
 {
-    public static readonly CameraSettings Default = new(16f / 9f, 1920, MathHelper.DegToRad(90), 1, Vector3.Zero);
+    public static readonly CameraSettings Default = new(16f / 9f, 1080, MathHelper.DegToRad(90), 1, Vector3.Zero);
 
     public float AspectRatio { get; init; }
 

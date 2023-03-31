@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RayTracer.Imaging.Reflection;
+namespace RayTracer.Imaging.Plugins;
 
 [AttributeUsage(AttributeTargets.Assembly)]
 public class AssemblyPluginAttribute : Attribute { }

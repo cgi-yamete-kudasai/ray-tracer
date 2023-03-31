@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
@@ -12,10 +13,10 @@ public class ObjMeshReader : IMeshReader
 
     private const string FACE_PREFIX = "f ";
 
-    public IntersectableList Read(Stream source)
+    public ImmutableArray<IIntersectable> Read(Stream source)
     {
         List<Vector3> vertices = new();
-        IntersectableList result = new();
+        var result = ImmutableArray.CreateBuilder<IIntersectable>();
 
         using StreamReader reader = new(source);
 
@@ -34,7 +35,7 @@ public class ObjMeshReader : IMeshReader
             }
         }
 
-        return result;
+        return result.ToImmutable();
 
         void ParseVertex(ReadOnlySpan<char> line)
         {

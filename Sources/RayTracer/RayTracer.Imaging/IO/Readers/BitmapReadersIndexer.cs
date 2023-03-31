@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using RayTracer.Imaging.Reflection;
+using RayTracer.Imaging.Plugins;
 using RayTracer.Library.Reflection;
 
 namespace RayTracer.Imaging.IO.Readers;
