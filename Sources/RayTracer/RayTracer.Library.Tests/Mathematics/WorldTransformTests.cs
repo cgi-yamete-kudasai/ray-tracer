@@ -105,15 +105,15 @@ public class WorldTransformTests
 
     private static bool CompareMatrices(float[,] expected, float[,] actual)
     {
-        bool areEqual = true;
         for (int i = 0; i < expected.GetLength(0); i++)
         {
             for (int j = 0; j < expected.GetLength(1); j++)
             {
-                areEqual &= Math.Abs(expected[i, j] - actual[i, j]) < TOLERANCE;
+                if (Math.Abs(expected[i, j] - actual[i, j]) > TOLERANCE)
+                    return false;
             }
         }
 
-        return areEqual;
+        return true;
     }
 }
