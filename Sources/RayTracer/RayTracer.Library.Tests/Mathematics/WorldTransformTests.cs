@@ -1,18 +1,13 @@
 using System;
-using System.Numerics;
+using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
-using Vector3 = RayTracer.Library.Mathematics.Vector3;
+using static RayTracer.Library.Mathematics.MathHelper;
 
 namespace RayTracer.Library.Tests.Mathematics;
 
 public class WorldTransformTests
 {
-    private readonly ITestOutputHelper _testOutputHelper;
-
-    public WorldTransformTests(ITestOutputHelper testOutputHelper)
-    {
-        _testOutputHelper = testOutputHelper;
-    }
+    public const float TOLERANCE = 0.0001f;
 
     [Fact]
     public void WorldTransformRotationX()
@@ -20,7 +15,7 @@ public class WorldTransformTests
         float xAngle = 90;
         bool clockwise = false;
 
-        float[,] expected = new float[4, 4]
+        float[,] expected =
         {
             { 1, 0, 0, 0 },
             { 0, 0, -1, 0 },
@@ -28,7 +23,7 @@ public class WorldTransformTests
             { 0, 0, 0, 1 }
         };
 
-        float[,] actual = WorldTransform.Identity.RotateX(xAngle, clockwise).Matrix;
+        float[,] actual = WorldTransform.Identity.RotateX(DegToRad(xAngle), clockwise).Matrix;
 
         Assert.Equal(expected.GetLength(0), actual.GetLength(0));
         Assert.Equal(expected.GetLength(1), actual.GetLength(1));
@@ -42,7 +37,7 @@ public class WorldTransformTests
         float yAngle = 90;
         bool clockwise = false;
 
-        float[,] expected = new float[4, 4]
+        float[,] expected =
         {
             { 0, 0, 1, 0 },
             { 0, 1, 0, 0 },
@@ -50,7 +45,7 @@ public class WorldTransformTests
             { 0, 0, 0, 1 }
         };
 
-        float[,] actual = WorldTransform.Identity.RotateY(yAngle, clockwise).Matrix;
+        float[,] actual = WorldTransform.Identity.RotateY(DegToRad(yAngle), clockwise).Matrix;
 
         Assert.Equal(expected.GetLength(0), actual.GetLength(0));
         Assert.Equal(expected.GetLength(1), actual.GetLength(1));
@@ -58,16 +53,13 @@ public class WorldTransformTests
         Assert.True(CompareMatrices(expected, actual));
     }
 
-    public const float TOLERANCE = 0.0001f;
-
-
     [Fact]
     public void WorldTransformRotationZ()
     {
         float zAngle = 90;
         bool clockwise = false;
 
-        float[,] expected = new float[4, 4]
+        float[,] expected =
         {
             { 0, -1, 0, 0 },
             { 1, 0, 0, 0 },
@@ -75,7 +67,7 @@ public class WorldTransformTests
             { 0, 0, 0, 1 }
         };
 
-        float[,] actual = WorldTransform.Identity.RotateZ(zAngle, clockwise).Matrix;
+        float[,] actual = WorldTransform.Identity.RotateZ(DegToRad(zAngle), clockwise).Matrix;
 
         Assert.Equal(expected.GetLength(0), actual.GetLength(0));
         Assert.Equal(expected.GetLength(1), actual.GetLength(1));
@@ -91,20 +83,20 @@ public class WorldTransformTests
         float zAngle = 45;
         bool clockwise = false;
 
-        Vector3 start = new Vector3(1, 0, 1);
-        Vector3 expected = new Vector3(1.353553391f,	0.3535533906f,	-0.2071067812f);
+        Vector3 start = new(1, 0, 1);
+        Vector3 expected = new(1.353553391f, 0.3535533906f, -0.2071067812f);
 
         WorldTransform transform = WorldTransform.Identity
-                .RotateX(xAngle, clockwise) 
-                .RotateY(yAngle, clockwise)
-             .RotateZ(zAngle, clockwise);
-        Vector3 actual =
-            transform.ApplyTransform(start);
+            .RotateX(DegToRad(xAngle), clockwise)
+            .RotateY(DegToRad(yAngle), clockwise)
+            .RotateZ(DegToRad(zAngle), clockwise);
 
-       Assert.True(CompareVectors(expected, actual));
+        Vector3 actual = start.Transform(transform);
+
+        Assert.True(CompareVectors(expected, actual));
     }
 
-    private bool CompareVectors(Vector3 expected, Vector3 actual)
+    private static bool CompareVectors(Vector3 expected, Vector3 actual)
     {
         return Math.Abs(expected.X - actual.X) < TOLERANCE &&
                Math.Abs(expected.Y - actual.Y) < TOLERANCE &&

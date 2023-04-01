@@ -4,7 +4,7 @@ namespace RayTracer.Library.Mathematics;
 
 public readonly struct WorldTransform
 {
-    public static readonly WorldTransform Identity = new(new float[4, 4]
+    public static readonly WorldTransform Identity = new(new float[,]
     {
         { 1, 0, 0, 0 },
         { 0, 1, 0, 0 },
@@ -12,20 +12,19 @@ public readonly struct WorldTransform
         { 0, 0, 0, 1 }
     });
 
-    public float[,] Matrix => _matrix;
-    
-    private readonly float[,] _matrix;
+    public float[,] Matrix { get; }
 
     private WorldTransform(float[,] matrix)
     {
-        _matrix = matrix;
+        Matrix = matrix;
     }
 
-    public readonly WorldTransform RotateX(float angle, bool clockwise = true)
+    public WorldTransform RotateX(float rad, bool clockwise = true)
     {
-        double rad = MathHelper.DegToRad(angle) * (clockwise ? -1 : 1);
+        if (clockwise)
+            rad *= -1;
 
-        float[,] rotationMatrix = new float[4, 4]
+        float[,] rotationMatrix =
         {
             { 1, 0, 0, 0 },
             { 0, (float)Math.Cos(rad), -(float)Math.Sin(rad), 0 },
@@ -33,14 +32,15 @@ public readonly struct WorldTransform
             { 0, 0, 0, 1 }
         };
 
-        return new WorldTransform(rotationMatrix.Multiply(_matrix));
+        return new WorldTransform(MathHelper.MultiplyMatrices(rotationMatrix, Matrix));
     }
     
-    public readonly WorldTransform RotateY(float angle, bool clockwise = true)
+    public WorldTransform RotateY(float rad, bool clockwise = true)
     {
-        double rad = MathHelper.DegToRad(angle) * (clockwise ? -1 : 1);
+        if (clockwise)
+            rad *= -1;
 
-        float[,] rotationMatrix = new float[4, 4]
+        float[,] rotationMatrix =
         {
             { (float)Math.Cos(rad), 0, (float)Math.Sin(rad), 0 },
             { 0, 1, 0, 0 },
@@ -48,14 +48,15 @@ public readonly struct WorldTransform
             { 0, 0, 0, 1 }
         };
 
-        return new WorldTransform(rotationMatrix.Multiply(_matrix));
+        return new WorldTransform(MathHelper.MultiplyMatrices(rotationMatrix, Matrix));
     }
     
-    public readonly WorldTransform RotateZ(float angle, bool clockwise = true)
+    public WorldTransform RotateZ(float rad, bool clockwise = true)
     {
-        double rad = MathHelper.DegToRad(angle) * (clockwise ? -1 : 1);
+        if (clockwise)
+            rad *= -1;
 
-        float[,] rotationMatrix = new float[4, 4]
+        float[,] rotationMatrix =
         {
             { (float)Math.Cos(rad), -(float)Math.Sin(rad), 0, 0 },
             { (float)Math.Sin(rad), (float)Math.Cos(rad), 0, 0 },
@@ -63,14 +64,6 @@ public readonly struct WorldTransform
             { 0, 0, 0, 1 }
         };
 
-        return new WorldTransform(rotationMatrix.Multiply(_matrix));
-    }
-
-    public Vector3 ApplyTransform(Vector3 vector)
-    {
-        float x = _matrix[0, 0] * vector.X + _matrix[0, 1] * vector.Y + _matrix[0, 2] * vector.Z + _matrix[0, 3];
-        float y = _matrix[1, 0] * vector.X + _matrix[1, 1] * vector.Y + _matrix[1, 2] * vector.Z + _matrix[1, 3];
-        float z = _matrix[2, 0] * vector.X + _matrix[2, 1] * vector.Y + _matrix[2, 2] * vector.Z + _matrix[2, 3];
-        return new Vector3(x, y, z);
+        return new WorldTransform(MathHelper.MultiplyMatrices(rotationMatrix, Matrix));
     }
 }
