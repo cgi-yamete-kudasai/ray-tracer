@@ -66,4 +66,30 @@ public readonly struct WorldTransform
 
         return new WorldTransform(MathHelper.MultiplyMatrices(rotationMatrix, Matrix));
     }
+
+    public WorldTransform Translate(Vector3 vector)
+    {
+        float[,] translationMatrix = new float[4, 4]
+        {
+            { 1, 0, 0, vector.X },
+            { 0, 1, 0, vector.Y },
+            { 0, 0, 1, vector.Z },
+            { 0, 0, 0, 1 }
+        };
+
+        return new WorldTransform(MathHelper.MultiplyMatrices(translationMatrix, Matrix));
+    }
+
+    public WorldTransform Scale(Vector3 vector)
+    {
+        float[,] scaleMatrix = new float[4, 4]
+        {
+            { vector.X, 0, 0, 0 },
+            { 0, vector.Y, 0, 0 },
+            { 0, 0, vector.Z, 0 },
+            { 0, 0, 0, 1 }
+        };
+
+        return new WorldTransform(MathHelper.MultiplyMatrices(scaleMatrix, Matrix));
+    }
 }

@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Immutable;
 using RayTracer.Imaging.IO.Writers;
+using RayTracer.Library.Diagnostics.Logging;
+using RayTracer.Library.Extensions;
 using RayTracer.Render.Core;
 using RayTracer.Render.IO;
 using RayTracer.Render.Sample.Configuration;
@@ -31,6 +33,8 @@ public class RayCasterApp
 
         Scene scene;
 
+        Log.Default.Info($"Loading source file {setup.Source}");
+
         using (var sourceFs = File.OpenRead(setup.Source))
         {
             // hardcoded lights
@@ -40,8 +44,12 @@ public class RayCasterApp
             scene = new(shapes, lights);
         }
 
+        Log.Default.Info($"Rendering with settings: {CameraSettings}");
+
         Camera camera = new(CameraSettings);
         Bitmap result = camera.Render(scene);
+
+        Log.Default.Info($"Writing to destination file {setup.Output}");
 
         using (var destinationFs = File.OpenWrite(setup.Output))
             writer.Write(destinationFs, result);

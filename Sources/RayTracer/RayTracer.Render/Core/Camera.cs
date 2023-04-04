@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
 using RayTracer.Library.Utils;
@@ -9,6 +10,8 @@ namespace RayTracer.Render.Core;
 public sealed class Camera
 {
     public CameraSettings Settings { get; }
+
+    private readonly Vector3 _origin = Vector3.Zero;
 
     public Camera(in CameraSettings settings)
     {
@@ -23,9 +26,16 @@ public sealed class Camera
         float viewportHeight = 2 * Settings.FocalLength * (float)Math.Tan(Settings.VerticalFOV / 2);
         float viewportWidth = Settings.AspectRatio * viewportHeight;
 
+        Vector3 origin = _origin.Transform(Settings.OriginTransform);
+
         Vector3 horizontal = new(viewportWidth, 0, 0);
+        horizontal = horizontal.Transform(Settings.DirectionTransform);
+
         Vector3 vertical = new(0, -viewportHeight, 0);
+        vertical = vertical.Transform(Settings.DirectionTransform);
+
         Vector3 topLeftCorner = new(-viewportWidth / 2, viewportHeight / 2, -Settings.FocalLength);
+        topLeftCorner = topLeftCorner.Transform(Settings.DirectionTransform);
 
         Bitmap map = new(imageWidth, imageHeight);
 
@@ -38,8 +48,8 @@ public sealed class Camera
                 float u = (float)i / imageHeight;
                 float v = (float)j / imageWidth;
 
-                Vector3 direction = Settings.Origin + topLeftCorner + u * vertical + v * horizontal - Settings.Origin;
-                Ray ray = new(Settings.Origin, direction);
+                Vector3 direction = topLeftCorner + u * vertical + v * horizontal - origin;
+                Ray ray = new(origin, direction);
 
                 if (list.TryIntersect(ray, out var result))
                 {

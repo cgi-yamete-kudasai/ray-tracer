@@ -75,6 +75,27 @@ public class WorldTransformTests
         Assert.True(CompareMatrices(expected, actual));
     }
 
+
+    [Fact]
+    public void WorldTransformScale()
+    {
+        Vector3 scale = new Vector3(2, 3, 4);
+        Vector3 start = new Vector3(-4, 6, 8);
+
+        Vector3 expected = new Vector3(-8, 18, 32);
+        Assert.True(CompareVectors(expected, start.Transform(WorldTransform.Identity.Scale(scale))));
+    }
+
+    [Fact]
+    public void WorldTransformTranslate()
+    {
+        Vector3 translation = new Vector3(5, -3, 2);
+        Vector3 start = new Vector3(-3, 4, 5);
+
+        Vector3 expected = new Vector3(2, 1, 7);
+        Assert.True(CompareVectors(expected, start.Transform(WorldTransform.Identity.Translate(translation))));
+    }
+
     [Fact]
     public void WorldTransformApplyRotation()
     {
