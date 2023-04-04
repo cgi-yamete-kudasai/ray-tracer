@@ -2,31 +2,21 @@
 
 namespace RayTracer.Render.Core;
 
-public readonly struct CameraSettings
+public readonly record struct CameraSettings(
+    float AspectRatio,
+    int ImageHeight,
+    float VerticalFOV,
+    float FocalLength,
+    WorldTransform OriginTransform,
+    WorldTransform DirectionTransform)
 {
-    public static readonly CameraSettings Default = new(16f / 9f, 1080, MathHelper.DegToRad(90), 1, Vector3.Zero);
-
-    public float AspectRatio { get; init; }
-
-    public int ImageHeight { get; init; }
-
-    public float VerticalFOV { get; init; }
-
-    public float FocalLength { get; init; }
-
-    public Vector3 Origin { get; init; }
-
-    public CameraSettings(
-        float aspectRatio,
-        int imageHeight,
-        float verticalFOV,
-        float focalLength,
-        in Vector3 origin)
+    public static readonly CameraSettings Default = new()
     {
-        AspectRatio = aspectRatio;
-        ImageHeight = imageHeight;
-        VerticalFOV = verticalFOV;
-        FocalLength = focalLength;
-        Origin = origin;
-    }
+        AspectRatio = 16f / 9,
+        ImageHeight = 1080,
+        VerticalFOV = MathHelper.DegToRad(90),
+        FocalLength = 1,
+        OriginTransform = WorldTransform.Identity,
+        DirectionTransform = WorldTransform.Identity
+    };
 }
