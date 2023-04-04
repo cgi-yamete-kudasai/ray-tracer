@@ -13,7 +13,7 @@ public readonly struct WorldTransform
     });
 
     public float[,] Matrix => _matrix;
-    
+
     private readonly float[,] _matrix;
 
     private WorldTransform(float[,] matrix)
@@ -35,7 +35,7 @@ public readonly struct WorldTransform
 
         return new WorldTransform(rotationMatrix.Multiply(_matrix));
     }
-    
+
     public readonly WorldTransform RotateY(float angle, bool clockwise = true)
     {
         double rad = MathHelper.DegToRad(angle) * (clockwise ? -1 : 1);
@@ -50,7 +50,7 @@ public readonly struct WorldTransform
 
         return new WorldTransform(rotationMatrix.Multiply(_matrix));
     }
-    
+
     public readonly WorldTransform RotateZ(float angle, bool clockwise = true)
     {
         double rad = MathHelper.DegToRad(angle) * (clockwise ? -1 : 1);
@@ -64,6 +64,32 @@ public readonly struct WorldTransform
         };
 
         return new WorldTransform(rotationMatrix.Multiply(_matrix));
+    }
+
+    public readonly WorldTransform Translate(Vector3 vector)
+    {
+        float[,] translationMatrix = new float[4, 4]
+        {
+            { 1, 0, 0, vector.X },
+            { 0, 1, 0, vector.Y },
+            { 0, 0, 1, vector.Z },
+            { 0, 0, 0, 1 }
+        };
+
+        return new WorldTransform(translationMatrix.Multiply(_matrix));
+    }
+
+    public readonly WorldTransform Scale(Vector3 vector)
+    {
+        float[,] scaleMatrix = new float[4, 4]
+        {
+            { vector.X, 0, 0, 0 },
+            { 0, vector.Y, 0, 0 },
+            { 0, 0, vector.Z, 0 },
+            { 0, 0, 0, 1 }
+        };
+
+        return new WorldTransform(scaleMatrix.Multiply(_matrix));
     }
 
     public Vector3 ApplyTransform(Vector3 vector)
