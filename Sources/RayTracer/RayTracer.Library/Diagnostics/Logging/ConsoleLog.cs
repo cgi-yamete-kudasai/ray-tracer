@@ -11,7 +11,7 @@ public class ConsoleLog : Singleton<ConsoleLog>, ILog
         Console.ForegroundColor = GetSeverityColor(severity);
 
         string prefix = GetSeverityPrefix(severity);
-        Console.WriteLine($"[{prefix}]: {message}", severity);
+        Console.WriteLine($"[{prefix}]: {message}");
 
         Console.ForegroundColor = ConsoleColor.Gray;
     }
