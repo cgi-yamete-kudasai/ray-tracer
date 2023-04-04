@@ -59,6 +59,10 @@ public class Triangle : IIntersectable
             return false;
 
         float distance = Vector3.Dot(e2, qvec) * inv_det;
+
+        if (distance < 0)
+            return false;
+
         Vector3 point = ray.Origin + distance * ray.Direction;
 
         result = new(point, distance, _normal.Value);

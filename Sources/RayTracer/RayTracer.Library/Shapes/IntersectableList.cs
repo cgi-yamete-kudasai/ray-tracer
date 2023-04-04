@@ -46,6 +46,21 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
         return resultExists;
     }
 
+    public bool TryIntersectAny(in Ray ray, out IntersectionResult result)
+    {
+        foreach (IIntersectable intersectable in this)
+        {
+            if (intersectable.TryIntersect(ray, out var intResult))
+            {
+                result = intResult;
+                return true;
+            }
+        }
+
+        result = default;
+        return false;
+    }
+
     public IEnumerator<IIntersectable> GetEnumerator()
     {
         return _intersectables.GetEnumerator();
