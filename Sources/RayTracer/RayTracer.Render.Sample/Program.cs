@@ -5,10 +5,7 @@ using RayTracer.Render.Sample;
 
 // --source=example.obj --output=output.png
 
-CameraSettings settings = CameraSettings.Default with
-{
-    Origin = new(0, 0, 1)
-};
+CameraSettings settings = CameraSettings.Default;
 
 ArgSwitchesProcessor.Process(args);
 new PluginLoader().LoadPlugins();
