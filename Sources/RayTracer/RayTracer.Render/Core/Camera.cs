@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Threading.Tasks;
+using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
 using RayTracer.Library.Utils;
+using RayTracer.Render.Lights;
 
 namespace RayTracer.Render.Core;
 
 public sealed class Camera
 {
+    private const float ACNE_TOLERANCE = 0.001f;
+
     public CameraSettings Settings { get; }
 
     private readonly Vector3 _origin = Vector3.Zero;
@@ -41,6 +45,10 @@ public sealed class Camera
 
         IntersectableList list = new(scene.Shapes);
 
+        // TODO: handle many lights
+        Assert.Equal(1, scene.Lights.Length);
+        var light = (DirectionalLight)scene.Lights[0];
+
         Parallel.For(0, imageHeight, i =>
         {
             for (int j = 0; j < imageWidth; j++)
@@ -53,9 +61,13 @@ public sealed class Camera
 
                 if (list.TryIntersect(ray, out var result))
                 {
-                    // TODO: handle many lights
-                    ColorRGB color = scene.Lights[0].PaintPoint(list, result);
-                    map.SetColor(j, i, color);
+                    Ray lightRay = new(result.Point - ACNE_TOLERANCE * light.Direction, -1 * light.Direction);
+
+                    if (!list.TryIntersectAny(lightRay, out _))
+                    {
+                        ColorRGB color = light.PaintPoint(list, result);
+                        map.SetColor(j, i, color);
+                    }
                 }
             }
         });
