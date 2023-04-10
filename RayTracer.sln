@@ -29,7 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RayTracer", "RayTracer", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Render", "Sources\RayTracer\RayTracer.Render\RayTracer.Render.csproj", "{87EBEE75-4F44-4F98-8BA7-373F686CC8B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Render.Sample", "Sources\RayTracer\RayTracer.Render.Sample\RayTracer.Render.Sample.csproj", "{13898816-77D8-407E-B170-6326CF8F53FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Render.Sample", "Sources\RayTracer\RayTracer.Render.Sample\RayTracer.Render.Sample.csproj", "{13898816-77D8-407E-B170-6326CF8F53FF}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RayTracer.Ppm.Writer", "Sources\Plugins\Writers\RayTracer.Ppm.Writer\RayTracer.Ppm.Writer.fsproj", "{E1812E93-919F-4DEE-9D0D-4F21D81FC66D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,12 +59,12 @@ Global
 		{BFA971F7-9C21-4B29-838E-660742D84854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFA971F7-9C21-4B29-838E-660742D84854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFA971F7-9C21-4B29-838E-660742D84854}.Release|Any CPU.Build.0 = Release|Any CPU
-		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{802040BC-023F-4BAD-88C3-8E804D8C2614}.Release|Any CPU.Build.0 = Release|Any CPU
-		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95D0C84A-20FE-4A64-A60D-1EE655752AB3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{87EBEE75-4F44-4F98-8BA7-373F686CC8B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{13898816-77D8-407E-B170-6326CF8F53FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13898816-77D8-407E-B170-6326CF8F53FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13898816-77D8-407E-B170-6326CF8F53FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1812E93-919F-4DEE-9D0D-4F21D81FC66D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1812E93-919F-4DEE-9D0D-4F21D81FC66D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1812E93-919F-4DEE-9D0D-4F21D81FC66D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1812E93-919F-4DEE-9D0D-4F21D81FC66D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{430241A2-137D-4111-AA2F-300343475483} = {AD0FFFC7-DC8D-414E-90B8-C71858B76CCD}
 		{87EBEE75-4F44-4F98-8BA7-373F686CC8B6} = {430241A2-137D-4111-AA2F-300343475483}
 		{13898816-77D8-407E-B170-6326CF8F53FF} = {430241A2-137D-4111-AA2F-300343475483}
+		{E1812E93-919F-4DEE-9D0D-4F21D81FC66D} = {3499A441-D624-44DD-8DDC-D2B654C88616}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E45FBB5-0F08-4318-82C2-F8E3DE2B317B}
