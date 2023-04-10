@@ -1,8 +1,9 @@
 ﻿using RayTracer.Library.Mathematics;
+using RayTracer.Library.Utils;
 
 namespace RayTracer.Library.Shapes;
 
-public interface IIntersectable
+public interface IIntersectable : ITransformable
 {
     bool TryIntersect(in Ray ray, out IntersectionResult result);
 }

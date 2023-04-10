@@ -61,6 +61,12 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
         return false;
     }
 
+    public void Transform(WorldTransform wt)
+    {
+        foreach (var shape in _intersectables)
+            shape.Transform(wt);
+    }
+
     public IEnumerator<IIntersectable> GetEnumerator()
     {
         return _intersectables.GetEnumerator();

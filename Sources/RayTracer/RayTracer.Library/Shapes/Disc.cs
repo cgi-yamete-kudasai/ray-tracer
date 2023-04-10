@@ -7,8 +7,10 @@ namespace RayTracer.Library.Shapes;
 
 public class Disc : IIntersectable, ISerializable<Disc>
 {
-    public Vector3 Center { get; }
-    public Vector3 Normal { get; }
+    public Vector3 Center { get; private set; }
+
+    public Vector3 Normal { get; private set; }
+    
     public float Radius { get; }
 
     public Disc(Vector3 center, Vector3 normal, float radius)
@@ -37,7 +39,13 @@ public class Disc : IIntersectable, ISerializable<Disc>
         result = default;
         return false;
     }
-    
+
+    public void Transform(WorldTransform wt)
+    {
+        Center = Center.Transform(wt);
+        Normal = Normal.Transform(wt);
+    }
+
     static ISerializer<Disc> ISerializable<Disc>.Serializer => DiscSerializer.Instance;
 
 }
