@@ -16,8 +16,8 @@ public class ConverterApp
         if (!BitmapReadersIndexer.Instance.Readers.TryGetValue(setup.SourceFormat, out var reader))
             throw new InvalidOperationException($"Format {setup.SourceFormat} is not supported for reading");
 
-        if (!BitmapWritersIndexer.Instance.Writers.TryGetValue(setup.SourceFormat, out var writer))
-            throw new InvalidOperationException($"Format {setup.SourceFormat} is not supported for writing");
+        if (!BitmapWritersIndexer.Instance.Writers.TryGetValue(setup.TargetFormat, out var writer))
+            throw new InvalidOperationException($"Format {setup.TargetFormat} is not supported for writing");
 
         if (!File.Exists(setup.Source))
             throw new FileNotFoundException($"Can't find source file {setup.Source}.");
