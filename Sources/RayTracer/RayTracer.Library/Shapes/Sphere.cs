@@ -7,9 +7,9 @@ namespace RayTracer.Library.Shapes;
 
 public class Sphere : IIntersectable, ISerializable<Sphere>
 {
-    public Vector3 Center { get; init; }
+    public Vector3 Center { get; private set; }
 
-    public float Radius { get; init; }
+    public float Radius { get; }
 
     public Sphere(Vector3 center, float radius)
     {
@@ -37,6 +37,11 @@ public class Sphere : IIntersectable, ISerializable<Sphere>
 
         result = new(point, closest, GetNormal(point));
         return true;
+    }
+
+    public void Transform(WorldTransform wt)
+    {
+        Center = Center.Transform(wt);
     }
 
     private Vector3 GetNormal(in Vector3 point)

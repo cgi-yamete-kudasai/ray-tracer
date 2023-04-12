@@ -36,5 +36,14 @@ public readonly partial struct Vector3 : ISerializable<Vector3>
         return HashCode.Combine(X, Y, Z);
     }
 
+    public Vector3 Transform(WorldTransform wt)
+    {
+        float x = wt.Matrix[0, 0] * X + wt.Matrix[0, 1] * Y + wt.Matrix[0, 2] * Z + wt.Matrix[0, 3];
+        float y = wt.Matrix[1, 0] * X + wt.Matrix[1, 1] * Y + wt.Matrix[1, 2] * Z + wt.Matrix[1, 3];
+        float z = wt.Matrix[2, 0] * X + wt.Matrix[2, 1] * Y + wt.Matrix[2, 2] * Z + wt.Matrix[2, 3];
+        
+        return new(x, y, z);
+    }
+
     static ISerializer<Vector3> ISerializable<Vector3>.Serializer => Vector3Serializer.Instance;
 }

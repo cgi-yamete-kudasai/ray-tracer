@@ -11,4 +11,12 @@ public readonly struct Ray
         Origin = origin;
         Direction = direction;
     }
+
+    public Ray Transform(WorldTransform wt)
+    {
+        Vector3 origin = Origin.Transform(wt);
+        Vector3 direction = Direction.Transform(wt);
+        
+        return new(origin, direction);
+    }
 }

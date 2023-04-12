@@ -7,8 +7,9 @@ namespace RayTracer.Library.Shapes;
 
 public class Plane : IIntersectable, ISerializable<Plane>
 {
-    public Vector3 BasePoint { get; }
-    public Vector3 Normal { get; }
+    public Vector3 BasePoint { get; private set; }
+
+    public Vector3 Normal { get; private set; }
 
     public Plane(Vector3 basePoint, Vector3 normal)
     {
@@ -34,6 +35,12 @@ public class Plane : IIntersectable, ISerializable<Plane>
 
         result = default;
         return false;
+    }
+
+    public void Transform(WorldTransform wt)
+    {
+        BasePoint = BasePoint.Transform(wt);
+        Normal = Normal.Transform(wt);
     }
 
     public static ISerializer<Plane> Serializer => PlaneSerializer.Instance;
