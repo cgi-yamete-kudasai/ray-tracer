@@ -1,15 +1,16 @@
 ﻿module PpmBitmapWriter
 
 open System.IO
+open System.Text
 open RayTracer.Imaging
 open RayTracer.Imaging.IO.Writers
 
 type PpmBitmapWriter() =
     interface IBitmapWriter with
-        member this.Format = ImageFormat.Ppm
+        member this.Format = "ppm"
         member this.Write(destination, bitmap) = 
             use writer = new StreamWriter(destination)
-            writer.WriteLine "P3"
+            writer.WriteLine (Encoding.UTF8.GetString FileSignatures.Ppm)
             writer.WriteLine $"{bitmap.Width} {bitmap.Height}"
             writer.WriteLine "255"
 

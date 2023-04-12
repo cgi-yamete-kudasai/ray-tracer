@@ -10,7 +10,7 @@ open RayTracer.Library.Utils
 
 type PpmBitmapReader() =
     interface IBitmapReader with
-        member this.Format = ImageFormat.Ppm
+        member this.MagicBytes = FileSignatures.Ppm
         member this.Read(source: Stream) = 
             use reader = new StreamReader(source)
             Assert.Equal ("P3", reader.ReadLine())

@@ -5,7 +5,7 @@ namespace RayTracer.Imaging.IO.Writers;
 
 public interface IBitmapWriter
 {
-    ImageFormat Format { get; }
+    string Format { get; }
 
     void Write(Stream destination, Bitmap bitmap);
 }
