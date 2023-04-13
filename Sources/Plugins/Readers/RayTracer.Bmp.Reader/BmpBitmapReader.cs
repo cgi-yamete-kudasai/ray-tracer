@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using RayTracer.Imaging;
 using RayTracer.Imaging.Bmp;
 using RayTracer.Imaging.IO.Readers;
@@ -11,10 +12,16 @@ namespace RayTracer.Bmp.Reader;
 
 public class BmpBitmapReader : IBitmapReader
 {
-    public ImageFormat Format => ImageFormat.Bmp;
+    public ReadOnlySpan<byte> MagicBytes => FileSignatures.Bmp;
 
     public Bitmap Read(Stream source)
     {
+        byte[] magicBytes = new byte[MagicBytes.Length];
+        int bytesRead = source.Read(magicBytes);
+
+        if (bytesRead != MagicBytes.Length || !MagicBytes.SequenceEqual(magicBytes))
+            throw new ArgumentException("The file signature doesn't match the BMP signature.", nameof(source));
+        
         var header = source.MarshalReadStructure<BmpHeader>();
         ValidateHeader(header);
 
@@ -47,9 +54,6 @@ public class BmpBitmapReader : IBitmapReader
 
     private static void ValidateHeader(in BmpHeader header)
     {
-        Assert.Equal('B', header.Signature & 0x00FF);
-        Assert.Equal('M', (header.Signature & 0xFF00) >> 8);
-
         Assert.Equal(0u, header.Reserved);
 
         Assert.Equal(1, header.Planes);

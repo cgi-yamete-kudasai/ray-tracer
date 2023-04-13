@@ -10,12 +10,14 @@ namespace RayTracer.Bmp.Writer;
 
 public class BmpBitmapWriter : IBitmapWriter
 {
-    public ImageFormat Format => ImageFormat.Bmp;
+    public string Format => "bmp";
 
     public void Write(Stream destination, Bitmap bitmap)
     {
         int width = bitmap.Width;
         int height = bitmap.Height;
+
+        destination.Write(FileSignatures.Bmp);
 
         BmpHeader header = new((uint)width, (uint)height);
         destination.MarshalWriteStructure(header);

@@ -12,7 +12,7 @@ public class ImageBitmapWriter : IBitmapWriter
 {
     public SD.Imaging.ImageFormat Format { get; }
 
-    ImageFormat IBitmapWriter.Format => throw new NotSupportedException();
+    string IBitmapWriter.Format => throw new NotSupportedException();
 
     public ImageBitmapWriter(SD.Imaging.ImageFormat? format = null)
     {

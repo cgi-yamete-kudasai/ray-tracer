@@ -1,6 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System;
-using RayTracer.Imaging;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RayTracer.Render.Sample.Configuration;
 
@@ -12,7 +11,7 @@ public class RayCasterSetup
 
     public string Output { get; private set; }
 
-    public ImageFormat TargetFormat { get; private set; }
+    public string TargetFormat { get; private set; }
 
     public RayCasterSetup(RayCasterConfiguration config)
     {
@@ -30,20 +29,16 @@ public class RayCasterSetup
     }
 
     [MemberNotNull(nameof(Output))]
+    [MemberNotNull(nameof(TargetFormat))]
     private void ParseOutput(RayCasterConfiguration config)
     {
         Output = config.Output ?? throw new InvalidOperationException("Output must be provided");
 
         int dotIndex = config.Output.LastIndexOf('.');
 
-        if (dotIndex == -1 || dotIndex == config.Output.Length - 1 || !TryParseFormat(config.Output.AsSpan()[(dotIndex + 1)..], out var format))
+        if (dotIndex == -1 || dotIndex == config.Output.Length - 1)
             throw new InvalidOperationException("Can't parse output file's format");
 
-        TargetFormat = format;
-    }
-
-    private static bool TryParseFormat(ReadOnlySpan<char> span, out ImageFormat format)
-    {
-        return Enum.TryParse(span, true, out format);
+        TargetFormat = config.Output[(dotIndex + 1)..];
     }
 }

@@ -9,9 +9,7 @@ public class ImageConverterSetup
 
     public string Output { get; private set; }
 
-    public ImageFormat SourceFormat { get; private set; }
-
-    public ImageFormat TargetFormat { get; private set; }
+    public string TargetFormat { get; private set; }
 
     public ImageConverterSetup(ImageConverterConfiguration config)
     {
@@ -28,22 +26,13 @@ public class ImageConverterSetup
 
         int dotIndex = config.Source.LastIndexOf('.');
 
-        if (dotIndex == -1 || dotIndex == config.Source.Length - 1 || !TryParseFormat(config.Source.AsSpan()[(dotIndex + 1)..], out var format))
-            throw new InvalidOperationException("Can't parse source format");
-
-        Output ??= $"{Source[..dotIndex]}.{TargetFormat.ToString().ToLower()}";
-        SourceFormat = format;
+        Output ??= $"{Source[..dotIndex]}.{TargetFormat.ToLower()}";
     }
 
+    [MemberNotNull(nameof(TargetFormat))]
     private void ParseTarget(ImageConverterConfiguration config)
     {
-        if (config.Target is null)
-            throw new InvalidOperationException("Target must be provided");
-
-        if (!TryParseFormat(config.Target, out var format))
-            throw new InvalidOperationException("Can't parse target format");
-
-        TargetFormat = format;
+        TargetFormat = config.Target ?? throw new InvalidOperationException("Target must be provided");
     }
 
     private void ParseOutput(ImageConverterConfiguration config)
@@ -53,17 +42,14 @@ public class ImageConverterSetup
 
         int dotIndex = config.Output.LastIndexOf('.');
 
-        if (dotIndex == -1 || dotIndex == config.Output.Length - 1 || !TryParseFormat(config.Output.AsSpan()[(dotIndex + 1)..], out var format))
+        if (dotIndex == -1 || dotIndex == config.Output.Length - 1)
             throw new InvalidOperationException("Can't parse output file's format");
+
+        string format = config.Output[(dotIndex + 1)..];
 
         if (format != TargetFormat)
             throw new InvalidOperationException("Output file's format doesn't match the target format");
 
         Output = config.Output;
-    }
-
-    private static bool TryParseFormat(ReadOnlySpan<char> span, out ImageFormat format)
-    {
-        return Enum.TryParse(span, true, out format);
     }
 }

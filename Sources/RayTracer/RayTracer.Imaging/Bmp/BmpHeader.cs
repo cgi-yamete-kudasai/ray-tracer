@@ -10,49 +10,46 @@ public readonly struct BmpHeader
 
     // Header
     [FieldOffset(0)]
-    public readonly ushort Signature = 'M' << 8 | 'B';
-
-    [FieldOffset(2)]
     public readonly uint FileSize;
 
-    [FieldOffset(6)]
+    [FieldOffset(4)]
     public readonly uint Reserved;
 
-    [FieldOffset(10)]
+    [FieldOffset(8)]
     public readonly uint DataOffset;
 
     // InfoHeader
-    [FieldOffset(14)]
+    [FieldOffset(12)]
     public readonly uint Size = 40;
 
-    [FieldOffset(18)]
+    [FieldOffset(16)]
     public readonly uint Width;
 
-    [FieldOffset(22)]
+    [FieldOffset(20)]
     public readonly uint Height;
 
-    [FieldOffset(26)]
+    [FieldOffset(24)]
     public readonly ushort Planes = 1;
 
-    [FieldOffset(28)]
+    [FieldOffset(26)]
     public readonly ushort BitsPerPixel;
 
-    [FieldOffset(30)]
+    [FieldOffset(28)]
     public readonly uint Compression;
 
-    [FieldOffset(34)]
+    [FieldOffset(32)]
     public readonly uint ImageSize;
 
-    [FieldOffset(38)]
+    [FieldOffset(36)]
     public readonly uint XPixelsPerM;
 
-    [FieldOffset(42)]
+    [FieldOffset(40)]
     public readonly uint YPixelsPerM;
 
-    [FieldOffset(46)]
+    [FieldOffset(44)]
     public readonly uint ColorsUsed;
 
-    [FieldOffset(50)]
+    [FieldOffset(48)]
     public readonly uint ImportantColors;
 
     public BmpHeader(uint width, uint height)
