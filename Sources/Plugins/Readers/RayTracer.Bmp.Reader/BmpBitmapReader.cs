@@ -22,7 +22,7 @@ public class BmpBitmapReader : IBitmapReader
         if (bytesRead != MagicBytes.Length || !MagicBytes.SequenceEqual(magicBytes))
             throw new ArgumentException("The file signature doesn't match the BMP signature.", nameof(source));
         
-        var header = source.MarshalReadStructure<BmpHeader>();
+        var header = source.NativeRead<BmpHeader>();
         ValidateHeader(header);
 
         Bitmap result = new((int)header.Width, (int)header.Height);

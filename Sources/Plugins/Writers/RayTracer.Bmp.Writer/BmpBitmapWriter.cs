@@ -20,7 +20,7 @@ public class BmpBitmapWriter : IBitmapWriter
         destination.Write(FileSignatures.Bmp);
 
         BmpHeader header = new((uint)width, (uint)height);
-        destination.MarshalWriteStructure(header);
+        destination.NativeWrite(header);
 
         int bytesToSkip = 4 - width * 3 % 4;
 

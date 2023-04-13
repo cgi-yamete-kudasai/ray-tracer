@@ -30,8 +30,8 @@ public class ConverterApp
         if (!File.Exists(setup.Source))
             throw new FileNotFoundException($"Can't find source file {setup.Source}.");
 
-        using (var destinationFs = File.OpenWrite(setup.Output))
-            writer.Write(destinationFs, bitmap);
+        using var destinationFs = File.OpenWrite(setup.Output);
+        writer.Write(destinationFs, bitmap);
     }
 
     private bool TryReadImage(Stream source, [MaybeNullWhen(false)] out Bitmap image)
