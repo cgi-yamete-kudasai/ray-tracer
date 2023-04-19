@@ -1,36 +1,33 @@
-﻿using System.IO;
-using System.Runtime.InteropServices;
+﻿using System;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace RayTracer.Library.Extensions;
 
 public static class StreamExtensions
 {
-    public static T MarshalReadStructure<T>(this Stream stream)
-        where T : struct
+    public static unsafe T NativeRead<T>(this Stream stream)
+        where T : unmanaged
     {
-        int structSize = Marshal.SizeOf<T>();
-        byte[] bytes = new byte[structSize];
+        int size = Unsafe.SizeOf<T>();
 
-        int bytesRead = stream.Read(bytes, 0, bytes.Length);
+        Unsafe.SkipInit(out T result);
 
-        if (bytesRead < structSize)
-            throw new IOException($"Unable to read {typeof(T)}: fewer bytes read than requested ({bytesRead}/{structSize}).");
+        Span<byte> bytes = new(&result, size);
 
-        GCHandle pBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-        T result = Marshal.PtrToStructure<T>(pBytes.AddrOfPinnedObject());
+        int bytesRead = stream.Read(bytes);
+
+        if (bytesRead < size)
+            throw new IOException($"Unable to read {typeof(T)}: fewer bytes read than requested ({bytesRead}/{size}).");
 
         return result;
     }
 
-    public static void MarshalWriteStructure<T>(this Stream stream, T value)
-        where T : struct
+    public static unsafe void NativeWrite<T>(this Stream stream, T value)
+        where T : unmanaged
     {
-        int structSize = Marshal.SizeOf<T>();
-
-        byte[] bytes = new byte[structSize];
-        GCHandle pBytes = GCHandle.Alloc(bytes, GCHandleType.Pinned);
-        Marshal.StructureToPtr(value, pBytes.AddrOfPinnedObject(), false);
-
+        int size = Unsafe.SizeOf<T>();
+        Span<byte> bytes = new(&value, size);
         stream.Write(bytes);
     }
 }
