@@ -1,34 +1,115 @@
 using System;
 using System.IO;
+using System.IO.Compression;
+using RayTracer.Imaging.Png.Filters;
+using RayTracer.Imaging.Png.PngChunks;
+using RayTracer.Library.Mathematics;
+using RayTracer.Library.Utils;
 
 namespace RayTracer.Imaging.Png;
 
 public static class PngDecoder
 {
-    public static void Decode(MemoryStream dataStream, PngHeader pngHeader)
+    public static Bitmap DecodeImageData(Stream dataStream, PngHeader pngHeader)
     {
-        if (pngHeader.InterlaceMethod == 1) // Adam7
+        dataStream.Flush();
+        dataStream.Seek(2, SeekOrigin.Begin);
+        
+        MemoryStream output = new MemoryStream();
+
+        using (var deflateStream = new DeflateStream(dataStream, CompressionMode.Decompress))
+        {
+            deflateStream.CopyTo(output);
+            deflateStream.Close();
+        }
+
+        DecodeDecompressedData(output, pngHeader);
+
+        Bitmap bitmap = new Bitmap((int)pngHeader.Width, (int)pngHeader.Height);
+
+        switch (pngHeader.PngColorType)
+        {
+            case PngColorType.GrayScale:
+                ReadGrayScaleImage(output, bitmap);
+                break;
+            case PngColorType.ColorUsed:
+                ReadRGBImage(output, bitmap);
+                break;
+            case PngColorType.PaletteUsed:
+            case PngColorType.AlphaChannelUsed:
+            case PngColorType.ColorUsed | PngColorType.AlphaChannelUsed:
+                throw new NotImplementedException();
+            default:
+                throw new ArgumentException();
+        }
+
+
+        return bitmap;
+    }
+
+    private static void ReadRGBImage(Stream stream, Bitmap bitmap)
+    {
+        for (int i = 0; i < bitmap.Height; i++)
+        {
+            stream.ReadByte();
+            for (int j = 0; j < bitmap.Width; j++)
+            {
+                var r = stream.ReadByte();
+                var g = stream.ReadByte();
+                var b = stream.ReadByte();
+                bitmap.SetColor(j, i, new ColorRGB(r / 255f, g / 255f, b / 255f));
+            }
+        }
+    }
+
+    private static void ReadGrayScaleImage(Stream memoryStream, Bitmap bitmap)
+    {
+        for (int i = 0; i < bitmap.Height; i++)
+        {
+            memoryStream.ReadByte();
+            for (int j = 0; j < bitmap.Width; j++)
+            {
+                var value = memoryStream.ReadByte();
+                bitmap.SetColor(j, i, new ColorRGB(value / 255f, value / 255f, value / 255f));
+            }
+        }
+    }
+
+    private static void DecodeDecompressedData(MemoryStream decompressedData, PngHeader pngHeader)
+    {
+        if (pngHeader.InterlaceMethod == PngInterlaceMethod.Adam7)
         {
             throw new NotImplementedException("Interlaced PNGs are not supported.");
         }
+        
         var bytesPerScanline = GetBytesPerScanline(pngHeader);
 
-        var data = dataStream.GetBuffer();
+        var data = decompressedData.GetBuffer();
 
+        Span<byte> currentRaw;
+        Span<byte> previousRaw = new byte[bytesPerScanline];
+        previousRaw.Fill(0);
+        MemoryStream output = new MemoryStream();
+        
         for (int i = 0; i < pngHeader.Height; i++)
         {
             var filterType = (FilterType)data[i * (bytesPerScanline + 1)];
-            ReverseFilter(filterType, data, i, bytesPerScanline);
+            currentRaw = data.AsSpan(i * (bytesPerScanline + 1) + 1, bytesPerScanline);
+            PngFilterProcessor.Process(previousRaw,currentRaw,filterType, output, FilterMode.Reverse,GetBytesPerPixel(pngHeader));
+            currentRaw.CopyTo(previousRaw);
         }
         
-        dataStream.Position = 0;
+        decompressedData.SetLength(output.Length);
+        output.Position = 0;
+        output.CopyTo(decompressedData);
+        decompressedData.Position = 0;
     }
 
     private static byte GetSamplesPerPixel(PngHeader header)
     {
         switch (header.PngColorType)
         {
-            case PngColorType.None:
+            case PngColorType.GrayScale:
                 return 1;
             case PngColorType.PaletteUsed:
                 return 1;
@@ -69,94 +150,5 @@ public static class PngDecoder
             default:
                 return 0;
         }
-    }
-
-    private static void ApplyFilter(FilterType filterType, Span<byte> data, int rawId, int bytesPerScanline)
-    {
-        int rawStartIndex = rawId * (bytesPerScanline + 1) + 1;
-        int previousRawStartIndex = (rawId - 1) * (bytesPerScanline + 1) + 1;
-        
-        
-    }
-
-    private static void ReverseFilter(FilterType filterType, Span<byte> decodedData, int rawId, int bytesPerScanline)
-    {
-        int rawStartIndex = rawId * (bytesPerScanline + 1) + 1;
-        int previousRawStartIndex = (rawId - 1) * (bytesPerScanline + 1) + 1;
-        
-        for (int byteIndex = 0; byteIndex < bytesPerScanline; byteIndex++)
-        {
-            var byteValue = decodedData[rawStartIndex + byteIndex];
-            var leftValue = GetLeftByte(byteIndex, decodedData);
-            var aboveValue = GetAboveByte(byteIndex, decodedData);
-            var aboveLeftValue = GetAboveLeftByte(byteIndex, decodedData);
-            
-            switch (filterType)
-            {
-                case FilterType.None:
-                    break;
-                case FilterType.Sub:
-                    decodedData[rawStartIndex + byteIndex] = (byte)(byteValue + leftValue);
-                    break;
-                case FilterType.Up:
-                    decodedData[rawStartIndex + byteIndex] = (byte)(byteValue + aboveValue);
-                    break;
-                case FilterType.Average:
-                    decodedData[rawStartIndex + byteIndex] = (byte)(byteValue + (leftValue + aboveValue) / 2);
-                    break;
-                case FilterType.Paeth:
-                    decodedData[rawStartIndex + byteIndex] = (byte)(byteValue + PaethPredictor(leftValue, aboveValue, aboveLeftValue));
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(filterType), filterType, null);
-            }
-        }
-        byte GetLeftByte(int byteIndex, Span<byte> data)
-        {
-            var leftIndex = byteIndex - 1;
-            var leftValue = leftIndex >= 0 ? data[rawStartIndex + leftIndex] : (byte)0;
-            return leftValue;
-        }
-        
-        byte GetAboveByte(int byteIndex, Span<byte> data)
-        {
-            var upIndex = previousRawStartIndex + byteIndex;
-            return upIndex >= 0 ? data[upIndex] : (byte)0;
-        }
-        
-        byte GetAboveLeftByte(int byteIndex, Span<byte> data)
-        {
-            var index = previousRawStartIndex + byteIndex - 1;
-            return index >= 0 ? data[index] : (byte)0;
-        }
-        
-        byte PaethPredictor(byte a, byte b, byte c)
-        {
-            var p = a + b - c;
-            var pa = Math.Abs(p - a);
-            var pb = Math.Abs(p - b);
-            var pc = Math.Abs(p - c);
-
-            if (pa <= pb && pa <= pc)
-            {
-                return a;
-            }
-
-            if (pb <= pc)
-            {
-                return b;
-            }
-
-            return c;
-        }
-    }
-
-    private enum FilterType
-    {
-        None = 0,
-        Sub = 1,
-        Up = 2,
-        Average = 3,
-        Paeth = 4
     }
 }

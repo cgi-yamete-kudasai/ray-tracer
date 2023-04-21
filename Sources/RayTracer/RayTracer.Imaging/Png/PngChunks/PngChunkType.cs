@@ -1,6 +1,6 @@
 using System;
 
-namespace RayTracer.Imaging.Png;
+namespace RayTracer.Imaging.Png.PngChunks;
 
 public static class PngChunkType
 {

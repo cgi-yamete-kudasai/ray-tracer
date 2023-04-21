@@ -1,10 +1,9 @@
-using System.IO.Compression;
 using RayTracer.Imaging;
 using RayTracer.Imaging.IO.Readers;
 using RayTracer.Imaging.Png;
+using RayTracer.Imaging.Png.PngChunks;
 using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Extensions;
-using RayTracer.Library.Mathematics;
 using RayTracer.Library.Memory;
 using RayTracer.Library.Utils;
 
@@ -40,74 +39,9 @@ public class PngBitmapReader : IBitmapReader
 
         Assert.Equal(source.Length, source.Position);
 
-        var bitmap = DecodeImageData(dataStream, pngHeader);
+        var bitmap = PngDecoder.DecodeImageData(dataStream, pngHeader);
 
         return bitmap;
-    }
-
-    private static Bitmap DecodeImageData(Stream dataStream, PngHeader pngHeader)
-    {
-        dataStream.Flush();
-        dataStream.Seek(2, SeekOrigin.Begin);
-
-        MemoryStream output = new MemoryStream();
-
-        using (var deflateStream = new DeflateStream(dataStream, CompressionMode.Decompress))
-        {
-            deflateStream.CopyTo(output);
-            deflateStream.Close();
-        }
-
-        PngDecoder.Decode(output, pngHeader);
-
-        Bitmap bitmap = new Bitmap((int)pngHeader.Width, (int)pngHeader.Height);
-
-        switch (pngHeader.PngColorType)
-        {
-            case PngColorType.None:
-                ReadGrayScaleImage(output, bitmap);
-                break;
-            case PngColorType.ColorUsed:
-                ReadRGBImage(output, bitmap);
-                break;
-            case PngColorType.PaletteUsed:
-            case PngColorType.AlphaChannelUsed:
-            case PngColorType.ColorUsed | PngColorType.AlphaChannelUsed:
-                throw new NotImplementedException();
-            default:
-                throw new ArgumentException();
-        }
-
-
-        return bitmap;
-    }
-
-    private static void ReadRGBImage(Stream stream, Bitmap bitmap)
-    {
-        for (int i = 0; i < bitmap.Height; i++)
-        {
-            stream.ReadByte();
-            for (int j = 0; j < bitmap.Width; j++)
-            {
-                var r = stream.ReadByte();
-                var g = stream.ReadByte();
-                var b = stream.ReadByte();
-                bitmap.SetColor(j, i, new ColorRGB(r / 255f, g / 255f, b / 255f));
-            }
-        }
-    }
-
-    private static void ReadGrayScaleImage(Stream memoryStream, Bitmap bitmap)
-    {
-        for (int i = 0; i < bitmap.Height; i++)
-        {
-            memoryStream.ReadByte();
-            for (int j = 0; j < bitmap.Width; j++)
-            {
-                var value = memoryStream.ReadByte();
-                bitmap.SetColor(j, i, new ColorRGB(value / 255f, value / 255f, value / 255f));
-            }
-        }
     }
 
     private static PngHeader ReadIHDRChunk(PngChunk pngChunk)

@@ -1,7 +1,4 @@
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
-namespace RayTracer.Imaging.Png;
+namespace RayTracer.Imaging.Png.PngChunks;
 
 public readonly struct PngHeader
 {
@@ -17,17 +14,17 @@ public readonly struct PngHeader
     
     public readonly byte FilterMethod;
     
-    public readonly byte InterlaceMethod;
+    public readonly PngInterlaceMethod InterlaceMethod;
     
-    public PngHeader(uint width, uint height)
+    public PngHeader(int width, int height)
     {
-        Width = width;
-        Height = height;
+        Width = (uint)width;
+        Height = (uint)height;
         BitDepth = 8;
-        PngColorType = (PngColorType)2;
+        PngColorType = PngColorType.ColorUsed;
         CompressionMethod = 0;
         FilterMethod = 0;
-        InterlaceMethod = 0;
+        InterlaceMethod = PngInterlaceMethod.None;
     }
 
     public PngHeader(uint width, uint height, byte bitDepth, byte colorType, byte compressionMethod, byte filterMethod, byte interlaceMethod)
@@ -38,6 +35,6 @@ public readonly struct PngHeader
         PngColorType = (PngColorType)colorType;
         CompressionMethod = compressionMethod;
         FilterMethod = filterMethod;
-        InterlaceMethod = interlaceMethod;
+        InterlaceMethod = (PngInterlaceMethod)interlaceMethod;
     }
 }
