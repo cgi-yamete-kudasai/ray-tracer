@@ -2,6 +2,7 @@ namespace RayTracer.Imaging.Png.PngChunks;
 
 public readonly struct PngHeader
 {
+    public static int Size => 13;
     public readonly uint Width;
     
     public readonly uint Height;

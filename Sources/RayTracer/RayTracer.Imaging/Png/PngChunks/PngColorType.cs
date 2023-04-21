@@ -5,8 +5,8 @@ namespace RayTracer.Imaging.Png.PngChunks;
 [Flags]
 public enum PngColorType : byte
 {
-    GrayScale = 0,
-    PaletteUsed = 1,
-    ColorUsed = 2,
-    AlphaChannelUsed = 4
+    GreyScale = 0,
+    PaletteUsed = 1 << 0,
+    ColorUsed = 1 << 1,
+    AlphaChannelUsed = 1 <<2,
 }

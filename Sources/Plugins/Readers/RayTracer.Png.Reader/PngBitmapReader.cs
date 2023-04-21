@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using RayTracer.Imaging;
 using RayTracer.Imaging.IO.Readers;
 using RayTracer.Imaging.Png;
@@ -15,10 +17,12 @@ public class PngBitmapReader : IBitmapReader
 
     public Bitmap Read(Stream source)
     {
-        Span<byte> header = new byte[8];
+        Span<byte> header = stackalloc byte[FileSignatures.Png.Length];
 
-        Assert.Equal(8, source.Read(header));
-        Assert.True(header.SequenceEqual(MagicBytes));
+        if (source.Read(header) != 8 || !header.SequenceEqual(MagicBytes))
+        {
+            throw new InvalidDataException("Invalid PNG file");
+        }
 
         var firstChunk = ReadPngChunk(source);
         var pngHeader = ReadIHDRChunk(firstChunk);
@@ -30,8 +34,10 @@ public class PngBitmapReader : IBitmapReader
             if (pngChunk.ChunkType.SequenceEqual(PngChunkType.IDAT))
             {
                 ReadIDATChunk(pngChunk, dataStream);
+                continue;
             }
-            else if (pngChunk.ChunkType.SequenceEqual(PngChunkType.IEND))
+
+            if (pngChunk.ChunkType.SequenceEqual(PngChunkType.IEND))
             {
                 break;
             }
@@ -47,10 +53,12 @@ public class PngBitmapReader : IBitmapReader
     private static PngHeader ReadIHDRChunk(PngChunk pngChunk)
     {
         Assert.True(pngChunk.ChunkType.SequenceEqual(PngChunkType.IHDR));
-        Assert.Equal((uint)13, pngChunk.DataLength);
-        Assert.Equal(13, pngChunk.Data.Length);
+        Assert.Equal((uint)PngHeader.Size, pngChunk.DataLength);
+        Assert.Equal(PngHeader.Size, pngChunk.Data.Length);
 
-        MemoryStream dataStream = new MemoryStream(pngChunk.Data);
+        MemoryStream dataStream = new MemoryStream();
+        dataStream.Write(pngChunk.Data);
+        dataStream.Position = 0;
 
         uint width = dataStream.NativeRead<BigEndianInt>();
         uint height = dataStream.NativeRead<BigEndianInt>();
@@ -66,7 +74,7 @@ public class PngBitmapReader : IBitmapReader
     private static void ReadIDATChunk(PngChunk pngChunk, MemoryStream dataStream)
     {
         Assert.True(pngChunk.ChunkType.SequenceEqual(PngChunkType.IDAT));
-        dataStream.Write(pngChunk.Data, 0, pngChunk.Data.Length);
+        dataStream.Write(pngChunk.Data);
     }
 
     private static PngChunk ReadPngChunk(Stream stream)

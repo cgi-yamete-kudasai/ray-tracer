@@ -2,12 +2,12 @@ using System;
 
 namespace RayTracer.Imaging.Png.PngChunks;
 
-public ref struct PngChunk
+public readonly ref struct PngChunk
 {
-    public uint DataLength;
-    public ReadOnlySpan<byte> ChunkType;
-    public byte[] Data;
-    public uint Crc;
+    public readonly uint DataLength;
+    public readonly ReadOnlySpan<byte> ChunkType;
+    public readonly ReadOnlySpan<byte> Data;
+    public readonly uint Crc;
 
     public PngChunk(uint dataLength, Span<byte> chunkType, byte[] data) : this(dataLength, chunkType, data, Crc32.Calculate(data))
     {

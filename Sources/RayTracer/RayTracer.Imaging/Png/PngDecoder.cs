@@ -29,7 +29,7 @@ public static class PngDecoder
 
         switch (pngHeader.PngColorType)
         {
-            case PngColorType.GrayScale:
+            case PngColorType.GreyScale:
                 ReadGrayScaleImage(output, bitmap);
                 break;
             case PngColorType.ColorUsed:
@@ -86,17 +86,17 @@ public static class PngDecoder
 
         var data = decompressedData.GetBuffer();
 
-        Span<byte> currentRaw;
-        Span<byte> previousRaw = new byte[bytesPerScanline];
-        previousRaw.Fill(0);
+        Span<byte> currentRow;
+        Span<byte> previousRow = new byte[bytesPerScanline];
+        previousRow.Fill(0);
         MemoryStream output = new MemoryStream();
         
         for (int i = 0; i < pngHeader.Height; i++)
         {
             var filterType = (FilterType)data[i * (bytesPerScanline + 1)];
-            currentRaw = data.AsSpan(i * (bytesPerScanline + 1) + 1, bytesPerScanline);
-            PngFilterProcessor.Process(previousRaw,currentRaw,filterType, output, FilterMode.Reverse,GetBytesPerPixel(pngHeader));
-            currentRaw.CopyTo(previousRaw);
+            currentRow = data.AsSpan(i * (bytesPerScanline + 1) + 1, bytesPerScanline);
+            PngFilterProcessor.Process(previousRow,currentRow,filterType, output, FilterMode.Reverse,GetBytesPerPixel(pngHeader));
+            currentRow.CopyTo(previousRow);
         }
         
         decompressedData.SetLength(output.Length);
@@ -109,7 +109,7 @@ public static class PngDecoder
     {
         switch (header.PngColorType)
         {
-            case PngColorType.GrayScale:
+            case PngColorType.GreyScale:
                 return 1;
             case PngColorType.PaletteUsed:
                 return 1;
