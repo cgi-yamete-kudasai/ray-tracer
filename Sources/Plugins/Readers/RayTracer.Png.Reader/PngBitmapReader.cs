@@ -50,16 +50,17 @@ public class PngBitmapReader : IBitmapReader
         return bitmap;
     }
 
-    private static PngHeader ReadIHDRChunk(PngChunk pngChunk)
+    private static unsafe PngHeader ReadIHDRChunk(PngChunk pngChunk)
     {
         Assert.True(pngChunk.ChunkType.SequenceEqual(PngChunkType.IHDR));
-        Assert.Equal((uint)PngHeader.Size, pngChunk.DataLength);
-        Assert.Equal(PngHeader.Size, pngChunk.Data.Length);
+        Assert.Equal((uint)sizeof(PngHeader), pngChunk.DataLength);
+        Assert.Equal(sizeof(PngHeader), pngChunk.Data.Length);
 
         MemoryStream dataStream = new MemoryStream();
         dataStream.Write(pngChunk.Data);
         dataStream.Position = 0;
 
+        return dataStream.NativeRead<PngHeader>();
         uint width = dataStream.NativeRead<BigEndianInt>();
         uint height = dataStream.NativeRead<BigEndianInt>();
         byte bitDepth = dataStream.NativeRead<byte>();

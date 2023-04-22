@@ -9,11 +9,14 @@ namespace RayTracer.Imaging.Png;
 
 public static class PngEncoder
 {
+    private static readonly byte[] DeflateMethodSignature = new byte[]{0x08, 0x1D};
     public static void EncodeImageData(Bitmap bitmap, Stream outputStream)
     {
+        outputStream.Write(DeflateMethodSignature);
+        
         MemoryStream dataStream = new MemoryStream();
-        Span<byte> previousRaw = stackalloc byte[bitmap.Width * 3];
-        Span<byte> currentRaw = stackalloc byte[bitmap.Width * 3];
+        Span<byte> previousRaw = new byte[bitmap.Width * 3];
+        Span<byte> currentRaw = new byte[bitmap.Width * 3];
         previousRaw.Fill(0);
 
         for (int i = 0; i < bitmap.Height; i++)

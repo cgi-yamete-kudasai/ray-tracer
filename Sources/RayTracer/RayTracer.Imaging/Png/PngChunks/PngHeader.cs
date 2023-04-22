@@ -1,11 +1,14 @@
+using System.Runtime.InteropServices;
+using RayTracer.Library.Memory;
+
 namespace RayTracer.Imaging.Png.PngChunks;
 
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public readonly struct PngHeader
 {
-    public static int Size => 13;
-    public readonly uint Width;
+    public readonly BigEndianInt Width;
     
-    public readonly uint Height;
+    public readonly BigEndianInt Height;
     
     public readonly byte BitDepth;
     

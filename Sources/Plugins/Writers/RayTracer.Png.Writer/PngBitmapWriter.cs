@@ -1,4 +1,6 @@
-﻿using RayTracer.Imaging;
+﻿using System;
+using System.IO;
+using RayTracer.Imaging;
 using RayTracer.Imaging.IO.Writers;
 using RayTracer.Imaging.Png;
 using RayTracer.Imaging.Png.PngChunks;
@@ -31,13 +33,7 @@ public class PngBitmapWriter : IBitmapWriter
         PngHeader header = new(bitmap.Width, bitmap.Height);
         MemoryStream dataStream = new MemoryStream(new byte[13]);
 
-        dataStream.NativeWrite(new BigEndianInt(header.Width));
-        dataStream.NativeWrite(new BigEndianInt(header.Height));
-        dataStream.WriteByte(header.BitDepth);
-        dataStream.WriteByte((byte)header.PngColorType);
-        dataStream.WriteByte(header.CompressionMethod);
-        dataStream.WriteByte(header.FilterMethod);
-        dataStream.WriteByte((byte)header.InterlaceMethod);
+        dataStream.NativeWrite(header);
 
         return new(13, PngChunkType.IHDR.ToArray(), dataStream.ToArray());
     }
@@ -50,8 +46,7 @@ public class PngBitmapWriter : IBitmapWriter
     private PngChunk CreateIDATChunk(Bitmap bitmap)
     {
         MemoryStream dataStream = new MemoryStream();
-        dataStream.WriteByte(0x08);
-        dataStream.WriteByte(0x1D);
+        
         PngEncoder.EncodeImageData(bitmap, dataStream);
 
         return new((uint)dataStream.ToArray().Length, PngChunkType.IDAT.ToArray(), dataStream.ToArray());

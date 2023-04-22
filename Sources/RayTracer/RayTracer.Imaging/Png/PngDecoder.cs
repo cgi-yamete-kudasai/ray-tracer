@@ -25,7 +25,7 @@ public static class PngDecoder
 
         DecodeDecompressedData(output, pngHeader);
 
-        Bitmap bitmap = new Bitmap((int)pngHeader.Width, (int)pngHeader.Height);
+        Bitmap bitmap = new Bitmap((int)(uint)pngHeader.Width, (int)(uint)pngHeader.Height);
 
         switch (pngHeader.PngColorType)
         {
