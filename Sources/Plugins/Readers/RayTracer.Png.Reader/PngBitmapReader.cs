@@ -61,15 +61,6 @@ public class PngBitmapReader : IBitmapReader
         dataStream.Position = 0;
 
         return dataStream.NativeRead<PngHeader>();
-        uint width = dataStream.NativeRead<BigEndianInt>();
-        uint height = dataStream.NativeRead<BigEndianInt>();
-        byte bitDepth = dataStream.NativeRead<byte>();
-        byte colorType = dataStream.NativeRead<byte>();
-        byte compressionMethod = dataStream.NativeRead<byte>();
-        byte filterMethod = dataStream.NativeRead<byte>();
-        byte interlaceMethod = dataStream.NativeRead<byte>();
-
-        return new PngHeader(width, height, bitDepth, colorType, compressionMethod, filterMethod, interlaceMethod);
     }
 
     private static void ReadIDATChunk(PngChunk pngChunk, MemoryStream dataStream)
