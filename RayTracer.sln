@@ -31,9 +31,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Render", "Sources
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Render.Sample", "Sources\RayTracer\RayTracer.Render.Sample\RayTracer.Render.Sample.csproj", "{13898816-77D8-407E-B170-6326CF8F53FF}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RayTracer.Ppm.Writer", "Sources\Plugins\Writers\RayTracer.Ppm.Writer\RayTracer.Ppm.Writer.fsproj", "{E1812E93-919F-4DEE-9D0D-4F21D81FC66D}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracer.Ppm.Writer", "Sources\Plugins\Writers\RayTracer.Ppm.Writer\RayTracer.Ppm.Writer.fsproj", "{E1812E93-919F-4DEE-9D0D-4F21D81FC66D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RayTracer.Ppm.Reader", "Sources\Plugins\Readers\RayTracer.Ppm.Reader\RayTracer.Ppm.Reader.fsproj", "{8E6F956E-9D62-4934-B51D-A499793E3B13}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracer.Ppm.Reader", "Sources\Plugins\Readers\RayTracer.Ppm.Reader\RayTracer.Ppm.Reader.fsproj", "{8E6F956E-9D62-4934-B51D-A499793E3B13}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Png.Writer", "Sources\Plugins\Writers\RayTracer.Png.Writer\RayTracer.Png.Writer.csproj", "{BDBD391F-74CA-42C3-B7D5-0B9D4188DD3E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Png.Reader", "Sources\Plugins\Readers\RayTracer.Png.Reader\RayTracer.Png.Reader.csproj", "{C9C00DBC-3750-4FD3-B23B-BA40D96A7575}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Png.Reader", "Sources\Plugins\Readers\RayTracer.Png.Reader\RayTracer.Png.Reader.csproj", "{3027F832-1C48-482F-B45F-0F388D09741D}"
 EndProject
