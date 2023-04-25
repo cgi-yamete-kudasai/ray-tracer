@@ -1,3 +1,4 @@
+
 ﻿using System.Runtime.InteropServices;
 
 namespace RayTracer.Library.Memory;
