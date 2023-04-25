@@ -19,7 +19,7 @@ public class ConverterApp
         using (var sourceFs = File.OpenRead(setup.Source))
         {
             if (!TryReadImage(sourceFs, out var image))
-                throw new InvalidOperationException($"Couldn't read the format of the file {setup.Source}");
+                throw new InvalidOperationException($"The file {setup.Source} has unsupported format");
          
             bitmap = image;
         }

@@ -3,7 +3,6 @@ using System.IO;
 using RayTracer.Imaging;
 using RayTracer.Imaging.Bmp;
 using RayTracer.Imaging.IO.Readers;
-using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
@@ -54,12 +53,16 @@ public class BmpBitmapReader : IBitmapReader
 
     private static void ValidateHeader(in BmpHeader header)
     {
-        Assert.Equal(0u, header.Reserved);
+        if (header.Reserved != 0)
+            throw new InvalidOperationException("Bad BMP format");
 
-        Assert.Equal(1, header.Planes);
+        if (header.Planes != 1)
+            throw new InvalidOperationException("Bad BMP format");
 
-        Assert.Equal(24, header.BitsPerPixel);
+        if (header.BitsPerPixel != 24)
+            throw new InvalidOperationException("Only 24bit BMPs are supported");
 
-        Assert.Equal(0u, header.Compression);
+        if (header.Compression != 0)
+            throw new InvalidOperationException("Only BMPs without compression are supported");
     }
 }
