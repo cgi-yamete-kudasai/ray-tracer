@@ -1,6 +1,6 @@
 ﻿using System.IO;
+using RayTracer.Bmp.Common;
 using RayTracer.Imaging;
-using RayTracer.Imaging.Bmp;
 using RayTracer.Imaging.IO.Writers;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
@@ -10,15 +10,17 @@ namespace RayTracer.Bmp.Writer;
 
 public class BmpBitmapWriter : IBitmapWriter
 {
-    public ImageFormat Format => ImageFormat.Bmp;
+    public string Format => "bmp";
 
     public void Write(Stream destination, Bitmap bitmap)
     {
         int width = bitmap.Width;
         int height = bitmap.Height;
 
+        destination.Write(FileSignatures.Bmp);
+
         BmpHeader header = new((uint)width, (uint)height);
-        destination.MarshalWriteStructure(header);
+        destination.NativeWrite(header);
 
         int bytesToSkip = 4 - width * 3 % 4;
 

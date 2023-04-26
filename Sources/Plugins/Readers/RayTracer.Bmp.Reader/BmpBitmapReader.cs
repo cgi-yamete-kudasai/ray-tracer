@@ -1,8 +1,8 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using RayTracer.Bmp.Common;
 using RayTracer.Imaging;
-using RayTracer.Imaging.Bmp;
 using RayTracer.Imaging.IO.Readers;
-using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
@@ -11,11 +11,17 @@ namespace RayTracer.Bmp.Reader;
 
 public class BmpBitmapReader : IBitmapReader
 {
-    public ImageFormat Format => ImageFormat.Bmp;
+    public ReadOnlySpan<byte> MagicBytes => FileSignatures.Bmp;
 
     public Bitmap Read(Stream source)
     {
-        var header = source.MarshalReadStructure<BmpHeader>();
+        byte[] magicBytes = new byte[MagicBytes.Length];
+        int bytesRead = source.Read(magicBytes);
+
+        if (bytesRead != MagicBytes.Length || !MagicBytes.SequenceEqual(magicBytes))
+            throw new ArgumentException("The file signature doesn't match the BMP signature.", nameof(source));
+        
+        var header = source.NativeRead<BmpHeader>();
         ValidateHeader(header);
 
         Bitmap result = new((int)header.Width, (int)header.Height);
@@ -47,15 +53,16 @@ public class BmpBitmapReader : IBitmapReader
 
     private static void ValidateHeader(in BmpHeader header)
     {
-        Assert.Equal('B', header.Signature & 0x00FF);
-        Assert.Equal('M', (header.Signature & 0xFF00) >> 8);
+        if (header.Reserved != 0)
+            throw new InvalidOperationException("Bad BMP format");
 
-        Assert.Equal(0u, header.Reserved);
+        if (header.Planes != 1)
+            throw new InvalidOperationException("Bad BMP format");
 
-        Assert.Equal(1, header.Planes);
+        if (header.BitsPerPixel != 24)
+            throw new InvalidOperationException("Only 24bit BMPs are supported");
 
-        Assert.Equal(24, header.BitsPerPixel);
-
-        Assert.Equal(0u, header.Compression);
+        if (header.Compression != 0)
+            throw new InvalidOperationException("Only BMPs without compression are supported");
     }
 }

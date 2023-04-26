@@ -8,9 +8,9 @@ namespace RayTracer.Imaging.IO.Writers;
 
 public class BitmapWritersIndexer : AnnotatedAssemblyIndexerBase<BitmapWritersIndexer, AssemblyPluginAttribute>
 {
-    public IReadOnlyDictionary<ImageFormat, IBitmapWriter> Writers => _writers;
+    public IReadOnlyDictionary<string, IBitmapWriter> Writers => _writers;
 
-    private readonly Dictionary<ImageFormat, IBitmapWriter> _writers = new();
+    private readonly Dictionary<string, IBitmapWriter> _writers = new();
 
     protected override void ProcessAnnotatedAssembly(Assembly assembly)
     {

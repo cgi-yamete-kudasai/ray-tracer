@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\RayTracer\RayTracer.Imaging\RayTracer.Imaging.csproj" />
+      <ProjectReference Include="..\..\RayTracer.Png.Common\RayTracer.Png.Common.csproj" />
+    </ItemGroup>
+
+</Project>

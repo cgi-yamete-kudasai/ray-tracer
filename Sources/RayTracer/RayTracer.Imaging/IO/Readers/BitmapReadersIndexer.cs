@@ -8,9 +8,9 @@ namespace RayTracer.Imaging.IO.Readers;
 
 public class BitmapReadersIndexer : AnnotatedAssemblyIndexerBase<BitmapReadersIndexer, AssemblyPluginAttribute>
 {
-    public IReadOnlyDictionary<ImageFormat, IBitmapReader> Readers => _readers;
+    public IReadOnlyList<IBitmapReader> Readers => _readers;
 
-    private readonly Dictionary<ImageFormat, IBitmapReader> _readers = new();
+    private readonly List<IBitmapReader> _readers = new();
 
     protected override void ProcessAnnotatedAssembly(Assembly assembly)
     {
@@ -19,7 +19,7 @@ public class BitmapReadersIndexer : AnnotatedAssemblyIndexerBase<BitmapReadersIn
             if (type.IsAssignableTo(typeof(IBitmapReader)))
             {
                 var reader = (IBitmapReader)Activator.CreateInstance(type)!;
-                _readers.Add(reader.Format, reader);
+                _readers.Add(reader);
             }
         }
     }

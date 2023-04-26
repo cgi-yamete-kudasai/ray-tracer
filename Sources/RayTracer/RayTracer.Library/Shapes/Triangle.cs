@@ -5,11 +5,11 @@ namespace RayTracer.Library.Shapes;
 
 public class Triangle : IIntersectable
 {
-    public Vector3 A { get; }
+    public Vector3 A { get; private set; }
 
-    public Vector3 B { get; }
+    public Vector3 B { get; private set; }
 
-    public Vector3 C { get; }
+    public Vector3 C { get; private set; }
 
     private readonly Lazy<Vector3> _normal;
 
@@ -67,6 +67,13 @@ public class Triangle : IIntersectable
 
         result = new(point, distance, _normal.Value);
         return true;
+    }
+
+    public void Transform(WorldTransform wt)
+    {
+        A = A.Transform(wt);
+        B = B.Transform(wt);
+        C = C.Transform(wt);
     }
 
     private static Vector3 FindNormal(Vector3 a, Vector3 b, Vector3 c)

@@ -8,7 +8,7 @@ namespace RayTracer.Imaging.IO.Writers;
 
 public class StringBitmapWriter : IBitmapWriter
 {
-    ImageFormat IBitmapWriter.Format => throw new NotSupportedException();
+    string IBitmapWriter.Format => throw new NotSupportedException();
 
     public void Write(Stream destination, Bitmap bitmap)
     {
