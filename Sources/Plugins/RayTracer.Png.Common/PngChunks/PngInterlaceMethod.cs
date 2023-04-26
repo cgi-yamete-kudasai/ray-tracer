@@ -1,4 +1,4 @@
-namespace RayTracer.Imaging.Png.PngChunks;
+namespace RayTracer.Png.Common.PngChunks;
 
 public enum PngInterlaceMethod : byte
 {

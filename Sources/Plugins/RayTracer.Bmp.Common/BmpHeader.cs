@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-namespace RayTracer.Imaging.Bmp;
+namespace RayTracer.Bmp.Common;
 
 [StructLayout(LayoutKind.Sequential)]
 public readonly struct BmpHeader

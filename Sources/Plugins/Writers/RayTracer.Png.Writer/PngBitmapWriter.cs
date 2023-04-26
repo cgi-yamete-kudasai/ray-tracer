@@ -2,8 +2,8 @@
 using System.IO;
 using RayTracer.Imaging;
 using RayTracer.Imaging.IO.Writers;
-using RayTracer.Imaging.Png;
-using RayTracer.Imaging.Png.PngChunks;
+using RayTracer.Png.Common;
+using RayTracer.Png.Common.PngChunks;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Memory;
 using RayTracer.Library.Utils;

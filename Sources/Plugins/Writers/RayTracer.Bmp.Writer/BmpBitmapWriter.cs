@@ -1,6 +1,6 @@
 ﻿using System.IO;
+using RayTracer.Bmp.Common;
 using RayTracer.Imaging;
-using RayTracer.Imaging.Bmp;
 using RayTracer.Imaging.IO.Writers;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;

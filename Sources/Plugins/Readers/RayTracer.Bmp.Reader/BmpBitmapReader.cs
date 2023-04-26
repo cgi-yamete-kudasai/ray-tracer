@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using RayTracer.Bmp.Common;
 using RayTracer.Imaging;
-using RayTracer.Imaging.Bmp;
 using RayTracer.Imaging.IO.Readers;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Mathematics;

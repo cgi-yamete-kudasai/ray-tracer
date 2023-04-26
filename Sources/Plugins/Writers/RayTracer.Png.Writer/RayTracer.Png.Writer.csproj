@@ -7,6 +7,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\RayTracer\RayTracer.Imaging\RayTracer.Imaging.csproj" />
+      <ProjectReference Include="..\..\RayTracer.Png.Common\RayTracer.Png.Common.csproj" />
     </ItemGroup>
 
 </Project>

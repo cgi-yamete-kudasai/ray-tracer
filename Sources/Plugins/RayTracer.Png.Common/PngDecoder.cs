@@ -1,12 +1,10 @@
-using System;
-using System.IO;
 using System.IO.Compression;
-using RayTracer.Imaging.Png.Filters;
-using RayTracer.Imaging.Png.PngChunks;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
+using RayTracer.Png.Common.Filters;
+using RayTracer.Png.Common.PngChunks;
 
-namespace RayTracer.Imaging.Png;
+namespace RayTracer.Png.Common;
 
 public static class PngDecoder
 {

@@ -1,4 +1,4 @@
-namespace RayTracer.Imaging.Png.Filters;
+namespace RayTracer.Png.Common.Filters;
 
 public enum FilterType
 {

@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using RayTracer.Library.Memory;
 
-namespace RayTracer.Imaging.Png.PngChunks;
+namespace RayTracer.Png.Common.PngChunks;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public readonly struct PngHeader

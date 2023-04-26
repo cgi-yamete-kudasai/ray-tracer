@@ -1,9 +1,6 @@
-using System;
-using System.Buffers;
-using System.IO;
 using RayTracer.Library.Utils;
 
-namespace RayTracer.Imaging.Png.Filters;
+namespace RayTracer.Png.Common.Filters;
 
 public static class PngFilterProcessor
 {

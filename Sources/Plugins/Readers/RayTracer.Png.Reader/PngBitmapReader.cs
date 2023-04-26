@@ -2,12 +2,12 @@ using System;
 using System.IO;
 using RayTracer.Imaging;
 using RayTracer.Imaging.IO.Readers;
-using RayTracer.Imaging.Png;
-using RayTracer.Imaging.Png.PngChunks;
 using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Extensions;
 using RayTracer.Library.Memory;
 using RayTracer.Library.Utils;
+using RayTracer.Png.Common;
+using RayTracer.Png.Common.PngChunks;
 
 namespace RayTracer.Png.Reader;
 

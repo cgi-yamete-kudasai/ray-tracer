@@ -2,12 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\RayTracer\RayTracer.Imaging\RayTracer.Imaging.csproj" />
-    <ProjectReference Include="..\..\RayTracer.Bmp.Common\RayTracer.Bmp.Common.csproj" />
+    <ProjectReference Include="..\..\RayTracer\RayTracer.Library\RayTracer.Library.csproj" />
   </ItemGroup>
 
 </Project>

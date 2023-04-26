@@ -35,9 +35,13 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracer.Ppm.Writer", "Sou
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracer.Ppm.Reader", "Sources\Plugins\Readers\RayTracer.Ppm.Reader\RayTracer.Ppm.Reader.fsproj", "{8E6F956E-9D62-4934-B51D-A499793E3B13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Png.Reader", "Sources\Plugins\Readers\RayTracer.Png.Reader\RayTracer.Png.Reader.csproj", "{3027F832-1C48-482F-B45F-0F388D09741D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Png.Reader", "Sources\Plugins\Readers\RayTracer.Png.Reader\RayTracer.Png.Reader.csproj", "{3027F832-1C48-482F-B45F-0F388D09741D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Png.Writer", "Sources\Plugins\Writers\RayTracer.Png.Writer\RayTracer.Png.Writer.csproj", "{C7F18420-2F74-470F-9B3C-04CD3B934264}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Png.Writer", "Sources\Plugins\Writers\RayTracer.Png.Writer\RayTracer.Png.Writer.csproj", "{C7F18420-2F74-470F-9B3C-04CD3B934264}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Png.Common", "Sources\Plugins\RayTracer.Png.Common\RayTracer.Png.Common.csproj", "{111666EA-86D1-477B-ADD0-13294E9BA0B7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Bmp.Common", "Sources\Plugins\RayTracer.Bmp.Common\RayTracer.Bmp.Common.csproj", "{B93D7450-72CF-4D3A-8CDB-89E9765AE054}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +101,14 @@ Global
 		{C7F18420-2F74-470F-9B3C-04CD3B934264}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C7F18420-2F74-470F-9B3C-04CD3B934264}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C7F18420-2F74-470F-9B3C-04CD3B934264}.Release|Any CPU.Build.0 = Release|Any CPU
+		{111666EA-86D1-477B-ADD0-13294E9BA0B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{111666EA-86D1-477B-ADD0-13294E9BA0B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{111666EA-86D1-477B-ADD0-13294E9BA0B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{111666EA-86D1-477B-ADD0-13294E9BA0B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B93D7450-72CF-4D3A-8CDB-89E9765AE054}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B93D7450-72CF-4D3A-8CDB-89E9765AE054}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B93D7450-72CF-4D3A-8CDB-89E9765AE054}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B93D7450-72CF-4D3A-8CDB-89E9765AE054}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,6 +131,8 @@ Global
 		{8E6F956E-9D62-4934-B51D-A499793E3B13} = {D04477E1-A7AF-4AE7-B0B6-38FA68193F1A}
 		{3027F832-1C48-482F-B45F-0F388D09741D} = {D04477E1-A7AF-4AE7-B0B6-38FA68193F1A}
 		{C7F18420-2F74-470F-9B3C-04CD3B934264} = {3499A441-D624-44DD-8DDC-D2B654C88616}
+		{111666EA-86D1-477B-ADD0-13294E9BA0B7} = {886AD218-4FA0-47AB-9F84-05B934AF6371}
+		{B93D7450-72CF-4D3A-8CDB-89E9765AE054} = {886AD218-4FA0-47AB-9F84-05B934AF6371}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E45FBB5-0F08-4318-82C2-F8E3DE2B317B}

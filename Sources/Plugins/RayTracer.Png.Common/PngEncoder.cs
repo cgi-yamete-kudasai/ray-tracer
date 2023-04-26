@@ -1,11 +1,9 @@
-using System;
-using System.IO;
 using System.IO.Compression;
-using RayTracer.Imaging.Png.Filters;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
+using RayTracer.Png.Common.Filters;
 
-namespace RayTracer.Imaging.Png;
+namespace RayTracer.Png.Common;
 
 public static class PngEncoder
 {
