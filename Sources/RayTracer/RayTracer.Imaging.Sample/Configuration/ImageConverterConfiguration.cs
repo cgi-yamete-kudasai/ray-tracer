@@ -1,9 +1,8 @@
 ﻿using RayTracer.Library.CLI;
-using RayTracer.Library.Utils;
 
 namespace RayTracer.Imaging.Sample.Configuration;
 
-public class ImageConverterConfiguration : Singleton<ImageConverterConfiguration>
+public class ImageConverterConfiguration
 {
     public const string SOURCE_ARG = "--source";
 

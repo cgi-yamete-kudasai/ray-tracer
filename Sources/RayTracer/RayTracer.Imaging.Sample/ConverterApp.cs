@@ -1,18 +1,47 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using RayTracer.DependencyInjection;
 using RayTracer.Imaging.IO.Readers;
 using RayTracer.Imaging.IO.Writers;
+using RayTracer.Imaging.Plugins;
 using RayTracer.Imaging.Sample.Configuration;
+using RayTracer.Library.CLI;
 using RayTracer.Library.Utils;
 
 namespace RayTracer.Imaging.Sample;
 
-public class ConverterApp
+public class ConverterApp : IArgSwitchesProvider
 {
+    [Service]
+    private readonly ArgSwitchesProcessor _switchesProcessor = null!;
+
+    [Service]
+    private readonly BitmapReadersIndexer _readersIndexer = null!;
+
+    [Service]
+    private readonly BitmapWritersIndexer _writersIndexer = null!;
+    
+    [Service]
+    private readonly ImageConverterConfiguration _configuration = null!;
+
+    private readonly string[] _args;
+
+    IReadOnlyList<object> IArgSwitchesProvider.Listeners => new[] { _configuration };
+
+    public ConverterApp(string[] args)
+    {
+        _args = args;
+    }
+
     public void Run()
     {
-        ImageConverterSetup setup = new(ImageConverterConfiguration.Instance);
+        _switchesProcessor.Process(_args, this);
+
+        new PluginLoader().LoadPlugins();
+
+        ImageConverterSetup setup = new(_configuration);
 
         Bitmap bitmap;
 
@@ -24,7 +53,7 @@ public class ConverterApp
             bitmap = image;
         }
 
-        if (!BitmapWritersIndexer.Instance.Writers.TryGetValue(setup.TargetFormat, out var writer))
+        if (!_writersIndexer.Writers.TryGetValue(setup.TargetFormat, out var writer))
             throw new InvalidOperationException($"Format {setup.TargetFormat} is not supported for writing");
 
         if (!File.Exists(setup.Source))
@@ -36,7 +65,7 @@ public class ConverterApp
 
     private bool TryReadImage(Stream source, [MaybeNullWhen(false)] out Bitmap image)
     {
-        foreach (var reader in BitmapReadersIndexer.Instance.Readers)
+        foreach (var reader in _readersIndexer.Readers)
         {
             if (IsCorrectFormat(reader))
             {

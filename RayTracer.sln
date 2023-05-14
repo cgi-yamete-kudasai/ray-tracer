@@ -39,9 +39,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Png.Reader", "Sou
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Png.Writer", "Sources\Plugins\Writers\RayTracer.Png.Writer\RayTracer.Png.Writer.csproj", "{C7F18420-2F74-470F-9B3C-04CD3B934264}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Png.Common", "Sources\Plugins\RayTracer.Png.Common\RayTracer.Png.Common.csproj", "{111666EA-86D1-477B-ADD0-13294E9BA0B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Png.Common", "Sources\Plugins\RayTracer.Png.Common\RayTracer.Png.Common.csproj", "{111666EA-86D1-477B-ADD0-13294E9BA0B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.Bmp.Common", "Sources\Plugins\RayTracer.Bmp.Common\RayTracer.Bmp.Common.csproj", "{B93D7450-72CF-4D3A-8CDB-89E9765AE054}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RayTracer.Bmp.Common", "Sources\Plugins\RayTracer.Bmp.Common\RayTracer.Bmp.Common.csproj", "{B93D7450-72CF-4D3A-8CDB-89E9765AE054}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RayTracer.DependencyInjection", "Sources\RayTracer\RayTracer.DependencyInjection\RayTracer.DependencyInjection.csproj", "{77AD86D3-4097-4213-8D40-4F82BF8FE97A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -109,6 +111,10 @@ Global
 		{B93D7450-72CF-4D3A-8CDB-89E9765AE054}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B93D7450-72CF-4D3A-8CDB-89E9765AE054}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B93D7450-72CF-4D3A-8CDB-89E9765AE054}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77AD86D3-4097-4213-8D40-4F82BF8FE97A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77AD86D3-4097-4213-8D40-4F82BF8FE97A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77AD86D3-4097-4213-8D40-4F82BF8FE97A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77AD86D3-4097-4213-8D40-4F82BF8FE97A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -133,6 +139,7 @@ Global
 		{C7F18420-2F74-470F-9B3C-04CD3B934264} = {3499A441-D624-44DD-8DDC-D2B654C88616}
 		{111666EA-86D1-477B-ADD0-13294E9BA0B7} = {886AD218-4FA0-47AB-9F84-05B934AF6371}
 		{B93D7450-72CF-4D3A-8CDB-89E9765AE054} = {886AD218-4FA0-47AB-9F84-05B934AF6371}
+		{77AD86D3-4097-4213-8D40-4F82BF8FE97A} = {430241A2-137D-4111-AA2F-300343475483}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3E45FBB5-0F08-4318-82C2-F8E3DE2B317B}

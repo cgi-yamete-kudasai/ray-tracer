@@ -1,15 +1,22 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-using RayTracer.Library.Utils;
+using System.Collections.Generic;
+using RayTracer.DependencyInjection;
 
 namespace RayTracer.Library.CLI;
 
-public static class ArgSwitchesProcessor
+public class ArgSwitchesProcessor
 {
-    public static void Process(string[] args)
+    [Service]
+    private readonly ArgSwitchesIndexer _switchesIndexer = null!;
+
+    public void Process(string[] args, IArgSwitchesProvider provider)
     {
-        var switchesMap = ArgSwitchesIndexer.Instance.Switches;
+        var switchesMap = _switchesIndexer.Switches;
+
+        var listenersMap = new Dictionary<Type, object>();
+
+        foreach (var listener in provider.Listeners)
+            listenersMap.Add(listener.GetType(), listener);
 
         foreach (var arg in args)
         {
@@ -21,23 +28,11 @@ public static class ArgSwitchesProcessor
             if (switchesMap.TryGetValue(name, out var switches))
             {
                 foreach (var @switch in switches)
-                    InvokeArgSwitch(@switch, value);
+                {
+                    if (listenersMap.TryGetValue(@switch.DeclaringType!, out var listener))
+                        @switch.Invoke(listener, new object[] { value });
+                }
             }
         }
-    }
-
-    private static unsafe void InvokeArgSwitch(MethodInfo method, string value)
-    {
-        Type decl = method.DeclaringType!;
-
-        if (decl.BaseType != typeof(Singleton<>).MakeGenericType(decl))
-            throw new InvalidOperationException($"Methods with {nameof(ArgSwitchAttribute)} can only be singletons");
-
-        MethodInfo instanceGetter = decl.BaseType?.GetTypeInfo().GetDeclaredMethod("get_Instance") ?? throw new UnreachableException();
-
-        var ptr = (delegate*<object>)instanceGetter.MethodHandle.GetFunctionPointer();
-        var instance = ptr();
-
-        method.Invoke(instance, new object[] { value });
     }
 }
