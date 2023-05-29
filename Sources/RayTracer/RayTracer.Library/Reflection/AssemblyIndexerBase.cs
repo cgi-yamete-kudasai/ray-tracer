@@ -1,11 +1,10 @@
-﻿using RayTracer.Library.Utils;
-using System;
+﻿using System;
 using System.Reflection;
 
 namespace RayTracer.Library.Reflection;
 
-public abstract class AssemblyIndexerBase<T> : Singleton<T>
-    where T : AssemblyIndexerBase<T>, new()
+public abstract class AssemblyIndexerBase<T>
+    where T : AssemblyIndexerBase<T>
 {
     protected AssemblyIndexerBase()
     {
