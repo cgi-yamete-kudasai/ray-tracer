@@ -69,7 +69,11 @@ public class RayCasterApp : IArgSwitchesProvider
         Log.Default.Info($"Rendering with settings: {CameraSettings}");
 
         Camera camera = new(CameraSettings);
-        Bitmap result = camera.Render(scene);
+        BitmapRenderer renderer = new();
+
+        renderer.Render(camera, scene);
+
+        Bitmap result = renderer.GetResult();
 
         Log.Default.Info($"Writing to destination file {setup.Output}");
 
