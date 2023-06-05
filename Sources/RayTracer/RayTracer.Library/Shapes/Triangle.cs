@@ -5,7 +5,7 @@ using RayTracer.Library.Serialization.Serializers;
 
 namespace RayTracer.Library.Shapes;
 
-public class Triangle : IIntersectable, ISerializable<Triangle>
+public class Triangle : IIntersectable
 {
     public Vector3 A { get; private set; }
 
@@ -81,8 +81,6 @@ public class Triangle : IIntersectable, ISerializable<Triangle>
 
         _normal = FindNormal(A, B, C);
     }
-
-    static ISerializer<Triangle> ISerializable<Triangle>.Serializer => TriangleSerializer.Instance;
 
     private static Vector3 FindNormal(Vector3 a, Vector3 b, Vector3 c)
     {
