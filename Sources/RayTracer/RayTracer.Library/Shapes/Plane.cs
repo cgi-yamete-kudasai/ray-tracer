@@ -17,7 +17,7 @@ public class Plane : IIntersectable, ISerializable<Plane>
         Normal = Vector3.Normalize(normal);
     }
 
-    public BoundingBox BoundingBox => throw new NotImplementedException();
+    public BoundingBox BB => throw new NotImplementedException();
 
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {

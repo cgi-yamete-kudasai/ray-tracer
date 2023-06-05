@@ -12,7 +12,7 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
 
     public bool IsReadOnly => false;
 
-    public BoundingBox BoundingBox => _boundingBox;
+    public BoundingBox BB => _boundingBox;
     private List<IIntersectable> _intersectables;
     private BoundingBox _boundingBox;
 
@@ -82,7 +82,7 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
 
     public void Add(IIntersectable item)
     {
-        _boundingBox = Count == 0 ? item.BoundingBox : BoundingBox.Union(_boundingBox, item.BoundingBox);
+        _boundingBox = Count == 0 ? item.BB : BoundingBox.Union(_boundingBox, item.BB);
 
         _intersectables.Add(item);
     }

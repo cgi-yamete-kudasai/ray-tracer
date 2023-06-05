@@ -17,7 +17,7 @@ public class Sphere : IIntersectable, ISerializable<Sphere>
         Radius = radius;
     }
 
-    public BoundingBox BoundingBox => new(Center - new Vector3(Radius), Center + new Vector3(Radius));
+    public BoundingBox BB => new(Center - new Vector3(Radius), Center + new Vector3(Radius));
 
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {

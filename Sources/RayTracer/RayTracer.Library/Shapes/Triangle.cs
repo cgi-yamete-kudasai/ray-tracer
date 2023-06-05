@@ -22,7 +22,7 @@ public class Triangle : IIntersectable
         _normal = new(() => FindNormal(a, b, c));
     }
 
-    public BoundingBox BoundingBox => CalculateBoundingBox();
+    public BoundingBox BB => CalculateBoundingBox();
 
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {

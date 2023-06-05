@@ -20,7 +20,7 @@ public class Disc : IIntersectable, ISerializable<Disc>
         Radius = radius;
     }
 
-    public BoundingBox BoundingBox => CalculateBoundingBox();
+    public BoundingBox BB => CalculateBoundingBox();
 
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
