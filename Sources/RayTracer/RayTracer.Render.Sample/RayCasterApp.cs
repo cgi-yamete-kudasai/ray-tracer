@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Collections.Immutable;
 using RayTracer.DependencyInjection;
 using RayTracer.Imaging.IO.Writers;
 using RayTracer.Library.CLI;
@@ -13,6 +12,9 @@ using RayTracer.Render.Sample.Configuration;
 using RayTracer.Library.Utils;
 using RayTracer.Render.Lights;
 using RayTracer.Imaging.Plugins;
+using RayTracer.Library.Mathematics;
+using RayTracer.Library.Serialization;
+using RayTracer.Render.Scenes;
 
 namespace RayTracer.Render.Sample;
 
@@ -26,6 +28,12 @@ public class RayCasterApp : IArgSwitchesProvider
 
     [Service]
     private readonly RayCasterConfiguration _configuration = null!;
+
+    [Service]
+    private readonly IMeshReader _meshReader = null!;
+
+    [Service]
+    private readonly ISceneLocator _sceneLocator = null!;
 
     private readonly string[] _args;
 
@@ -50,21 +58,14 @@ public class RayCasterApp : IArgSwitchesProvider
         if (!_writersIndexer.Writers.TryGetValue(setup.TargetFormat, out var writer))
             throw new InvalidOperationException($"Format {setup.TargetFormat} is not supported for writing");
 
-        if (!File.Exists(setup.Source))
-            throw new FileNotFoundException($"Can't find source file {setup.Source}.");
-
-        Scene scene;
-
         Log.Default.Info($"Loading source file {setup.Source}");
 
-        using (var sourceFs = File.OpenRead(setup.Source))
+        Scene scene = setup.SourceKind switch
         {
-            // hardcoded lights
-            var lights = ImmutableArray<ILight>.Empty.Add(new DirectionalLight(new(0, 1, 0)));
-            var shapes = new ObjMeshReader().Read(sourceFs);
-
-            scene = new(shapes, lights);
-        }
+            SourceKind.Scene => ReadScene(setup.Source),
+            SourceKind.Obj => ReadObjFile(setup.Source),
+            _ => throw new NotSupportedException()
+        };
 
         Log.Default.Info($"Rendering with settings: {CameraSettings}");
 
@@ -77,7 +78,29 @@ public class RayCasterApp : IArgSwitchesProvider
 
         Log.Default.Info($"Writing to destination file {setup.Output}");
 
-        using (var destinationFs = File.OpenWrite(setup.Output))
-            writer.Write(destinationFs, result);
+        using var destinationFs = File.OpenWrite(setup.Output);
+        writer.Write(destinationFs, result);
+    }
+
+    private Scene ReadScene(string sceneName)
+    {
+        return _sceneLocator.LocateScene(sceneName);
+    }
+
+    private Scene ReadObjFile(string sourceFile)
+    {
+        if (!File.Exists(sourceFile))
+            throw new FileNotFoundException($"Can't find source file {sourceFile}.");
+
+        var builder = CreateDefaultBuilder();
+        builder.AddMeshFromFile(sourceFile, WorldTransform.Identity);
+        return builder.Build();
+    }
+
+    private Scene.Builder CreateDefaultBuilder()
+    {
+        var builder = Scene.CreateBuilder(_meshReader);
+        builder.AddLight(new PointLight(new(0, -1, 0)));
+        return builder;
     }
 }
