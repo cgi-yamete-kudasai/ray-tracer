@@ -47,6 +47,59 @@ public struct BoundingBox
 
         return ContainmentType.Disjoint;
     }
-    
-    
+
+    public bool IntersectsWithRay(in Ray ray, out float t)
+    {
+        float tmin = (Min.X - ray.Origin.X) / ray.Direction.X;
+        float tmax = (Max.X - ray.Origin.X) / ray.Direction.X;
+        t = -1;
+
+        if (tmin > tmax)
+        {
+            (tmin, tmax) = (tmax, tmin);
+        }
+
+        float tymin = (Min.Y - ray.Origin.Y) / ray.Direction.Y;
+        float tymax = (Max.Y - ray.Origin.Y) / ray.Direction.Y;
+
+        if (tymin > tymax)
+        {
+            (tymin, tymax) = (tymax, tymin);
+        }
+
+        if ((tmin > tymax) || (tymin > tmax))
+        {
+            return false;
+        }
+
+        if (tymin > tmin)
+            tmin = tymin;
+
+        if (tymax < tmax)
+            tmax = tymax;
+
+        float tzmin = (Min.Z - ray.Origin.Z) / ray.Direction.Z;
+        float tzmax = (Max.Z - ray.Origin.Z) / ray.Direction.Z;
+
+        if (tzmin > tzmax)
+        {
+            (tzmin, tzmax) = (tzmax, tzmin);
+        }
+
+        if ((tmin > tzmax) || (tzmin > tmax))
+        {
+            return false;
+        }
+
+        if (tzmin > tmin)
+            tmin = tzmin;
+
+        if (tzmax < tmax)
+            tmax = tzmax;
+
+        t = tmin;
+        
+        return true;
+    }
+
 }
