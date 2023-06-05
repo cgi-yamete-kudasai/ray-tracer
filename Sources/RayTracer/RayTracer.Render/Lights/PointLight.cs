@@ -1,10 +1,11 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Serialization;
 using RayTracer.Library.Shapes;
 
 namespace RayTracer.Render.Lights;
 
-public class PointLight : ILight
+public class PointLight : ILight, ISerializable<PointLight>
 {
     public ColorRGB Color { get; }
 
@@ -28,9 +29,19 @@ public class PointLight : ILight
 
     public ColorRGB PaintPoint(IIntersectable shape, in IntersectionResult result)
     {
-        var direction = Vector3.Normalize(result.Point - Position);
+        var lightRay = result.Point - Position;
+
+        var direction = Vector3.Normalize(lightRay);
+        
         float dot = Vector3.Dot(result.Normal, -1 * direction);
         dot = Math.Max(0, dot);
-        return dot * Color;
+
+        float raySquared = lightRay.LengthSquared();
+
+        float intensity = Math.Min(1 / raySquared, 1);
+
+        return dot * intensity * Color;
     }
+
+    static ISerializer<PointLight> ISerializable<PointLight>.Serializer => PointLightSerializer.Instance;
 }

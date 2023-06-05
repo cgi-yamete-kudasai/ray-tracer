@@ -4,6 +4,7 @@ using RayTracer.Library.Shapes;
 using System.Threading.Tasks;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
+using RayTracer.Render.Scenes;
 
 namespace RayTracer.Render.Core;
 
@@ -20,7 +21,14 @@ public class BitmapRenderer : IRenderer
 
         Bitmap map = new(camera.ImageWidth, camera.ImageHeight);
 
-        IntersectableList list = new(scene.Shapes);
+        IntersectableList list = new();
+
+        foreach (var descriptor in scene.Shapes)
+        {
+            var shape = descriptor.Shape;
+            shape.Transform(descriptor.Transform);
+            list.Add(shape);
+        }
 
         // TODO: handle many lights
         Assert.Equal(1, scene.Lights.Length);

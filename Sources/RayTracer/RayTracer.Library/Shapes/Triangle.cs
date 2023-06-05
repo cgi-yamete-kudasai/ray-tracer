@@ -1,9 +1,11 @@
 ﻿using System;
 using RayTracer.Library.Mathematics;
+using RayTracer.Library.Serialization;
+using RayTracer.Library.Serialization.Serializers;
 
 namespace RayTracer.Library.Shapes;
 
-public class Triangle : IIntersectable
+public class Triangle : IIntersectable, ISerializable<Triangle>
 {
     public Vector3 A { get; private set; }
 
@@ -11,7 +13,7 @@ public class Triangle : IIntersectable
 
     public Vector3 C { get; private set; }
 
-    private readonly Lazy<Vector3> _normal;
+    private Vector3 _normal;
 
     public Triangle(Vector3 a, Vector3 b, Vector3 c)
     {
@@ -19,7 +21,7 @@ public class Triangle : IIntersectable
         B = b;
         C = c;
 
-        _normal = new(() => FindNormal(a, b, c));
+        _normal = FindNormal(A, B, C);
     }
 
     public BoundingBox BB => CalculateBoundingBox();
@@ -67,7 +69,7 @@ public class Triangle : IIntersectable
 
         Vector3 point = ray.Origin + distance * ray.Direction;
 
-        result = new(point, distance, _normal.Value);
+        result = new(point, distance, _normal);
         return true;
     }
 
@@ -76,7 +78,11 @@ public class Triangle : IIntersectable
         A = A.Transform(wt);
         B = B.Transform(wt);
         C = C.Transform(wt);
+
+        _normal = FindNormal(A, B, C);
     }
+
+    static ISerializer<Triangle> ISerializable<Triangle>.Serializer => TriangleSerializer.Instance;
 
     private static Vector3 FindNormal(Vector3 a, Vector3 b, Vector3 c)
     {

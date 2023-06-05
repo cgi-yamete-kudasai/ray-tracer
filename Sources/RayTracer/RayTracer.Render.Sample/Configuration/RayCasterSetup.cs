@@ -13,6 +13,8 @@ public class RayCasterSetup
 
     public string TargetFormat { get; private set; }
 
+    public SourceKind SourceKind { get; private set; }
+
     public RayCasterSetup(RayCasterConfiguration config)
     {
         ParseOutput(config);
@@ -24,8 +26,13 @@ public class RayCasterSetup
     {
         Source = config.Source ?? throw new InvalidOperationException("Source must be provided");
 
-        if (!Source.EndsWith(OBJ_EXTENSION))
-            throw new InvalidOperationException($"The source file {Source} be an {OBJ_EXTENSION} file.");
+        if (Source.EndsWith(OBJ_EXTENSION))
+        {
+            SourceKind = SourceKind.Obj;
+            return;
+        }
+
+        SourceKind = SourceKind.Scene;
     }
 
     [MemberNotNull(nameof(Output))]

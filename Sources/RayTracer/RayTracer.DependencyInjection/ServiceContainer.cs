@@ -39,7 +39,7 @@ public partial class ServiceContainer : IDisposable
 
         object instance = descriptor.Factory?.Invoke() ?? Activator.CreateInstance(type)!;
 
-        foreach (var member in type.GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
+        foreach (var member in instance.GetType().GetMembers(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic))
         {
             if (member.GetCustomAttribute<ServiceAttribute>() is null)
                 continue;
