@@ -21,6 +21,13 @@ public readonly partial struct Vector3 : ISerializable<Vector3>
         Y = y;
         Z = z;
     }
+    
+    public Vector3(float value)
+    {
+        X = value;
+        Y = value;
+        Z = value;
+    }
 
     public float Length() => (float)Math.Sqrt(LengthSquared());
 

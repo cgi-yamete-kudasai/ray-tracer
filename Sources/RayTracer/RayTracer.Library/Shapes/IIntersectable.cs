@@ -5,5 +5,7 @@ namespace RayTracer.Library.Shapes;
 
 public interface IIntersectable : ITransformable
 {
+    BoundingBox BoundingBox { get; }
+
     bool TryIntersect(in Ray ray, out IntersectionResult result);
 }

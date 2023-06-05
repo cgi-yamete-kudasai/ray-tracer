@@ -20,6 +20,8 @@ public class Disc : IIntersectable, ISerializable<Disc>
         Radius = radius;
     }
 
+    public BoundingBox BoundingBox => CalculateBoundingBox();
+
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
         float denominator = Vector3.Dot(Normal, ray.Direction);
@@ -47,5 +49,14 @@ public class Disc : IIntersectable, ISerializable<Disc>
     }
 
     static ISerializer<Disc> ISerializable<Disc>.Serializer => DiscSerializer.Instance;
+    
+    private BoundingBox CalculateBoundingBox()
+    {
+        float ex = MathF.Sqrt(1.0f - Normal.X * Normal.X);
+        float ey = MathF.Sqrt(1.0f - Normal.Y * Normal.Y);
+        float ez = MathF.Sqrt(1.0f - Normal.Z * Normal.Z);
 
+        Vector3 e = Radius * new Vector3(ex, ey, ez);
+        return new BoundingBox(Center - e, Center + e);
+    }
 }

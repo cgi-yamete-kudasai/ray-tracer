@@ -12,7 +12,10 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
 
     public bool IsReadOnly => false;
 
+    public BoundingBox BoundingBox => _boundingBox;
     private List<IIntersectable> _intersectables;
+    private BoundingBox _boundingBox;
+
 
     public IntersectableList()
     {
@@ -79,12 +82,15 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
 
     public void Add(IIntersectable item)
     {
+        _boundingBox = Count == 0 ? item.BoundingBox : BoundingBox.Union(_boundingBox, item.BoundingBox);
+
         _intersectables.Add(item);
     }
 
     public void Clear()
     {
         _intersectables.Clear();
+        _boundingBox = BoundingBox.Zero;
     }
 
     public bool Contains(IIntersectable item)
@@ -103,4 +109,6 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
     }
 
     public static ISerializer<IntersectableList> Serializer => IntersectableListSerializer.Instance;
+    
+    
 }

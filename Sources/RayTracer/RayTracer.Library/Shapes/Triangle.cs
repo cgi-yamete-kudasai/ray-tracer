@@ -22,6 +22,8 @@ public class Triangle : IIntersectable
         _normal = new(() => FindNormal(a, b, c));
     }
 
+    public BoundingBox BoundingBox => CalculateBoundingBox();
+
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
         result = default;
@@ -82,5 +84,18 @@ public class Triangle : IIntersectable
         Vector3 e2 = c - a;
 
         return Vector3.Normalize(Vector3.Cross(e1, e2));
+    }
+
+    private BoundingBox CalculateBoundingBox()
+    {
+        float minX = Math.Min(A.X, Math.Min(B.X, C.X));
+        float minY = Math.Min(A.Y, Math.Min(B.Y, C.Y));
+        float minZ = Math.Min(A.Z, Math.Min(B.Z, C.Z));
+        
+        float maxX = Math.Max(A.X, Math.Max(B.X, C.X));
+        float maxY = Math.Max(A.Y, Math.Max(B.Y, C.Y));
+        float maxZ = Math.Max(A.Z, Math.Max(B.Z, C.Z));
+        
+        return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
     }
 }
