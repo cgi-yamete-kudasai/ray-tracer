@@ -5,7 +5,7 @@ using RayTracer.Library.Shapes;
 
 namespace RayTracer.Render.Lights;
 
-public class PointLight : ILight, ISerializable<PointLight>
+public class PointLight : ILight
 {
     public ColorRGB Color { get; }
 
@@ -42,6 +42,4 @@ public class PointLight : ILight, ISerializable<PointLight>
 
         return dot * intensity * Color;
     }
-
-    static ISerializer<PointLight> ISerializable<PointLight>.Serializer => PointLightSerializer.Instance;
 }
