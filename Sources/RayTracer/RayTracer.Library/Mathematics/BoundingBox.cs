@@ -52,8 +52,8 @@ public struct BoundingBox
     {
         float tmin = (Min.X - ray.Origin.X) / ray.Direction.X;
         float tmax = (Max.X - ray.Origin.X) / ray.Direction.X;
-        t = -1;
-
+        t = 0;
+        
         if (tmin > tmax)
         {
             (tmin, tmax) = (tmax, tmin);
@@ -69,6 +69,7 @@ public struct BoundingBox
 
         if ((tmin > tymax) || (tymin > tmax))
         {
+            t = -1;
             return false;
         }
 
@@ -88,6 +89,7 @@ public struct BoundingBox
 
         if ((tmin > tzmax) || (tzmin > tmax))
         {
+            t = -1;
             return false;
         }
 
@@ -98,7 +100,12 @@ public struct BoundingBox
             tmax = tzmax;
 
         t = tmin;
-        
+
+        if (tmax < tmin || tmax < 0)
+        {
+            t = -1;
+            return false;
+        }
         return true;
     }
 

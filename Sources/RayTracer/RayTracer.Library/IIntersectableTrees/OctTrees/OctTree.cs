@@ -8,17 +8,18 @@ namespace RayTracer.Library.IIntersectableTrees.OctTrees;
 
 public class OctTree : ITree, IIntersectable
 {
-    private List<IIntersectable> _objects;
-    private OctTree? _parent;
-    private static readonly int MaxTreeDepth = 1;
+    public static bool TreeReady;
+    
+    private readonly List<IIntersectable> _objects;
+    // private OctTree? _parent;
+    private const int MaxTreeDepth = 10;
+    private const int MinObjectsPerNode = 20;
 
-    private static Queue<IIntersectable> _pendingInsertion = new();
+    private static readonly Queue<IIntersectable> PendingInsertion = new();
 
-    private const int MinSize = 1;
     private int _treeDepth;
 
-    private static bool _treeBuilt = false;
-    private static bool _treeReady = false;
+    private static bool _treeBuilt;
 
     private OctTree?[]? _childNodes;
 
@@ -42,15 +43,15 @@ public class OctTree : ITree, IIntersectable
 
     public void Add(IIntersectable @object)
     {
-        _pendingInsertion.Enqueue(@object);
-        _treeReady = false;
+        PendingInsertion.Enqueue(@object);
+        TreeReady = false;
     }
 
     public void Add(ImmutableArray<IIntersectable> objects)
     {
         foreach (var @object in objects)
         {
-            _pendingInsertion.Enqueue(@object);
+            PendingInsertion.Enqueue(@object);
         }
     }
 
@@ -58,22 +59,22 @@ public class OctTree : ITree, IIntersectable
     {
         if (!_treeBuilt)
         {
-            while (_pendingInsertion.Count != 0)
+            while (PendingInsertion.Count != 0)
             {
-                _objects.Add(_pendingInsertion.Dequeue());
+                _objects.Add(PendingInsertion.Dequeue());
             }
 
             BuildTree();
         }
         else
         {
-            while (_pendingInsertion.Count != 0)
+            while (PendingInsertion.Count != 0)
             {
-                Insert(_pendingInsertion.Dequeue());
+                Insert(PendingInsertion.Dequeue());
             }
         }
 
-        _treeReady = true;
+        TreeReady = true;
     }
 
     private void Insert(IIntersectable @object)
@@ -87,10 +88,6 @@ public class OctTree : ITree, IIntersectable
         Vector3 dimensions = BB.Max - BB.Min;
         Vector3 half = dimensions / 2.0f;
         Vector3 center = BB.Min + half;
-        if (dimensions is { X: <= MinSize, Y: <= MinSize, Z: <= MinSize })
-        {
-            return;
-        }
 
         BoundingBox[] childOctant = CreateChildOctantIfNotExists(center);
 
@@ -155,19 +152,21 @@ public class OctTree : ITree, IIntersectable
 
     private OctTree CreateNode(BoundingBox bb, IIntersectable @object)
     {
-        List<IIntersectable> objects = new List<IIntersectable>(1);
-        objects[0] = @object;
+        List<IIntersectable> objects = new List<IIntersectable>(1)
+        {
+            [0] = @object
+        };
 
         return new OctTree(bb, objects)
         {
-            _parent = this,
+            // _parent = this,
             _treeDepth = _treeDepth + 1
         };
     }
 
     private void BuildTree()
     {
-        if (_treeDepth >= MaxTreeDepth)
+        if (_treeDepth >= MaxTreeDepth || _objects.Count <= MinObjectsPerNode)
         {
             return;
         }
@@ -175,12 +174,6 @@ public class OctTree : ITree, IIntersectable
         if (BB.Size == 0)
         {
             RecalculateBoundingBox();
-        }
-
-        Vector3 dimensions = BB.Max - BB.Min;
-        if (dimensions is { X: <= MinSize, Y: <= MinSize, Z: <= MinSize })
-        {
-            return;
         }
 
         BoundingBox[] octant = CreateNewOctant();
@@ -193,7 +186,7 @@ public class OctTree : ITree, IIntersectable
         BuildChildNodes(octantList, octant);
 
         _treeBuilt = true;
-        _treeReady = true;
+        TreeReady = true;
     }
 
     private void PopulateOctantLists(BoundingBox[] octant, List<IIntersectable>[] octantList)
@@ -251,7 +244,7 @@ public class OctTree : ITree, IIntersectable
 
         return new OctTree(bb, objects)
         {
-            _parent = this,
+            // _parent = this,
             _treeDepth = _treeDepth + 1
         };
     }
@@ -275,20 +268,6 @@ public class OctTree : ITree, IIntersectable
         Vector3 center = BB.Min + half;
 
         BoundingBox[] octant = new BoundingBox[8];
-        // octant[0] = new BoundingBox(BB.Min, center);
-        // octant[1] = new BoundingBox(new Vector3(center.X, BB.Min.Y, BB.Min.Z),
-        //     new Vector3(BB.Max.X, center.Y, center.Z));
-        // octant[2] = new BoundingBox(new Vector3(center.X, BB.Min.Y, center.Z),
-        //     new Vector3(BB.Max.X, center.Y, BB.Max.Z));
-        // octant[3] = new BoundingBox(new Vector3(BB.Min.X, BB.Min.Y, center.Z),
-        //     new Vector3(center.X, center.Y, BB.Max.Z));
-        // octant[4] = new BoundingBox(new Vector3(BB.Min.X, center.Y, BB.Min.Z),
-        //     new Vector3(center.X, BB.Max.Y, center.Z));
-        // octant[5] = new BoundingBox(new Vector3(center.X, center.Y, BB.Min.Z),
-        //     new Vector3(BB.Max.X, BB.Max.Y, center.Z));
-        // octant[6] = new BoundingBox(center, BB.Max);
-        // octant[7] = new BoundingBox(new Vector3(BB.Min.X, center.Y, center.Z),
-        //     new Vector3(center.X, BB.Max.Y, BB.Max.Z));
         for (int i = 0; i < 8; i++)
         {
             octant[i] = CreateNewOctant(i, center);
@@ -334,8 +313,150 @@ public class OctTree : ITree, IIntersectable
 
     public BoundingBox BB { get; private set; }
 
+
     public bool TryIntersect(in Ray ray, out IntersectionResult result)
     {
-        throw new NotImplementedException();
+        bool resultExists = false;
+        float tResult = float.MaxValue;
+        result = default;
+
+        if (_objects.Count == 0 && !HasChildren)
+        {
+            result = new IntersectionResult();
+            return false;
+        }
+
+        if (TryIntersectObjects(in ray, out IntersectionResult objectsResult))
+        {
+            resultExists = true;
+            tResult = objectsResult.T;
+            result = objectsResult;
+        }
+
+        Span<float> tOctant = stackalloc float[8];
+        Span<int> tOctantIndex = stackalloc int[8];
+
+        tOctantIndex = InitSpans(ray, tOctantIndex, ref tOctant);
+
+        tOctant.Sort(tOctantIndex);
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (Math.Abs(tOctant[i] - float.MaxValue) > 0.0001f)
+            {
+                bool childIntersected = _childNodes![tOctantIndex[i]]!.TryIntersect(in ray,
+                    out IntersectionResult childNodeResult);
+                if (childIntersected && childNodeResult.T < tResult)
+                {
+                    resultExists = true;
+                    result = childNodeResult;
+
+                    return resultExists;
+                }
+            }
+        }
+
+        return resultExists;
+    }
+    
+    public bool TryIntersectAny(in Ray ray, out IntersectionResult result)
+    {
+        result = default;
+
+        if (_objects.Count == 0 && !HasChildren)
+        {
+            result = new IntersectionResult();
+            return false;
+        }
+        
+        if (TryIntersectObjects(in ray, out IntersectionResult objectsResult))
+        {
+            result = objectsResult;
+            return true;
+        }
+
+        Span<float> tOctant = stackalloc float[8];
+        Span<int> tOctantIndex = stackalloc int[8];
+
+        tOctantIndex = InitSpans(ray, tOctantIndex, ref tOctant);
+
+        tOctant.Sort(tOctantIndex);
+
+        for (int i = 0; i < 8; i++)
+        {
+            if (Math.Abs(tOctant[i] - float.MaxValue) > 0.0001f)
+            {
+                if (_childNodes![tOctantIndex[i]]!.TryIntersect(in ray,
+                        out IntersectionResult childNodeResult))
+                {
+                    result = childNodeResult;
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Span<int> InitSpans(Ray ray, Span<int> tOctantIndex, ref Span<float> tOctant)
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            tOctantIndex[i] = i;
+            tOctant[i] = float.MaxValue;
+            if (_childNodes?[i] != null && _childNodes[i]!.BB.IntersectsWithRay(in ray, out float t))
+            {
+                tOctant[i] = t;
+            }
+        }
+
+        return tOctantIndex;
+    }
+
+
+    private bool TryIntersectObjects(in Ray ray, out IntersectionResult result)
+    {
+        result = default;
+        bool resultExists = false;
+        float t = float.MaxValue;
+
+        foreach (var @object in _objects)
+        {
+            if (@object.TryIntersect(ray, out IntersectionResult temp))
+            {
+                if (temp.T < t)
+                {
+                    result = temp;
+                    t = temp.T;
+                    resultExists = true;
+                }
+            }
+        }
+
+        return resultExists;
+    }
+    
+    
+
+    private bool HasChildren
+    {
+        get
+        {
+            if (_childNodes is null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < 8; i++)
+            {
+                if (_childNodes[i] != null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }
