@@ -5,6 +5,7 @@ using RayTracer.Imaging.IO.Writers;
 using RayTracer.Library.Serialization;
 using RayTracer.Library.Utils;
 using RayTracer.Render.Core;
+using RayTracer.Render.Scenes;
 
 CameraSettings settings = CameraSettings.Default with
 {
@@ -13,10 +14,14 @@ CameraSettings settings = CameraSettings.Default with
 
 Camera camera = new(settings);
 
-FileStream fs = File.OpenRead("../../../../../Assets/Scenes/SpheresTest.json");
-Scene scene = SerializationHelper.Deserialize<Scene>(fs)!;
+//FileStream fs = File.OpenRead("../../../../../Assets/Scenes/SpheresTest.json");
+//Scene scene = SerializationHelper.Deserialize<Scene>(fs)!;
 
-Bitmap bitmap = camera.Render(scene);
+Scene scene = null!;
+
+BitmapRenderer renderer = new();
+renderer.Render(camera, scene);
+Bitmap bitmap = renderer.GetResult();
 
 StringBitmapWriter writer = new();
 
