@@ -68,6 +68,18 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
     {
         foreach (var shape in _intersectables)
             shape.Transform(wt);
+        
+        _boundingBox = CalculateBoundingBox();
+    }
+
+    private BoundingBox CalculateBoundingBox()
+    {
+        BoundingBox bb = BoundingBox.Zero;
+
+        foreach (var shape in _intersectables)
+            BoundingBox.Union(ref bb, shape.BB);
+
+        return bb;
     }
 
     public IEnumerator<IIntersectable> GetEnumerator()

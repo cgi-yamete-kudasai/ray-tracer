@@ -59,6 +59,7 @@ public class OctTree : IIntersectable
             Add(list);
             return;
         }
+
         PendingInsertion.Enqueue(@object);
         TreeReady = false;
     }
@@ -332,7 +333,39 @@ public class OctTree : IIntersectable
 
     public void Transform(WorldTransform wt)
     {
-        throw new NotImplementedException();
+        ReturnAllToQueue();
+        TransformObjects(wt);
+        BB = BoundingBox.Zero;
+        _treeBuilt = false;
+        TreeReady = false;
+    }
+
+    private void TransformObjects(WorldTransform wt)
+    {
+        foreach (var @object in PendingInsertion)
+        {
+            @object.Transform(wt);
+        }
+    }
+
+    private void ReturnAllToQueue()
+    {
+        foreach (IIntersectable obj in _objects)
+        {
+            PendingInsertion.Enqueue(obj);
+        }
+
+        _objects.Clear();
+
+        if (_childNodes == null)
+        {
+            return;
+        }
+
+        foreach (var child in _childNodes)
+        {
+            child?.ReturnAllToQueue();
+        }
     }
 
 
@@ -380,7 +413,7 @@ public class OctTree : IIntersectable
 
         return resultExists;
     }
-    
+
     public bool TryIntersectAny(in Ray ray, out IntersectionResult result)
     {
         result = default;
@@ -390,7 +423,7 @@ public class OctTree : IIntersectable
             result = new IntersectionResult();
             return false;
         }
-        
+
         if (TryIntersectObjects(in ray, out IntersectionResult objectsResult))
         {
             result = objectsResult;
@@ -458,8 +491,7 @@ public class OctTree : IIntersectable
 
         return resultExists;
     }
-    
-    
+
 
     private bool HasChildren
     {
