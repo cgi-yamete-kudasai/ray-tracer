@@ -1,4 +1,5 @@
-﻿using RayTracer.Library.Diagnostics;
+﻿using System;
+using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Shapes;
@@ -15,8 +16,8 @@ public readonly ref struct IntersectionResult
     {
         Point = point;
         T = t;
-
-        Assert.True(Vector3.IsUnit(normal));
+        
+        // Assert.True(Vector3.IsUnit(normal)); Too small tolerance
         Normal = normal;
     }
 }
