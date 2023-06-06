@@ -9,8 +9,11 @@ namespace RayTracer.Library.IIntersectableTrees.OctTrees;
 public class OctTree : ITree, IIntersectable
 {
     public static bool TreeReady;
-    
+    public BoundingBox BB { get; private set; }
+
     private readonly List<IIntersectable> _objects;
+
+
     // private OctTree? _parent;
     private const int MaxTreeDepth = 10;
     private const int MinObjectsPerNode = 20;
@@ -22,6 +25,7 @@ public class OctTree : ITree, IIntersectable
     private static bool _treeBuilt;
 
     private OctTree?[]? _childNodes;
+
 
     private OctTree(BoundingBox bb, List<IIntersectable> objects)
     {
@@ -255,7 +259,7 @@ public class OctTree : ITree, IIntersectable
         BoundingBox bb = _objects[0].BB;
         for (int i = 1; i < _objects.Count; i++)
         {
-            bb = BoundingBox.Union(bb, _objects[i].BB);
+            BoundingBox.Union(ref bb, _objects[i].BB);
         }
 
         BB = bb;
@@ -310,8 +314,6 @@ public class OctTree : ITree, IIntersectable
     {
         throw new NotImplementedException();
     }
-
-    public BoundingBox BB { get; private set; }
 
 
     public bool TryIntersect(in Ray ray, out IntersectionResult result)

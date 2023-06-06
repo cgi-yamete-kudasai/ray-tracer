@@ -5,18 +5,26 @@ namespace RayTracer.Library.Mathematics;
 
 public struct BoundingBox
 {
+    public static BoundingBox Zero => new(Vector3.Zero, Vector3.Zero);
     public Vector3 Min { get; private set; }
     public Vector3 Max { get; private set; }
+
+
+    public float Size {
+        get
+        {
+            Vector3 size = Max - Min;
+            return MathF.Sqrt(size.X * size.X + size.Y * size.Y + size.Z * size.Z);
+        }
+    }
 
     public BoundingBox(Vector3 min, Vector3 max)
     {
         Min = min;
         Max = max;
     }
-    
-    public static BoundingBox Zero => new(Vector3.Zero, Vector3.Zero);
 
-    public static BoundingBox Union(BoundingBox bb1, BoundingBox bb2)
+    public static void Union(ref BoundingBox bb1, in BoundingBox bb2)
     {
         float minX = MathF.Min(bb1.Min.X, bb2.Min.X);
         float minY = MathF.Min(bb1.Min.Y, bb2.Min.Y);
@@ -26,15 +34,8 @@ public struct BoundingBox
         float maxY = MathF.Max(bb1.Max.Y, bb2.Max.Y);
         float maxZ = MathF.Max(bb1.Max.Z, bb2.Max.Z);
         
-        return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
-    }
-
-    public float Size {
-        get
-        {
-            Vector3 size = Max - Min;
-            return MathF.Sqrt(size.X * size.X + size.Y * size.Y + size.Z * size.Z);
-        }
+        bb1.Min = new Vector3(minX, minY, minZ);
+        bb1.Max = new Vector3(maxX, maxY, maxZ);
     }
 
     public ContainmentType Contains(BoundingBox anotherBb)

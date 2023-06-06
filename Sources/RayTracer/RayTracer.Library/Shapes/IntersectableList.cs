@@ -82,7 +82,15 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
 
     public void Add(IIntersectable item)
     {
-        _boundingBox = Count == 0 ? item.BB : BoundingBox.Union(_boundingBox, item.BB);
+        if (Count == 0)
+        {
+            _boundingBox = item.BB;
+        }
+        else
+        {
+            BoundingBox.Union(ref _boundingBox, item.BB);
+        }
+
 
         _intersectables.Add(item);
     }
@@ -109,6 +117,4 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
     }
 
     public static ISerializer<IntersectableList> Serializer => IntersectableListSerializer.Instance;
-    
-    
 }
