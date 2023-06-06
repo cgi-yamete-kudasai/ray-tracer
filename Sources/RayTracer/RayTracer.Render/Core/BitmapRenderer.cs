@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Shapes;
 using System.Threading.Tasks;
+using RayTracer.Library.Diagnostics.Logging;
+using RayTracer.Library.IIntersectableTrees.OctTrees;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
 using RayTracer.Render.Scenes;
@@ -21,15 +24,20 @@ public class BitmapRenderer : IRenderer
 
         Bitmap map = new(camera.ImageWidth, camera.ImageHeight);
 
-        IntersectableList list = new();
+        OctTree tree = new();
 
         foreach (var descriptor in scene.Shapes)
         {
             var shape = descriptor.Shape;
             shape.Transform(descriptor.Transform);
-            list.Add(shape);
+            tree.Add(shape);
         }
 
+        tree.UpdateTree();
+        
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        Log.Default.WriteLine("Starting render...", LogSeverity.Info);
+        
         // TODO: handle many lights
         Assert.Equal(1, scene.Lights.Length);
         var light = scene.Lights[0];
@@ -40,21 +48,24 @@ public class BitmapRenderer : IRenderer
             {
                 Ray ray = camera.GetRay(j, i);
 
-                if (list.TryIntersect(ray, out var result))
+                if (tree.TryIntersect(ray, out var result))
                 {
                     if (light.TryGetDirection(result, out var lightDir))
                     {
                         Ray lightRay = new(result.Point - ACNE_TOLERANCE * lightDir, -1 * lightDir);
 
-                        if (list.TryIntersectAny(lightRay, out _))
+                        if (tree.TryIntersectAny(lightRay, out _))
                             continue;
                     }
 
-                    ColorRGB color = light.PaintPoint(list, result);
+                    ColorRGB color = light.PaintPoint(tree, result);
                     map.SetColor(j, i, color);
                 }
             }
         });
+
+        stopwatch.Stop();
+        Log.Default.WriteLine($"Render completed in {stopwatch.ElapsedMilliseconds}ms", LogSeverity.Info);
 
         _bitmap = map;
     }

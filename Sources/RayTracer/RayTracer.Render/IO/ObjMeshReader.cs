@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Shapes;
@@ -41,15 +42,15 @@ public class ObjMeshReader : IMeshReader
         {
             line = line[VERTEX_PREFIX.Length..];
             var f1Span = line[..line.IndexOf(' ')];
-            float f1 = float.Parse(f1Span);
-         
+            float f1 = float.Parse(f1Span, CultureInfo.InvariantCulture.NumberFormat);
+
             line = line[(line.IndexOf(' ') + 1)..];
             var f2Span = line[..line.IndexOf(' ')];
-            float f2 = float.Parse(f2Span);
-            
+            float f2 = float.Parse(f2Span, CultureInfo.InvariantCulture.NumberFormat);
+
             line = line[(line.IndexOf(' ') + 1)..];
             var f3Span = line;
-            float f3 = float.Parse(f3Span);
+            float f3 = float.Parse(f3Span, CultureInfo.InvariantCulture.NumberFormat);
 
             Vector3 vertex = new(f1, f2, f3);
             vertices.Add(vertex);
