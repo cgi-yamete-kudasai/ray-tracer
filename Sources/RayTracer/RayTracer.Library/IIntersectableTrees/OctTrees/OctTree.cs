@@ -47,15 +47,28 @@ public class OctTree : ITree, IIntersectable
 
     public void Add(IIntersectable @object)
     {
+        if (@object is IntersectableList list)
+        {
+            Add(list);
+            return;
+        }
         PendingInsertion.Enqueue(@object);
         TreeReady = false;
+    }
+
+    private void Add(IntersectableList list)
+    {
+        foreach (var @object in list)
+        {
+            Add(@object);
+        }
     }
 
     public void Add(ImmutableArray<IIntersectable> objects)
     {
         foreach (var @object in objects)
         {
-            PendingInsertion.Enqueue(@object);
+            Add(@object);
         }
     }
 
