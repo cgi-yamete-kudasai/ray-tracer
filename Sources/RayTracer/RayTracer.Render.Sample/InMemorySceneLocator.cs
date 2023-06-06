@@ -78,7 +78,8 @@ public class InMemorySceneLocator : ISceneLocator
         });
 
         // lights
-        builder.AddLight(new PointLight(new(0, -1f, 0)));
+        builder.AddLight(new PointLight(new(-1f, -1f, .5f), new(0, 0, 1)));
+        builder.AddLight(new PointLight(new(1f, -1f, .5f), new(1, 1, 0)));
 
         return builder.Build();
     }
