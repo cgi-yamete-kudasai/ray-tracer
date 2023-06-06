@@ -6,7 +6,7 @@ using RayTracer.Library.Shapes;
 
 namespace RayTracer.Library.IIntersectableTrees.OctTrees;
 
-public class OctTree : ITree, IIntersectable
+public class OctTree : IIntersectable
 {
     public static bool TreeReady;
     public BoundingBox BB { get; private set; }
@@ -37,6 +37,13 @@ public class OctTree : ITree, IIntersectable
     {
         _objects = new List<IIntersectable>();
         BB = BoundingBox.Zero;
+    }
+
+    public OctTree(ImmutableArray<IIntersectable> objects)
+    {
+        _objects = new List<IIntersectable>();
+        BB = BoundingBox.Zero;
+        Add(objects);
     }
 
     public OctTree(BoundingBox region)
