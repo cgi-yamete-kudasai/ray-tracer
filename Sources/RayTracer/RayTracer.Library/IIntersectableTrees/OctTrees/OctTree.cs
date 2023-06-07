@@ -8,7 +8,7 @@ namespace RayTracer.Library.IIntersectableTrees.OctTrees;
 
 public class OctTree : IIntersectable
 {
-    public static bool TreeReady;
+    public bool TreeReady;
     public BoundingBox BB { get; private set; }
 
     private readonly List<IIntersectable> _objects;
@@ -18,11 +18,11 @@ public class OctTree : IIntersectable
     private const int MaxTreeDepth = 10;
     private const int MinObjectsPerNode = 20;
 
-    private static readonly Queue<IIntersectable> PendingInsertion = new();
+    private readonly Queue<IIntersectable> _pendingInsertion = new();
 
     private int _treeDepth;
 
-    private static bool _treeBuilt;
+    private bool _treeBuilt;
 
     private OctTree?[]? _childNodes;
 
@@ -60,7 +60,7 @@ public class OctTree : IIntersectable
             return;
         }
 
-        PendingInsertion.Enqueue(@object);
+        _pendingInsertion.Enqueue(@object);
         TreeReady = false;
     }
 
@@ -84,18 +84,18 @@ public class OctTree : IIntersectable
     {
         if (!_treeBuilt)
         {
-            while (PendingInsertion.Count != 0)
+            while (_pendingInsertion.Count != 0)
             {
-                _objects.Add(PendingInsertion.Dequeue());
+                _objects.Add(_pendingInsertion.Dequeue());
             }
 
             BuildTree();
         }
         else
         {
-            while (PendingInsertion.Count != 0)
+            while (_pendingInsertion.Count != 0)
             {
-                Insert(PendingInsertion.Dequeue());
+                Insert(_pendingInsertion.Dequeue());
             }
         }
 
@@ -334,15 +334,17 @@ public class OctTree : IIntersectable
     public void Transform(WorldTransform wt)
     {
         ReturnAllToQueue();
+        _childNodes = null;
         TransformObjects(wt);
         BB = BoundingBox.Zero;
         _treeBuilt = false;
         TreeReady = false;
+        UpdateTree();
     }
 
     private void TransformObjects(WorldTransform wt)
     {
-        foreach (var @object in PendingInsertion)
+        foreach (var @object in _pendingInsertion)
         {
             @object.Transform(wt);
         }
@@ -352,7 +354,7 @@ public class OctTree : IIntersectable
     {
         foreach (IIntersectable obj in _objects)
         {
-            PendingInsertion.Enqueue(obj);
+            _pendingInsertion.Enqueue(obj);
         }
 
         _objects.Clear();

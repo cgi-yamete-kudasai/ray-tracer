@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
+using RayTracer.Library.IIntersectableTrees.OctTrees;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Serialization;
 using RayTracer.Library.Shapes;
@@ -66,12 +67,13 @@ public class Scene
             {
                 using var stream = File.OpenRead(meshFile);
                 var faces = _reader.Read(stream);
-                var mesh = new IntersectableList(faces);
+                var mesh = new OctTree(faces);
                 _shapes.Add(new()
                 {
                     Shape = mesh,
                     Transform = transform
                 });
+                mesh.UpdateTree();
             }
 
             var shapes = _shapes.ToImmutable();
