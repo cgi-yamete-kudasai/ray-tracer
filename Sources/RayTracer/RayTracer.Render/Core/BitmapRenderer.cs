@@ -38,10 +38,6 @@ public class BitmapRenderer : IRenderer
         Stopwatch stopwatch = Stopwatch.StartNew();
         Log.Default.WriteLine("Starting render...", LogSeverity.Info);
         
-        // TODO: handle many lights
-        Assert.Equal(1, scene.Lights.Length);
-        var light = scene.Lights[0];
-
         Parallel.For(0, imageHeight, i =>
         {
             for (int j = 0; j < imageWidth; j++)
@@ -50,6 +46,23 @@ public class BitmapRenderer : IRenderer
 
                 if (tree.TryIntersect(ray, out var result))
                 {
+                    ColorRGB color = PaintPoint(result);
+                    map.SetColor(j, i, color);
+                }
+            }
+
+            ColorRGB PaintPoint(in IntersectionResult result)
+            {
+                int lightsCount = scene.Lights.Length;
+
+                float r = 0;
+                float g = 0;
+                float b = 0;
+
+                for (int k = 0; k < lightsCount; k++)
+                {
+                    var light = scene.Lights[k];
+
                     if (light.TryGetDirection(result, out var lightDir))
                     {
                         Ray lightRay = new(result.Point - ACNE_TOLERANCE * lightDir, -1 * lightDir);
@@ -58,9 +71,13 @@ public class BitmapRenderer : IRenderer
                             continue;
                     }
 
-                    ColorRGB color = light.PaintPoint(tree, result);
-                    map.SetColor(j, i, color);
+                    ColorRGB current = light.PaintPoint(tree, result);
+                    r += current.R;
+                    g += current.G;
+                    b += current.B;
                 }
+
+                return new(r / lightsCount, g / lightsCount, b / lightsCount);
             }
         });
 
