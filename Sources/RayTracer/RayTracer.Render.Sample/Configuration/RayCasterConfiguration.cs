@@ -1,9 +1,8 @@
 ﻿using RayTracer.Library.CLI;
-using RayTracer.Library.Utils;
 
 namespace RayTracer.Render.Sample.Configuration;
 
-public class RayCasterConfiguration : Singleton<RayCasterConfiguration>
+public class RayCasterConfiguration
 {
     public const string SOURCE_ARG = "--source";
 

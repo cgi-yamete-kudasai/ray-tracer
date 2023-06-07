@@ -42,4 +42,21 @@ public partial struct Vector3
     {
         return new(rhs.X * lhs, rhs.Y * lhs, rhs.Z * lhs);
     }
+
+    public static Vector3 operator /(Vector3 lhs, float rhs)
+    {
+        return new Vector3(lhs.X / rhs, lhs.Y / rhs, lhs.Z / rhs);
+    }
+
+    public static float Distance(in Vector3 lhs, in Vector3 rhs)
+    {
+        return MathF.Sqrt((lhs.X - rhs.X) * (lhs.X - rhs.X) +
+                          (lhs.Y - rhs.Y) * (lhs.Y - rhs.Y) +
+                          (lhs.Z - rhs.Z) * (lhs.Z - rhs.Z));
+    }
+    
+    public static Vector3 Lerp(Vector3 value1, Vector3 value2, float amount)
+    {
+        return ((1f - amount) * value1) + (amount * value2);
+    }
 }

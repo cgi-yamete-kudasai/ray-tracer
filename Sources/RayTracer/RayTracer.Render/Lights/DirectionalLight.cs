@@ -22,6 +22,12 @@ public class DirectionalLight : ILight, ISerializable<DirectionalLight>
         Color = color;
     }
 
+    public bool TryGetDirection(in IntersectionResult result, out Vector3 direction)
+    {
+        direction = Direction;
+        return true;
+    }
+
     public ColorRGB PaintPoint(IIntersectable shape, in IntersectionResult result)
     {
         float dot = Vector3.Dot(result.Normal, -1 * Direction);

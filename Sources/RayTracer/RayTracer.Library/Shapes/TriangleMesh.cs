@@ -1,25 +1,32 @@
 ﻿using System;
+using System.Diagnostics;
 using RayTracer.Library.Mathematics;
 
 namespace RayTracer.Library.Shapes;
 
-public class Triangle : IIntersectable
+public class TriangleMesh : IIntersectable
 {
     public Vector3 A { get; private set; }
-
     public Vector3 B { get; private set; }
-
     public Vector3 C { get; private set; }
 
-    private Vector3 _normal;
+    public Vector3 NormalA { get; private set; }
+    public Vector3 NormalB { get; private set; }
+    public Vector3 NormalC { get; private set; }
 
-    public Triangle(Vector3 a, Vector3 b, Vector3 c)
+    public TriangleMesh(Vector3 a, Vector3 b, Vector3 c, Vector3 normalA, Vector3 normalB, Vector3 normalC)
     {
         A = a;
         B = b;
         C = c;
 
-        _normal = FindNormal(A, B, C);
+        Debug.Assert(Vector3.IsUnit(normalA));
+        Debug.Assert(Vector3.IsUnit(normalB));
+        Debug.Assert(Vector3.IsUnit(normalC));
+
+        NormalA = normalA;
+        NormalB = normalB;
+        NormalC = normalC;
     }
 
     public BoundingBox BB => CalculateBoundingBox();
@@ -67,7 +74,7 @@ public class Triangle : IIntersectable
 
         Vector3 point = ray.Origin + distance * ray.Direction;
 
-        result = new(point, distance, _normal);
+        result = new(point, distance, CalculateNormalBarycentric(point));
         return true;
     }
 
@@ -77,15 +84,47 @@ public class Triangle : IIntersectable
         B = B.Transform(wt);
         C = C.Transform(wt);
 
-        _normal = FindNormal(A, B, C);
+        NormalA = NormalA.Transform(wt);
+        NormalB = NormalB.Transform(wt);
+        NormalC = NormalC.Transform(wt);
     }
 
-    private static Vector3 FindNormal(Vector3 a, Vector3 b, Vector3 c)
+    private Vector3 CalculateNormalBarycentric(Vector3 p)
     {
-        Vector3 e1 = b - a;
-        Vector3 e2 = c - a;
+        var vector0 = B - A;
+        var vector1 = C - A;
+        var vector2 = p - A;
+        var dot00 = Vector3.Dot(vector0, vector0);
+        var dot01 = Vector3.Dot(vector0, vector1);
+        var dot11 = Vector3.Dot(vector1, vector1);
+        var dot20 = Vector3.Dot(vector2, vector0);
+        var dot21 = Vector3.Dot(vector2, vector1);
 
-        return Vector3.Normalize(Vector3.Cross(e1, e2));
+        var denom = dot00 * dot11 - dot01 * dot01;
+
+        var v = (dot11 * dot20 - dot01 * dot21) / denom;
+        var w = (dot00 * dot21 - dot01 * dot20) / denom;
+        var u = 1 - v - w;
+
+        return u * NormalA + v * NormalB + w * NormalC;
+    }
+
+    private Vector3 CalculateNormalNaive(Vector3 point)
+    {
+        float distanceA = Vector3.Distance(A, point);
+        float distanceB = Vector3.Distance(B, point);
+        float distanceC = Vector3.Distance(C, point);
+
+        float weightA = 1 / distanceA;
+        float weightB = 1 / distanceB;
+        float weightC = 1 / distanceC;
+
+        float totalWeight = weightA + weightB + weightC;
+
+        return Vector3.Normalize(
+            weightA / totalWeight * NormalA
+            + weightB / totalWeight * NormalB
+            + weightC / totalWeight * NormalC);
     }
 
     private BoundingBox CalculateBoundingBox()
@@ -93,11 +132,11 @@ public class Triangle : IIntersectable
         float minX = MathF.Min(A.X, MathF.Min(B.X, C.X));
         float minY = MathF.Min(A.Y, MathF.Min(B.Y, C.Y));
         float minZ = MathF.Min(A.Z, MathF.Min(B.Z, C.Z));
-        
+
         float maxX = MathF.Max(A.X, MathF.Max(B.X, C.X));
         float maxY = MathF.Max(A.Y, MathF.Max(B.Y, C.Y));
         float maxZ = MathF.Max(A.Z, MathF.Max(B.Z, C.Z));
-        
+
         return new BoundingBox(new Vector3(minX, minY, minZ), new Vector3(maxX, maxY, maxZ));
     }
 }
