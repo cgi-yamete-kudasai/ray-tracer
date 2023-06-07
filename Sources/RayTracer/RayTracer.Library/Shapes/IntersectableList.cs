@@ -12,7 +12,10 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
 
     public bool IsReadOnly => false;
 
+    public BoundingBox BB => _boundingBox;
     private List<IIntersectable> _intersectables;
+    private BoundingBox _boundingBox;
+
 
     public IntersectableList()
     {
@@ -65,6 +68,18 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
     {
         foreach (var shape in _intersectables)
             shape.Transform(wt);
+        
+        _boundingBox = CalculateBoundingBox();
+    }
+
+    private BoundingBox CalculateBoundingBox()
+    {
+        BoundingBox bb = BoundingBox.Zero;
+
+        foreach (var shape in _intersectables)
+            BoundingBox.Union(ref bb, shape.BB);
+
+        return bb;
     }
 
     public IEnumerator<IIntersectable> GetEnumerator()
@@ -79,12 +94,23 @@ public class IntersectableList : ICollection<IIntersectable>, IIntersectable, IS
 
     public void Add(IIntersectable item)
     {
+        if (Count == 0)
+        {
+            _boundingBox = item.BB;
+        }
+        else
+        {
+            BoundingBox.Union(ref _boundingBox, item.BB);
+        }
+
+
         _intersectables.Add(item);
     }
 
     public void Clear()
     {
         _intersectables.Clear();
+        _boundingBox = BoundingBox.Zero;
     }
 
     public bool Contains(IIntersectable item)

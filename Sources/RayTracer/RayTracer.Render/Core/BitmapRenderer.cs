@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using RayTracer.Library.Diagnostics;
 using RayTracer.Library.Shapes;
 using System.Threading.Tasks;
+using RayTracer.Library.Diagnostics.Logging;
+using RayTracer.Library.IIntersectableTrees.OctTrees;
 using RayTracer.Library.Mathematics;
 using RayTracer.Library.Utils;
 using RayTracer.Render.Scenes;
-using System.Drawing;
 
 namespace RayTracer.Render.Core;
 
@@ -22,22 +24,27 @@ public class BitmapRenderer : IRenderer
 
         Bitmap map = new(camera.ImageWidth, camera.ImageHeight);
 
-        IntersectableList list = new();
+        OctTree tree = new();
 
         foreach (var descriptor in scene.Shapes)
         {
             var shape = descriptor.Shape;
             shape.Transform(descriptor.Transform);
-            list.Add(shape);
+            tree.Add(shape);
         }
 
+        tree.UpdateTree();
+        
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        Log.Default.WriteLine("Starting render...", LogSeverity.Info);
+        
         Parallel.For(0, imageHeight, i =>
         {
             for (int j = 0; j < imageWidth; j++)
             {
                 Ray ray = camera.GetRay(j, i);
 
-                if (list.TryIntersect(ray, out var result))
+                if (tree.TryIntersect(ray, out var result))
                 {
                     ColorRGB color = PaintPoint(result);
                     map.SetColor(j, i, color);
@@ -60,11 +67,11 @@ public class BitmapRenderer : IRenderer
                     {
                         Ray lightRay = new(result.Point - ACNE_TOLERANCE * lightDir, -1 * lightDir);
 
-                        if (list.TryIntersectAny(lightRay, out _))
+                        if (tree.TryIntersectAny(lightRay, out _))
                             continue;
                     }
 
-                    ColorRGB current = light.PaintPoint(list, result);
+                    ColorRGB current = light.PaintPoint(tree, result);
                     r += current.R;
                     g += current.G;
                     b += current.B;
@@ -73,6 +80,9 @@ public class BitmapRenderer : IRenderer
                 return new(r / lightsCount, g / lightsCount, b / lightsCount);
             }
         });
+
+        stopwatch.Stop();
+        Log.Default.WriteLine($"Render completed in {stopwatch.ElapsedMilliseconds}ms", LogSeverity.Info);
 
         _bitmap = map;
     }
